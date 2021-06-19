@@ -9,6 +9,7 @@ class Proses extends CI_Controller
 		parent::__construct();
 		$this->load->library('form_validation');
 		$this->load->model('ProsesModel');
+		$this->load->model('MesinModel');
 	}
 
 	public function index()
@@ -46,7 +47,16 @@ class Proses extends CI_Controller
 			$this->load->view('proses_tambah', $data);
 			$this->load->view('templates/footer');
 		} else {
-			$this->ProsesModel->tambah();
+			$kodeMesin = $this->input->post('kode_mesin');
+			$hargaProses = $this->input->post('harga_proses');
+			$dataMesin = $this->MesinModel->getDataMesin($kodeMesin)->row();
+			$satuanMesin = $dataMesin->satuan;
+			$kekuatanMesin = $dataMesin->kekuatan;
+			$hargaPerProduk = 0;
+			if (strtolower($satuanMesin) == 'ton') {
+				$hargaPerProduk = $kekuatanMesin * $hargaProses;
+			}
+			$this->ProsesModel->tambah($hargaPerProduk);
 			// if (is_array($_POST['proses'])) {
 			// 	// $produk = implode(", ", $_POST['proses']);
 			// 	$proses = implode(', ', $this->input->post('proses'));

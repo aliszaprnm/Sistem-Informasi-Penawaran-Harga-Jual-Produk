@@ -14,7 +14,7 @@ class ProsesModel extends CI_Model
 		return $this->db->get();
 	}
 
-	public function tambah()
+	public function tambah($hargaPerProduk)
 	{
 		// $proses = implode(', ', $this->input->post('proses'));
 		$data = [
@@ -24,7 +24,7 @@ class ProsesModel extends CI_Model
 			'std_dies_height' => $this->input->post('std_dies_height', true),
 			'harga_dies' => $this->input->post('harga_dies', true),
 			'harga_proses' => $this->input->post('harga_proses', true),
-			'harga_per_produk' => $this->input->post('harga_per_produk', true),
+			'harga_per_produk' => $hargaPerProduk,
 		];
 		$this->db->insert('proses_produk', $data);
 	}

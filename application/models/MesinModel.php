@@ -10,6 +10,14 @@ class MesinModel extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function GetDataMesin($kode_mesin)
+	{
+		$this->db->select('kode_mesin, nama_mesin, kekuatan, satuan');
+		$this->db->from('mesin');
+		$this->db->where('kode_mesin', $kode_mesin);
+		return $this->db->get();
+	}
+
 	public function tambah()
 	{
 		$data = [
