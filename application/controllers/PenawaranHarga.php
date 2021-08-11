@@ -277,4 +277,33 @@ class PenawaranHarga extends CI_Controller
 		$this->dompdf->render();
 		$this->dompdf->stream('List Data Produk', ['Attachment' => 0]);
 	}
+
+	public function cetak_hasil($id) {
+		$data['title'] = 'Penawaran Harga Detil';
+		$where = array('penawaran_harga.status' => 'New' AND 'Deal');
+		if($this->session->userdata('role') == 'Operational Manager')
+		$where = array_merge($where,['penawaran_harga.created_by' => $this->session->userdata('userid')]);
+		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+							FROM penawaran_harga a
+							LEFT JOIN pesanan b ON a.pesanan_id = b.id
+							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
+							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
+							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							WHERE a.pesanan_id = $id AND a.status = 'Deal'
+						");
+		if ($this->session->userdata('role') == 'Marketing')
+		$where = array_merge($where,['penawaran_harga.created_by' => $this->session->userdata('userid')]);
+		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+							FROM penawaran_harga a
+							LEFT JOIN pesanan b ON a.pesanan_id = b.id
+							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
+							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
+							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							WHERE a.pesanan_id = $id AND a.status = 'New'
+						");
+		$data['rows'] = $getData->result();
+        $this->load->view('cetak_laporan_hasil_produksi', $data);
+    }
 }

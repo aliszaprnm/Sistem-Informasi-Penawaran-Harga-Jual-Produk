@@ -30,6 +30,9 @@
           <label for="kode_customer">Customer</label>
           <input type="text" data-format="dd-mm-yyyy" name="customer" readonly class="form-control form-control-sm" value="<?php echo $rows[0]->nama_customer ?>">
         </div>
+        <a href="<?=site_url('penawaranHarga/cetak_hasil/'. $this->uri->segment(3))?>" target='_blank' class="btn btn-success btn-xs">
+            <i class=""></i> Cetak
+        </a>
 		<div class="table-responsive">
 			<table class="table table-bordered" id="exportTable" width="100%" cellspacing="0">
               <thead>
@@ -136,4 +139,5 @@ var table = $('#exportTable').DataTable({
     }]
   });
   table.buttons().container().appendTo('#exportTable_wrapper .col-md-6:eq(0)');
+</script>
 </script>
