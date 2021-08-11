@@ -55,18 +55,20 @@
   </div>
 </div>
 <script>
-	$("#kode_pesanan").change(function(){
-	  $.get("<?= site_url() ?>processcost/get_pesanan/"+$(this).val(), function(data, status){
+	$("#kode_produk").change(function(){
+    const kodePesanan = $("#kode_pesanan").val()
+    const kodeProduk = $("#kode_produk").val()
+	  $.get("<?= site_url() ?>processcost/get_pesananV2/"+kodePesanan+"/"+kodeProduk, function(data, status){
 		  var jsonData = $.parseJSON(data);
 		  var optionProduk = '<option value="" disabled selected>--- Pilih Produk ---</option>';
 		  var optionCustomer = '<option value="" disabled selected>--- Pilih Customer ---</option>';
 		  if(status == 'success') {
-			for(i=0; i<jsonData.length; i++){
-				optionProduk += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
-				optionCustomer += `<option value="${jsonData[i].kode_customer}">${jsonData[i].customer}</option>`
-			}
-			$("#kode_produk").html(optionProduk);
-			$("#kode_customer").html(optionCustomer);
+			// for(i=0; i<jsonData.length; i++){
+			// 	optionProduk += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
+			// 	optionCustomer += `<option value="${jsonData[i].kode_customer}">${jsonData[i].customer}</option>`
+			// }
+			// $("#kode_produk").html(optionProduk);
+			$("#kode_customer").val(jsonData[0].kode_customer);
 			/*$(".select option").val(function(idx, val) {
 			  $(this).siblings('[value="'+ val +'"]').remove();
 			});*/
@@ -79,7 +81,7 @@
 			})
 		  } else { alert('Something wrong please contact administrator!') }
 	  });
-	  $.get("<?= site_url() ?>penawaranharga/get_harga/"+$(this).val(), function(data, status){
+	  $.get("<?= site_url() ?>penawaranharga/get_harga/"+kodeProduk, function(data, status){
 		  var jsonData = $.parseJSON(data);
 		  if(status == 'success') {
 				$("#process_cost").val(jsonData.process_cost);

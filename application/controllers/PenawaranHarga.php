@@ -105,15 +105,15 @@ class PenawaranHarga extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 	
-	public function get_harga($orderId){
-		$this->db->select('(select sum(total) from process_cost where pesanan_id = a.id) as process_cost, (select sum(total) from tooling_cost where pesanan_id = a.id) as tooling_cost')
-		->from('pesanan a')
-		->where('id',$orderId);
+	public function get_harga($kodeProduk){
+		// $this->db->select('(select sum(total) from process_cost where pesanan_id = a.id) as process_cost, (select sum(total) from tooling_cost where pesanan_id = a.id) as tooling_cost')
+		// ->from('pesanan a')
+		// ->where('id',$orderId);
+	 	// echo json_encode($this->db->get()->row());
+	 	$this->db->select('(select total from process_cost where kode_produk = a.kode_produk) as process_cost, (select total from tooling_cost where kode_produk = a.kode_produk) as tooling_cost')
+		->from('produk a')
+		->where('kode_produk',$kodeProduk);
 	 	echo json_encode($this->db->get()->row());
-	 // 	$this->db->select('(select total from process_cost where kode_produk = a.kode_produk) as process_cost, (select total from tooling_cost where kode_produk = a.kode_produk) as tooling_cost')
-		// ->from('produk a')
-		// ->where('kode_produk',$kodeProduk);
-	 // 	echo json_encode($this->db->get()->row());
 	}
 
 	public function tambah()
