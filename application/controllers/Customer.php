@@ -6,7 +6,7 @@ class Customer extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('form_validation');
+		is_log_in();
 		$this->load->model('CustomerModel');
 	}
 
@@ -67,8 +67,8 @@ class Customer extends CI_Controller {
 						</button>
 					</div>
 				');
-				redirect('customer');
 			}
+			redirect('customer');
 		}
 	}
 
@@ -108,8 +108,8 @@ class Customer extends CI_Controller {
 						</button>
 					</div>
 				');
-				redirect('customer');
 			}
+			redirect('customer');
 		}
 	}
 

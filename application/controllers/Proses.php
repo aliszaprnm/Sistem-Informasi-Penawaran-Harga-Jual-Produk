@@ -7,9 +7,10 @@ class Proses extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('form_validation');
+		is_log_in();
 		$this->load->model('ProsesModel');
 		$this->load->model('MesinModel');
+		$this->load->model('MaterialModel');
 	}
 
 	public function index()
@@ -27,12 +28,12 @@ class Proses extends CI_Controller
 		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required', [
 			'required' => 'Proses tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('std_dies_height', 'Standard Dies Height', 'trim|required', [
-			'required' => 'Standard dies height tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required', [
-			'required' => 'Harga dies tidak boleh kosong'
-		]);
+		// $this->form_validation->set_rules('std_dies_height', 'Standard Dies Height', 'trim|required', [
+		// 	'required' => 'Standard dies height tidak boleh kosong'
+		// ]);
+		// $this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required', [
+		// 	'required' => 'Harga dies tidak boleh kosong'
+		// ]);
 		$this->form_validation->set_rules('harga_proses', 'Harga Proses', 'trim|required', [
 			'required' => 'Harga proses tidak boleh kosong'
 		]);
@@ -49,13 +50,11 @@ class Proses extends CI_Controller
 		} else {
 			$kodeMesin = $this->input->post('kode_mesin');
 			$hargaProses = $this->input->post('harga_proses');
+			$kodeProduk = $this->input->post('kode_produk');
 			$dataMesin = $this->MesinModel->getDataMesin($kodeMesin)->row();
-			$satuanMesin = $dataMesin->satuan;
 			$kekuatanMesin = $dataMesin->kekuatan;
-			$hargaPerProduk = 0;
-			if (strtolower($satuanMesin) == 'ton') {
-				$hargaPerProduk = $kekuatanMesin * $hargaProses;
-			}
+			$hargaPerProduk = $kekuatanMesin * $hargaProses;
+
 			$this->ProsesModel->tambah($hargaPerProduk);
 			// if (is_array($_POST['proses'])) {
 			// 	// $produk = implode(", ", $_POST['proses']);
@@ -86,12 +85,12 @@ class Proses extends CI_Controller
 		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required', [
 			'required' => 'Proses tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('std_dies_height', 'Standard Dies Height', 'trim|required', [
-			'required' => 'Standard dies height tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required', [
-			'required' => 'Harga dies tidak boleh kosong'
-		]);
+		// $this->form_validation->set_rules('std_dies_height', 'Standard Dies Height', 'trim|required', [
+		// 	'required' => 'Standard dies height tidak boleh kosong'
+		// ]);
+		// $this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required', [
+		// 	'required' => 'Harga dies tidak boleh kosong'
+		// ]);
 		$this->form_validation->set_rules('harga_proses', 'Harga Proses', 'trim|required', [
 			'required' => 'Harga proses tidak boleh kosong'
 		]);
@@ -115,6 +114,8 @@ class Proses extends CI_Controller
 			// 		'proses'		=>	$proses
 			// 	));
 			// }
+			
+
 			$this->load->view('proses');
 
 			if ($this->db->affected_rows() > 0) {

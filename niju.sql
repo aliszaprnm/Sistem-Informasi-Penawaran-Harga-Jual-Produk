@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 17, 2021 at 03:07 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Host: localhost:3306
+-- Generation Time: Aug 09, 2021 at 12:31 AM
+-- Server version: 10.3.30-MariaDB-log-cll-lve
+-- PHP Version: 7.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `niju`
+-- Database: `denmaulc_niju`
 --
 
 -- --------------------------------------------------------
@@ -28,21 +29,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `customer` (
-  `kode_customer` varchar(255) NOT NULL,
+  `kode_customer` varchar(20) NOT NULL,
   `nama_customer` varchar(255) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `jarak` decimal(10,1) NOT NULL COMMENT 'km',
   `telp` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`kode_customer`, `nama_customer`, `alamat`, `jarak`, `telp`, `email`) VALUES
-('CUST-001', 'PT Mitsubishi Krama Yudha Motors and Manufacturing', 'Jalan Raya Bekasi No.22, RT.8/RW.5, Rw. Terate, Kec. Cakung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13930', '16.0', '(021) 4602908', 'mitsubishi-motors@mitsubishi-motors.co.id'),
-('CUST-002', 'PT Setia Guna Selaras', 'Jalan Industri Selatan 2 Blok LL No. 2A, Pasirsari, Cikarang Sel., Bekasi, Jawa Barat 17530', '15.9', '(021) 89836938', 'sgs@sgs.com');
 
 -- --------------------------------------------------------
 
@@ -55,24 +48,14 @@ CREATE TABLE `material_produk` (
   `kode_produk` varchar(255) NOT NULL,
   `jenis_material` varchar(255) NOT NULL,
   `tebal_material` decimal(5,2) NOT NULL,
-  `lebar_material` decimal(7,2) NOT NULL,
-  `panjang_material` decimal(7,2) NOT NULL,
+  `lebar_material` decimal(5,2) NOT NULL,
+  `panjang_material` decimal(5,2) NOT NULL,
   `berat_material` decimal(5,2) NOT NULL,
   `jml_per_sheet` int(11) NOT NULL,
-  `berat_produk` decimal(3,2) NOT NULL,
+  `berat_produk` decimal(8,2) NOT NULL,
   `harga_material` int(11) NOT NULL,
-  `harga_per_produk` int(11) NOT NULL
+  `harga_per_produk` decimal(8,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `material_produk`
---
-
-INSERT INTO `material_produk` (`id`, `kode_produk`, `jenis_material`, `tebal_material`, `lebar_material`, `panjang_material`, `berat_material`, `jml_per_sheet`, `berat_produk`, `harga_material`, `harga_per_produk`) VALUES
-(1, 'PROD-001', 'SPCC', '0.15', '50.00', '1219.00', '0.24', 24, '0.01', 15000, 150),
-(2, 'PROD-001', 'SPCC', '0.35', '243.00', '1024.00', '0.24', 24, '0.01', 15000, 150),
-(3, 'PROD-001', 'SPCC', '0.35', '243.00', '1024.00', '0.24', 24, '0.01', 15000, 150),
-(4, 'PROD-002', 'SPCk', '0.35', '243.00', '1024.00', '0.35', 70, '0.01', 20000, 100);
 
 -- --------------------------------------------------------
 
@@ -81,20 +64,28 @@ INSERT INTO `material_produk` (`id`, `kode_produk`, `jenis_material`, `tebal_mat
 --
 
 CREATE TABLE `mesin` (
-  `kode_mesin` varchar(255) NOT NULL,
+  `kode_mesin` varchar(20) NOT NULL,
   `nama_mesin` varchar(255) NOT NULL,
-  `kekuatan` decimal(5,2) NOT NULL,
+  `kekuatan` decimal(5,2) DEFAULT NULL,
   `satuan` enum('Kg','Ton') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `mesin`
+-- Table structure for table `notification`
 --
 
-INSERT INTO `mesin` (`kode_mesin`, `nama_mesin`, `kekuatan`, `satuan`) VALUES
-('MSN-001', 'High Press', '200.00', 'Ton'),
-('MSN-002', 'Medium Press', '35.00', 'Ton'),
-('MSN-003', 'Medium Press', '110.00', 'Ton');
+CREATE TABLE `notification` (
+  `id` bigint(20) NOT NULL,
+  `request_id` bigint(20) NOT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `message` varchar(250) DEFAULT NULL,
+  `from_user_id` bigint(20) DEFAULT NULL,
+  `to_user_id` bigint(20) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -104,19 +95,18 @@ INSERT INTO `mesin` (`kode_mesin`, `nama_mesin`, `kekuatan`, `satuan`) VALUES
 
 CREATE TABLE `penawaran_harga` (
   `id` int(11) NOT NULL,
+  `pesanan_id` int(11) NOT NULL,
   `kode_customer` varchar(255) NOT NULL,
   `kode_produk` varchar(255) NOT NULL,
   `process_cost` int(11) NOT NULL,
   `tooling_cost` int(11) NOT NULL,
-  `total` int(11) NOT NULL
+  `total` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `mod_by` int(11) DEFAULT NULL,
+  `mod_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `penawaran_harga`
---
-
-INSERT INTO `penawaran_harga` (`id`, `kode_customer`, `kode_produk`, `process_cost`, `tooling_cost`, `total`) VALUES
-(0, 'CUST-001', 'PROD-001', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -127,20 +117,28 @@ INSERT INTO `penawaran_harga` (`id`, `kode_customer`, `kode_produk`, `process_co
 CREATE TABLE `pesanan` (
   `id` int(11) NOT NULL,
   `kode_pesanan` varchar(255) NOT NULL,
-  `tanggal` date NOT NULL DEFAULT curdate(),
+  `tanggal` date DEFAULT NULL,
   `kode_customer` varchar(255) NOT NULL,
-  `kode_produk` varchar(255) NOT NULL,
-  `qty` int(11) NOT NULL,
-  `keterangan` varchar(255) DEFAULT NULL
+  `status` varchar(20) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `mod_by` int(11) NOT NULL,
+  `mod_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `pesanan`
+-- Table structure for table `pesanan_detil`
 --
 
-INSERT INTO `pesanan` (`id`, `kode_pesanan`, `tanggal`, `kode_customer`, `kode_produk`, `qty`, `keterangan`) VALUES
-(1, 'ORDER-00001', '2021-06-15', 'CUST-001', 'PROD-001', 5000, 'material berasal dari customer'),
-(2, 'ORDER-00001', '2021-06-15', 'CUST-001', 'PROD-002', 4000, 'material berasal dari customer');
+CREATE TABLE `pesanan_detil` (
+  `id` bigint(20) NOT NULL,
+  `pesanan_id` bigint(20) NOT NULL,
+  `kode_produk` varchar(20) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `keterangan` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -150,7 +148,7 @@ INSERT INTO `pesanan` (`id`, `kode_pesanan`, `tanggal`, `kode_customer`, `kode_p
 
 CREATE TABLE `process_cost` (
   `id` int(11) NOT NULL,
-  `kode_customer` varchar(255) NOT NULL,
+  `pesanan_id` varchar(255) DEFAULT NULL,
   `kode_produk` varchar(255) NOT NULL,
   `harga_material` int(11) NOT NULL,
   `harga_proses` int(11) NOT NULL,
@@ -163,13 +161,6 @@ CREATE TABLE `process_cost` (
   `total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `process_cost`
---
-
-INSERT INTO `process_cost` (`id`, `kode_customer`, `kode_produk`, `harga_material`, `harga_proses`, `harga_sub_material`, `harga_delivery`, `harga_packing`, `harga_qc`, `harga_mtc_dies`, `profit_dan_OH`, `total`) VALUES
-(1, 'CUST-001', 'PROD-001', 0, 0, 0, 15000, '0.05', '0.05', '0.10', '0.25', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -177,20 +168,14 @@ INSERT INTO `process_cost` (`id`, `kode_customer`, `kode_produk`, `harga_materia
 --
 
 CREATE TABLE `produk` (
-  `kode_produk` varchar(255) NOT NULL,
+  `kode_produk` varchar(20) NOT NULL,
   `kode_grup` varchar(255) NOT NULL,
-  `kode_customer` varchar(255) NOT NULL,
   `nama_produk` varchar(255) NOT NULL,
-  `cavity` int(11) NOT NULL
+  `cavity` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `mod_by` int(11) NOT NULL,
+  `mod_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `produk`
---
-
-INSERT INTO `produk` (`kode_produk`, `kode_grup`, `kode_customer`, `nama_produk`, `cavity`) VALUES
-('PROD-001', 'IK176', 'CUST-001', 'Oil Seal Step 1', 2),
-('PROD-002', 'SGS36', 'CUST-002', 'Bkt. Rear', 2);
 
 -- --------------------------------------------------------
 
@@ -203,21 +188,11 @@ CREATE TABLE `proses_produk` (
   `kode_produk` varchar(255) NOT NULL,
   `nama_proses` varchar(255) NOT NULL,
   `kode_mesin` varchar(255) NOT NULL,
-  `std_dies_height` decimal(5,1) DEFAULT NULL,
-  `harga_dies` int(11) NOT NULL,
-  `harga_proses` decimal(3,1) NOT NULL,
-  `harga_per_produk` decimal(5,1) DEFAULT NULL
+  `std_dies_height` decimal(5,2) DEFAULT NULL,
+  `harga_dies` int(11) DEFAULT NULL,
+  `harga_proses` decimal(8,2) NOT NULL,
+  `harga_per_produk` decimal(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `proses_produk`
---
-
-INSERT INTO `proses_produk` (`id`, `kode_produk`, `nama_proses`, `kode_mesin`, `std_dies_height`, `harga_dies`, `harga_proses`, `harga_per_produk`) VALUES
-(2, 'PROD-001', 'Blank', 'MSN-001', '253.5', 39000000, '1.5', '472.5'),
-(4, 'PROD-001', 'Draw', 'MSN-002', '243.9', 34000000, '1.5', '375.0'),
-(5, 'PROD-001', 'Piercing', 'MSN-001', '212.0', 30000000, '1.5', '472.5'),
-(6, 'PROD-002', 'Forming', 'MSN-003', '223.2', 39000000, '2.0', NULL);
 
 -- --------------------------------------------------------
 
@@ -229,17 +204,10 @@ CREATE TABLE `sub_material_produk` (
   `id` int(11) NOT NULL,
   `kode_produk` varchar(255) NOT NULL,
   `sub_material` varchar(255) NOT NULL,
-  `pemakaian` decimal(5,5) NOT NULL,
+  `pemakaian` decimal(5,2) NOT NULL,
   `harga_sub_material` int(11) NOT NULL,
-  `harga_per_produk` int(11) NOT NULL COMMENT 'pemakaian*sub_material_produk'
+  `harga_per_produk` decimal(8,2) NOT NULL COMMENT 'pemakaian*sub_material_produk'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `sub_material_produk`
---
-
-INSERT INTO `sub_material_produk` (`id`, `kode_produk`, `sub_material`, `pemakaian`, `harga_sub_material`, `harga_per_produk`) VALUES
-(2, 'PROD-001', 'Alphasol', '0.00020', 168000, 34);
 
 -- --------------------------------------------------------
 
@@ -249,19 +217,13 @@ INSERT INTO `sub_material_produk` (`id`, `kode_produk`, `sub_material`, `pemakai
 
 CREATE TABLE `tooling_cost` (
   `id` int(11) NOT NULL,
+  `pesanan_id` int(11) NOT NULL,
   `kode_produk` varchar(255) NOT NULL,
   `harga_dies` int(11) NOT NULL,
   `vol_prod` int(11) NOT NULL,
   `depresiasi_dies` int(11) NOT NULL,
   `total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tooling_cost`
---
-
-INSERT INTO `tooling_cost` (`id`, `kode_produk`, `harga_dies`, `vol_prod`, `depresiasi_dies`, `total`) VALUES
-(0, 'PROD-001', 0, 45000, 24, 0);
 
 -- --------------------------------------------------------
 
@@ -274,7 +236,7 @@ CREATE TABLE `user` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `level` enum('Administrator','Bagian Marketing','Operational Manager') NOT NULL,
+  `level` enum('Administrator','Marketing','Operational Manager') NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -283,7 +245,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `nama`, `level`, `email`) VALUES
-(1, 'admin', 'admin', 'Nur Khalisza Purnama Putri', 'Administrator', 'aliszaprnm@gmail.com');
+(1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Admin Ngab', 'Administrator', 'sgs@sgs.com'),
+(2, 'marketing', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Marketing Ngab', 'Marketing', 'sgs@sgs.com'),
+(3, 'om', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Operational Ngab', 'Operational Manager', 'sgs@sgs.com');
 
 --
 -- Indexes for dumped tables
@@ -308,6 +272,12 @@ ALTER TABLE `mesin`
   ADD PRIMARY KEY (`kode_mesin`);
 
 --
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `penawaran_harga`
 --
 ALTER TABLE `penawaran_harga`
@@ -317,6 +287,12 @@ ALTER TABLE `penawaran_harga`
 -- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pesanan_detil`
+--
+ALTER TABLE `pesanan_detil`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -363,37 +339,61 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `material_produk`
 --
 ALTER TABLE `material_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `penawaran_harga`
+--
+ALTER TABLE `penawaran_harga`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `pesanan_detil`
+--
+ALTER TABLE `pesanan_detil`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `process_cost`
 --
 ALTER TABLE `process_cost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `proses_produk`
 --
 ALTER TABLE `proses_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `sub_material_produk`
 --
 ALTER TABLE `sub_material_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `tooling_cost`
+--
+ALTER TABLE `tooling_cost`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

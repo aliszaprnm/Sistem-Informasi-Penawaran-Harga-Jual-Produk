@@ -23,42 +23,42 @@
         </div>
         <div class="form-group">
           <label for="tebal_material">Tebal Material</label>
-          <input type="text" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo set_value('tebal_material') ?>">
+          <input type="number" lang="en" step="0.001" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo set_value('tebal_material') ?>" required>
           <?php echo form_error('tebal_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="lebar_material">Lebar Material</label>
-          <input type="text" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo set_value('lebar_material') ?>">
+          <input type="number" min="0" lang="en" step="0.001" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo set_value('lebar_material') ?>" required>
           <?php echo form_error('lebar_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="panjang_material">Panjang Material</label>
-          <input type="text" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo set_value('panjang_material') ?>">
+          <input type="number" min="0" lang="en" step="0.001" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo set_value('panjang_material') ?>" required>
           <?php echo form_error('panjang_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="berat_material">Berat Material</label>
-          <input type="text" name="berat_material" class="form-control form-control-sm" id="berat_material" value="<?php echo set_value('berat_material') ?>">
+          <input type="number" min="0" lang="en" step="0.001" name="berat_material" class="form-control form-control-sm" id="berat_material" value="<?php echo set_value('berat_material') ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('berat_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="jml_per_sheet">Jumlah/Sheet</label>
-          <input type="number" min="1" name="jml_per_sheet" class="form-control form-control-sm" id="jml_per_sheet" onkeyup="hitung()" value="<?php echo set_value('jml_per_sheet') ?>">
+          <input type="number" min="1" name="jml_per_sheet" class="form-control form-control-sm" id="jml_per_sheet" onkeyup="hitung(this)" value="<?php echo set_value('jml_per_sheet') ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('jml_per_sheet', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="berat_produk">Berat Produk</label>
-          <input type="text" name="berat_produk" readonly class="form-control form-control-sm" id="berat_produk" onkeyup="hitung()" value="<?php echo set_value('berat_produk') ?>">
+          <input type="number" min="0" name="berat_produk" readonly class="form-control form-control-sm" id="berat_produk" onkeyup="hitung(this)" value="<?php echo set_value('berat_produk') ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('berat_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="harga_material">Harga Material</label>
-          <input type="text" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung()"value="<?php echo set_value('harga_material') ?>">
+          <input type="number" min="1" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung(this)"value="<?php echo set_value('harga_material') ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('harga_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="harga_per_produk">Harga Material per Produk</label>
-          <input type="text" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php echo set_value('harga_per_produk') ?>">
+          <input type="number" min="1" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php echo set_value('harga_per_produk') ?>">
           <?php echo form_error('harga_per_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>
@@ -68,14 +68,18 @@
 </div>
 
 <script>
-  function hitung() {
-    let berat_material = document.getElementById('berat_material').value;
+  function hitung(arg) {
+    let tebal_material = document.getElementById('tebal_material').value;
+    let lebar_material = document.getElementById('lebar_material').value;
+    let panjang_material = document.getElementById('panjang_material').value;
+    let berat_material = document.getElementById('berat_material');
     let jml_per_sheet = document.getElementById('jml_per_sheet').value;
     let berat_produk = document.getElementById('berat_produk');
     let harga_material = document.getElementById('harga_material').value;
     let harga_per_produk = document.getElementById('harga_per_produk');
 
-    berat_produk.value = parseFloat(berat_material)/parseInt(jml_per_sheet);
-    harga_per_produk.value = parseInt(harga_material)*(parseFloat(berat_material)/parseInt(jml_per_sheet));
+    berat_material.value = (parseFloat(tebal_material)*parseFloat(lebar_material)*parseFloat(panjang_material)*(7.85))/1000000;
+    berat_produk.value = ((parseFloat(tebal_material)*parseFloat(lebar_material)*parseFloat(panjang_material)*(7.85))/1000000)/parseInt(jml_per_sheet);
+    harga_per_produk.value = parseInt(harga_material)*(((parseFloat(tebal_material)*parseFloat(lebar_material)*parseFloat(panjang_material)*(7.85))/1000000)/parseInt(jml_per_sheet));
   }
 </script>

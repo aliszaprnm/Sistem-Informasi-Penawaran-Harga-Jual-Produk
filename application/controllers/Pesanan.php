@@ -7,33 +7,174 @@ class Pesanan extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('form_validation');
+		is_log_in();
 		$this->load->model('PesananModel');
 	}
 
 	public function index()
 	{
-		$data['title'] = 'Pesanan Customer';
-		$data['rows'] = $this->PesananModel->GetPesanan()->result();
+		$data['title'] = 'Daftar Pesanan';
+		$where = array();
+		if($this->session->userdata('role') == 'Marketing')
+		$where = array('pesanan.created_by' => $this->session->userdata('userid'));
+		$data['rows'] = $this->PesananModel->GetPesanan($where)->result();
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar');
+		$this->load->view('pesanan', $data);
+		$this->load->view('templates/footer');
+	}
+	
+	public function baru()
+	{
+		$data['title'] = 'Pesanan Masuk';
+		$where = array('pesanan.status' => 'Baru');
+		if($this->session->userdata('role') == 'Marketing')
+		$where = array_merge($where,['pesanan.created_by' => $this->session->userdata('userid')]);
+		$data['rows'] = $this->PesananModel->GetPesanan($where)->result();
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar');
 		$this->load->view('pesanan', $data);
 		$this->load->view('templates/footer');
 	}
 
+	public function proses($id=0)
+	{
+		if($id == 0) {
+			$data['title'] = 'Pesanan Dalam Proses';
+			$where = array('pesanan.status' => 'Proses');
+			if($this->session->userdata('role') == 'Marketing')
+			$where = array_merge($where,array('pesanan.created_by' => $this->session->userdata('userid')));
+			$data['rows'] = $this->PesananModel->GetPesanan($where)->result();
+			$this->load->view('templates/header', $data);
+			$this->load->view('templates/sidebar');
+			$this->load->view('pesanan', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$status = $this->db->select('status')->from('pesanan')->where('id', $id)->limit(1)->get()->row();
+			$status = $status->status;
+			if($status == 'Baru') {
+				$this->db->select('*');
+				$this->db->from('pesanan');
+				$this->db->join('pesanan_detil', 'pesanan_detil.pesanan_id = pesanan.id', 'inner');
+				$this->db->join('produk', 'pesanan_detil.kode_produk = produk.kode_produk', 'inner');
+				$this->db->where('pesanan.id', $id);
+				$get_detil = $this->db->get();
+				$message = ['success' => 'Pesanan berhasil diproses!', 'error' => 'Harap isi produk detil!'];
+				$redirect = 'pesanan/baru';
+				if($get_detil->num_rows() > 0) {
+					$this->db->select('*');
+					$this->db->from('pesanan');
+					$this->db->join('process_cost', 'process_cost.pesanan_id = pesanan.id', 'inner');
+					$this->db->where('pesanan.id', $id);
+					$get_cost = $this->db->get();
+					$message = ['success' => 'Pesanan berhasil dilanjutkan ke penawaran!', 'error' => 'Harap isi process cost!'];
+					if($get_cost->num_rows() > 0) {
+						$this->db->where('pesanan.id', $id);
+						$this->db->update('pesanan', array('status' => 'Proses', 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
+						/*$this->db->select('MIN(id) as uid');
+						$this->db->from('user');
+						$this->db->where('level','Marketing');
+						$toUser = $this->db->get();*/
+						$this->db->select('*, (select sum(total) from process_cost where pesanan_id = pesanan.id) as process_cost, (select sum(total) from tooling_cost where pesanan_id = pesanan.id) as tooling_cost');
+						$this->db->from('pesanan');
+						$this->db->where('pesanan.id', $id);
+						$dataOrder = $this->db->get();
+						$data = [
+							'pesanan_id' => $id,
+							'kode_produk' => $get_detil->row()->kode_produk,
+							'kode_customer' => $get_detil->row()->kode_customer,
+							'process_cost' => (float)$dataOrder->row()->process_cost,
+							'tooling_cost' => (float)$dataOrder->row()->tooling_cost,
+							'total' => (float)$dataOrder->row()->process_cost + (float)$dataOrder->row()->tooling_cost,
+							'status' => 'Baru',
+							'created_by' => $this->session->userdata('userid'),
+							'created_date' => date('Y-m-d H:i:s')
+						];
+						$this->db->insert('penawaran_harga', $data);
+						$headerId = $this->db->insert_id();
+
+						$dataNotif = [
+							'request_id' => $headerId,
+							'type' => 'Offer',
+							'message' => 'There is new offering',
+							'from_user_id' => $this->session->userdata('userid'),
+							'to_user_id' => $get_detil->row()->created_by,
+							'date' => date('Y-m-d H:i:s'),
+							'status' => 'unread'
+						];
+
+						$this->db->insert('notification', $dataNotif);
+					}
+				}
+			} /*else if($status == 'Proses'){
+				$this->db->select('*');
+				$this->db->from('pesanan');
+				$this->db->join('process_cost', 'process_cost.pesanan_id = pesanan.id', 'inner');
+				$this->db->where('pesanan.id', $id);
+				$get = $this->db->get();
+				$message = ['success' => 'Pesanan berhasil dilanjutkan ke penawaran!', 'error' => 'Harap isi process cost!'];
+				$redirect = 'pesanan/proses';
+				if($get->num_rows() > 0) {
+					$this->db->where('pesanan.id', $id);
+					$this->db->update('pesanan', array('status' => 'Penawaran', 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
+				}
+			} */
+			//print_r($message); exit;
+			if($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<strong>'.$message['success'].'</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+			} else {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>'.$message['error'].'</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+			}
+			redirect('pesanan/baru');
+		}
+	}
+
+	public function selesai()
+	{
+		$data['title'] = 'Pesanan Selesai';
+		$where = array('pesanan.status' => 'Selesai');
+		if($this->session->userdata('role') == 'Marketing')
+		$where = array_merge($where,array('pesanan.created_by' => $this->session->userdata('userid')));
+		$data['rows'] = $this->PesananModel->GetPesanan($where)->result();
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar');
+		$this->load->view('pesanan', $data);
+		$this->load->view('templates/footer');
+	}
+	
+	public function detil($id) {
+		$data['title'] = 'Detil Pesanan Customer';
+		$data['customer'] = $this->db->get('customer')->result();
+		$data['produk'] = $this->db->get('produk')->result();
+		$data['row'] = $this->db->get_where('pesanan', ['id' => $id])->row();
+		$data['detil'] = $this->db->get_where('pesanan_detil', ['pesanan_id' => $id])->result();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/sidebar');
+		$this->load->view('pesanan_detil', $data);
+		$this->load->view('templates/footer');
+	}
+
 	public function tambah()
 	{
-		$this->form_validation->set_rules('qty', 'Jumlah Pesanan', 'trim|required', [
-			'required' => 'Jumlah pesanan tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required', [
-			'required' => 'Keterangan tidak boleh kosong'
-		]);
-		
-		if ($this->form_validation->run() == FALSE) {
+		if (!($this->input->post('kode_pesanan'))) {
 			$data['title'] = 'Tambah Pesanan Customer';
 			$data['customer'] = $this->db->get('customer')->result();
-			$data['produk'] = $this->db->get('produk')->result();
+			$data['produk'] = $this->db->get_where('produk', ['status !=' => 'Used'])->result();
 
 			$CekKodePesanan = $this->db->get('pesanan')->num_rows();
 			if ($CekKodePesanan == 0) {
@@ -54,14 +195,6 @@ class Pesanan extends CI_Controller
 			$this->load->view('templates/footer');
 		} else {
 			$this->PesananModel->tambah();
-			// if (is_array($_POST['proses'])) {
-			// 	// $produk = implode(", ", $_POST['proses']);
-			// 	$proses = implode(', ', $this->input->post('proses'));
-
-			// 	$this->ProdukModel->tambah(array(
-			// 		'proses'		=>	$proses
-			// 	));
-			// }
 			$this->load->view('pesanan');
 
 			if ($this->db->affected_rows() > 0) {
@@ -80,29 +213,31 @@ class Pesanan extends CI_Controller
 
 	public function edit($id)
 	{
-		$this->form_validation->set_rules('qty', 'Jumlah Pesanan', 'trim|required', [
-			'required' => 'Jumlah pesanan tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required', [
-			'required' => 'Keterangan tidak boleh kosong'
-		]);
-
-		if ($this->form_validation->run() == FALSE) {
+		if (!($this->input->post('kode_pesanan'))) {
 			$data['title'] = 'Edit Pesanan Customer';
 			$data['customer'] = $this->db->get('customer')->result();
-			$data['produk'] = $this->db->get('produk')->result();
-
+			//$data['produk'] = $this->db->get_where('produk')->result();
+			$produk = $this->db->query("SELECT kode_produk, nama_produk 
+								FROM produk
+								WHERE status != 'Used' 
+								OR kode_produk IN (select kode_produk from pesanan_detil a inner join pesanan b on a.pesanan_id = b.id where b.id = $id)"
+							);
+			$data['produk'] = $produk->result();
 			$data['row'] = $this->db->get_where('pesanan', ['id' => $id])->row();
+			$data['detil'] = $this->db->get_where('pesanan_detil', ['pesanan_id' => $id])->result();
+
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar');
 			$this->load->view('pesanan_edit', $data);
 			$this->load->view('templates/footer');
 		} else {
 			$this->PesananModel->edit($id);
+			$this->load->view('pesanan');
+
 			if ($this->db->affected_rows() > 0) {
 				$this->session->set_flashdata('message', '
 					<div class="alert alert-warning alert-dismissible fade show" role="alert">
-						<strong>Data berhasil diubah!</strong>
+						<strong>Data berhasil diperbarui!</strong>
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -115,6 +250,8 @@ class Pesanan extends CI_Controller
 
 	public function hapus($id)
 	{
+		$this->db->where('pesanan_id', $id);
+		$this->db->delete('pesanan_detil');
 		$this->db->where('id', $id);
 		$this->db->delete('pesanan');
 		if ($this->db->affected_rows() > 0) {

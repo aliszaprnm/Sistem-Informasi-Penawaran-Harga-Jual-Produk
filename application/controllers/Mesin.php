@@ -6,7 +6,7 @@ class Mesin extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('form_validation');
+		is_log_in();
 		$this->load->model('MesinModel');
 	}
 
@@ -24,9 +24,6 @@ class Mesin extends CI_Controller {
 	{
 		$this->form_validation->set_rules('nama_mesin', 'Nama Mesin', 'trim|required', [
 			'required' => 'Nama Mesin tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required', [
-			'required' => 'Kekuatan Mesin tidak boleh kosong'
 		]);
 		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required', [
 			'required' => 'Satuan tidak boleh kosong'

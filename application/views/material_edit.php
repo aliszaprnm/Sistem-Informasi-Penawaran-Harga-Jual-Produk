@@ -17,47 +17,47 @@
         </div>
         <div class="form-group">
           <label for="jenis_material">Jenis Material</label>
-          <input type="text" name="jenis_material" class="form-control form-control-sm" id="jenis_material" value="<?php echo $row->jenis_material ?>">
+          <input type="text" name="jenis_material" class="form-control form-control-sm" id="jenis_material" value="<?php echo $row->jenis_material ?>" required>
           <?php echo form_error('jenis_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="tebal_material">Tebal Material</label>
-          <input type="text" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo $row->tebal_material ?>">
+          <input type="number" lang="en" step="0.001" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo $row->tebal_material ?>" required>
           <?php echo form_error('tebal_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="lebar_material">Lebar Material</label>
-          <input type="text" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo $row->lebar_material ?>">
+          <input type="number" lang="en" step="0.001" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo $row->lebar_material ?>" required>
           <?php echo form_error('lebar_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="panjang_material">Panjang Material</label>
-          <input type="text" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo $row->panjang_material ?>">
+          <input type="number" lang="en" step="0.001" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo $row->panjang_material ?>" required>
           <?php echo form_error('panjang_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="berat_material">Berat Material</label>
-          <input type="text" name="berat_material" class="form-control form-control-sm" id="berat_material" value="<?php echo $row->berat_material ?>">
+          <input type="number" lang="en" step="0.001" name="berat_material" class="form-control form-control-sm" id="berat_material" value="<?php echo $row->berat_material ?>" required>
           <?php echo form_error('berat_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="jml_per_sheet">Jumlah/Sheet</label>
-          <input type="number" min="1" name="jml_per_sheet" class="form-control form-control-sm" id="jml_per_sheet" onkeyup="hitung()" value="<?php echo $row->jml_per_sheet ?>">
+          <input type="number" min="1" name="jml_per_sheet" class="form-control form-control-sm" id="jml_per_sheet" onkeyup="hitung(this)" value="<?php echo $row->jml_per_sheet ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('jml_per_sheet', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="berat_produk">Berat Produk</label>
-          <input type="text" name="berat_produk" readonly class="form-control form-control-sm" id="berat_produk" onkeyup="hitung()" value="<?php echo $row->berat_produk ?>">
+          <input type="number" min="0" name="berat_produk" readonly class="form-control form-control-sm" id="berat_produk" onkeyup="hitung(this)" value="<?php echo $row->berat_produk ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('berat_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="harga_material">Harga Material</label>
-          <input type="text" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung()"value="<?php echo $row->harga_material ?>">
+          <input type="number" min="1" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung(this)"value="<?php echo $row->harga_material ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('harga_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="harga_per_produk">Harga Material per Produk</label>
-          <input type="text" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php echo $row->harga_per_produk ?>">
+          <input type="number" min="1" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php echo $row->harga_per_produk ?>">
           <?php echo form_error('harga_per_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>

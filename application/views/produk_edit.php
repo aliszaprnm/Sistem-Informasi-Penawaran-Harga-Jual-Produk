@@ -18,23 +18,15 @@
           <?php echo form_error('kode_grup', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="kode_customer">Customer</label>
-          <select name="kode_customer" class="form-control" id="kode_customer">
-            <?php foreach ($customer as $c) { ?>
-              <option value="<?php echo $c->kode_customer ?>" <?php echo $row->kode_customer == $c->kode_customer ? 'selected' : '' ?>> <?php echo $c->nama_customer ?> </option>
-            <?php } ?>
-          </select>
-        </div>
-        <div class="form-group">
           <label for="nama_produk">Nama Produk</label>
           <input type="text" name="nama_produk" class="form-control form-control-sm" id="nama_produk" value="<?php echo $row->nama_produk ?>">
           <?php echo form_error('nama_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
           <label for="cavity">Cavity</label>
           <input type="text" name="cavity" class="form-control form-control-sm" id="cavity" value="<?php echo $row->cavity ?>">
           <?php echo form_error('cavity', '<span class="text-danger small pl-3">', '</span>'); ?>
-        </div>
+        </div>-->
         <!-- <div class="form-group">
           <label for="proses">Proses</label> <br />
           <?php foreach ($proses as $p) { ?>

@@ -31,11 +31,11 @@
           <!-- <input type="text" name="kode_mesin" class="form-control form-control-sm" id="kode_mesin" value="<?php echo $row->kode_mesin ?>"> -->
           <?php echo form_error('kode_mesin', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="std_dies_height">Standard Dies Height</label>
           <input type="text" name="std_dies_height" class="form-control form-control-sm" id="std_dies_height" value="<?php echo $row->std_dies_height ?>">
           <?php echo form_error('std_dies_height', '<span class="text-danger small pl-3">', '</span>'); ?>
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="harga_dies">Harga Dies</label>
           <input type="text" name="harga_dies" class="form-control form-control-sm" id="harga_dies" value="<?php echo $row->harga_dies ?>">
@@ -45,10 +45,14 @@
           <label for="harga_proses">Harga Proses</label>
           <input type="text" name="harga_proses" class="form-control form-control-sm" id="harga_proses" value="<?php echo $row->harga_proses ?>">
           <?php echo form_error('harga_proses', '<span class="text-danger small pl-3">', '</span>'); ?>
-        </div><!-- 
-        <div class="form-group">
+        </div>
+        <!-- <div class="form-group">
           <label for="harga_per_produk">Harga Proses per Produk</label>
-          <input type="text" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php echo $row->harga_proses ?>">
+          <?php foreach ($mesin as $m) { ?>
+            <input type="text" name="harga_per_produk" class="form-control form-control-sm" id="harga_per_produk" readonly value="<?php if ($row->kode_mesin == $m->kode_mesin): $row->harga_proses*$m->kekuatan?>
+              
+            <?php endif ?>">
+          <?php } ?>
           <?php echo form_error('harga_per_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div> -->
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>

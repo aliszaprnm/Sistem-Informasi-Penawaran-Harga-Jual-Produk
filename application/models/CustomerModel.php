@@ -29,6 +29,7 @@ class CustomerModel extends CI_Model {
 			'kode_customer' => $this->input->post('kode_customer', true),
 			'nama_customer' => $this->input->post('nama_customer', true),
 			'alamat' => $this->input->post('alamat', true),
+			'jarak' => $this->input->post('jarak', true),
 			'telp' => $this->input->post('telp', true),
 			'email' => $this->input->post('email', true)
 		];

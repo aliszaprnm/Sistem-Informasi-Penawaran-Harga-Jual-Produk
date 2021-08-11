@@ -7,7 +7,7 @@ class Produk extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('form_validation');
+		is_log_in();
 		$this->load->model('ProdukModel');
 	}
 
@@ -23,20 +23,10 @@ class Produk extends CI_Controller
 
 	public function tambah()
 	{
-		$this->form_validation->set_rules('kode_grup', 'Kode Grup', 'trim|required', [
-			'required' => 'Kode grup tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('nama_produk', 'Nama Produk', 'trim|required', [
-			'required' => 'Nama produk tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('cavity', 'Cavity', 'trim|required', [
-			'required' => 'Cavity tidak boleh kosong'
-		]);
-
-		if ($this->form_validation->run() == FALSE) {
+		if (!($this->input->post('kode_produk'))) {
 			$data['title'] = 'Tambah Produk';
 			$data['customer'] = $this->db->get('customer')->result();
-			// $data['proses'] = $this->db->get('proses')->result();
+			$data['mesin'] = $this->db->get('mesin')->result();
 			
 			$CekKodeProduk = $this->db->get('produk')->num_rows();
 			if ($CekKodeProduk == 0) {
@@ -57,16 +47,6 @@ class Produk extends CI_Controller
 			$this->load->view('templates/footer');
 		} else {
 			$this->ProdukModel->tambah();
-			// if (is_array($_POST['proses'])) {
-			// 	// $produk = implode(", ", $_POST['proses']);
-			// 	$proses = implode(', ', $this->input->post('proses'));
-
-			// 	$this->ProdukModel->tambah(array(
-			// 		'proses'		=>	$proses
-			// 	));
-			// }
-			$this->load->view('produk');
-
 			if ($this->db->affected_rows() > 0) {
 				$this->session->set_flashdata('message', '
 					<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -89,12 +69,6 @@ class Produk extends CI_Controller
 		$this->form_validation->set_rules('nama_produk', 'Nama Produk', 'trim|required', [
 			'required' => 'Nama part tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('cavity', 'Cavity', 'trim|required', [
-			'required' => 'Cavity tidak boleh kosong'
-		]);
-		// $this->form_validation->set_rules('proses[]', 'Proses', 'required', [
-		// 	'required' => 'Proses tidak boleh kosong',
-		// ]);
 
 		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = 'Edit Produk';
@@ -107,16 +81,6 @@ class Produk extends CI_Controller
 			$this->load->view('templates/footer');
 		} else {
 			$this->ProdukModel->edit($kode_produk);
-			// if (is_array($_POST['proses'])) {
-			// 	// $produk = implode(", ", $_POST['proses']);
-			// 	$proses = implode(', ', $this->input->post('proses'));
-
-			// 	$this->ProdukModel->tambah(array(
-			// 		'proses'		=>	$proses
-			// 	));
-			// }
-			// $this->load->view('produk');
-
 			if ($this->db->affected_rows() > 0) {
 				$this->session->set_flashdata('message', '
 					<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -133,6 +97,12 @@ class Produk extends CI_Controller
 
 	public function hapus($kode_produk)
 	{
+		$this->db->where('kode_produk', $kode_produk);
+		$this->db->delete('proses_produk');
+		$this->db->where('kode_produk', $kode_produk);
+		$this->db->delete('sub_material_produk');
+		$this->db->where('kode_produk', $kode_produk);
+		$this->db->delete('material_produk');
 		$this->db->where('kode_produk', $kode_produk);
 		$this->db->delete('produk');
 		if ($this->db->affected_rows() > 0) {

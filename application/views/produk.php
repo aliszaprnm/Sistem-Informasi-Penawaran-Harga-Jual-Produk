@@ -4,7 +4,7 @@
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
         <a href="<?php echo site_url('produk/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Produk</a>
-        <a href="<?php echo site_url('produk/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a>
+        <!-- <a href="<?php echo site_url('produk/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a> -->
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -13,9 +13,8 @@
     				<tr>
     					<th>Kode Produk</th>
     					<th>Kode Grup</th>
-                        <th>Customer</th>
+                        <th>Status</th>
     					<th>Nama Produk</th>
-						<th>Cavity</th>
 						<th>Aksi</th>
                   	</tr>
                 </thead>
@@ -24,9 +23,8 @@
                 		<tr>
                     		<td><?php echo $row->kode_produk ?></td>
                     		<td><?php echo $row->kode_grup ?></td>
-                            <td><?php echo $row->nama_customer ?></td>
+                            <td><?php echo $row->status ?></td>
                     		<td><?php echo $row->nama_produk ?></td>
-                    		<td><?php echo $row->cavity ?></td>
                             <td>
                                 <a href="<?php echo site_url('produk/edit/' .$row->kode_produk) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
                                 <a href="<?php echo site_url('produk/hapus/'.$row->kode_produk) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>

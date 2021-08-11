@@ -3,7 +3,7 @@
   <?php echo $this->session->flashdata('message'); ?>
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
-  		<a href="<?php echo site_url('material/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Material</a>
+  		<!-- <a href="<?php echo site_url('material/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Material</a> -->
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -18,7 +18,7 @@
                         <th>Berat Material</th>
                         <th>Jumlah/Sheet</th>
                         <th>Harga</th>
-						<th colspan="2">Aksi</th>
+						<th>Aksi</th>
                   	</tr>
                 </thead>
                 <tbody>
@@ -26,16 +26,14 @@
                 		<tr>
                     		<td><?php echo $row->nama_produk ?></td>
                     		<td><?php echo $row->jenis_material ?></td>
-                    		<td><?php echo $row->tebal_material ." mm" ?></td>
-                    		<td><?php echo $row->lebar_material ." mm" ?></td>
-                    		<td><?php echo $row->panjang_material ." mm" ?></td>
+                    		<td><?php echo floatval($row->tebal_material) ." mm" ?></td>
+                    		<td><?php echo floatval($row->lebar_material) ." mm" ?></td>
+                    		<td><?php echo floatval($row->panjang_material) ." mm" ?></td>
                             <td><?php echo $row->berat_material ." kg" ?></td>
                             <td><?php echo $row->jml_per_sheet ." pcs" ?></td>
-                            <td><?php echo "Rp" . $row->harga_per_produk ?></td>
+                            <td><?php echo "Rp" . floatval($row->harga_per_produk) ?></td>
                     		<td>
                     			<a href="<?php echo site_url('material/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                    		</td>
-                            <td>
                                 <a href="<?php echo site_url('material/hapus/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                     		</td>
                     	</tr>

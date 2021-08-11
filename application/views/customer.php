@@ -4,7 +4,7 @@
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
   		<a href="<?php echo site_url('customer/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Customer</a>
-        <a href="<?php echo site_url('customer/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a>
+        <!-- <a href="<?php echo site_url('customer/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a> -->
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -16,7 +16,7 @@
     					<th>Alamat</th>
 						<th>Telp</th>
 						<th>Email</th>
-						<th colspan="2">Aksi</th>
+						<th>Aksi</th>
                   	</tr>
                 </thead>
                 <tbody>
@@ -29,8 +29,6 @@
                     		<td><?php echo $row->email ?></td>
                     		<td>
                     			<a href="<?php echo site_url('customer/edit/' .$row->kode_customer) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                    		</td>
-                            <td>
                                 <a href="<?php echo site_url('customer/hapus/'.$row->kode_customer) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                     		</td>
                     	</tr>
