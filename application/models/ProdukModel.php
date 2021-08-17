@@ -32,7 +32,8 @@ class ProdukModel extends CI_Model
 	public function tambah()
 	{
 		$arg = $this->input->post();
-
+		// var_dump($arg);
+		// die();
 		$this->db->select('MIN(id) as uid');
 		$this->db->from('user');
 		$this->db->where('level','Administrator');
@@ -55,14 +56,14 @@ class ProdukModel extends CI_Model
 		for ($i=0; $i < count($material); $i++) {
 			if ($material[$i] != '') {
 				$detil_material[$i]['kode_produk'] = $headerId;
-				$detil_material[$i]['jenis_material'] = $arg['jenis_material'][$i];
-				$detil_material[$i]['tebal_material'] = $arg['tebal'][$i];
-				$detil_material[$i]['lebar_material'] = $arg['lebar'][$i];
-				$detil_material[$i]['panjang_material'] = $arg['panjang'][$i];
+				$detil_material[$i]['id_material'] = $arg['material'][$i];
+				// $detil_material[$i]['tebal_material'] = $arg['tebal'][$i];
+				// $detil_material[$i]['lebar_material'] = $arg['lebar'][$i];
+				// $detil_material[$i]['panjang_material'] = $arg['panjang'][$i];
 				$detil_material[$i]['berat_material'] = $arg['berat'][$i];
 				$detil_material[$i]['jml_per_sheet'] = $arg['jumlah_sheet'][$i];
 				$detil_material[$i]['berat_produk'] = $arg['berat_pcs'][$i];
-				$detil_material[$i]['harga_material'] = $arg['harga'][$i];
+				// $detil_material[$i]['harga_material'] = $arg['harga'][$i];
 				$detil_material[$i]['harga_per_produk'] = $arg['harga_pcs'][$i];
 			}
 		}

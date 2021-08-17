@@ -134,4 +134,15 @@ class Material extends CI_Controller {
 		}
 	}
 
+	public function getMaterial($id)
+	{
+		$query = $this->db->query("
+		SELECT jenis_material, kode_customer, harga, tebal, panjang, lebar
+		FROM material
+		WHERE id = $id
+		");
+		$data = $query->result();
+		echo json_encode($data);
+	}
+
 }

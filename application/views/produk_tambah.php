@@ -73,9 +73,9 @@
 				  <!-- <input type="text" name="material[]" class="form-control" id="material0" required> -->
 				  <select name="material[]" class="form-control" id="material0" required>
 					<option value="" disabled selected>--- Pilih Material ---</option>
-					<?php foreach ($material as $mat) { ?>
+					<!-- <?php foreach ($material as $mat) { ?>
 					  <option value="<?php echo $mat->id ?>"> <?php echo $mat->jenis_material. ' - ' .floatval($mat->tebal). ' x ' .$mat->lebar. ' x ' .$mat->panjang?> </option>
-					<?php } ?>
+					<?php } ?> -->
 				</select>
 			  </td>
 			  <td>
@@ -202,17 +202,48 @@
 </div>
 
 <script>
-	$("#kode_customer").change(function(){  
+	$("#kode_customer").change(function(){ 
 	    $.get("<?= site_url() ?>produk/get_customer/"+$(this).val(), function(data, status){
 	      var jsonData = $.parseJSON(data);
 	      var option = '<option value="" disabled selected>--- Pilih Material ---</option>';
 	      if(status == 'success') {
 	      for(i=0; i<jsonData.length; i++){
-	        option += `<option value="${jsonData[i].id}">${jsonData[i].material}</option>`
+			var data = `${jsonData[i].jenis_material} - ${Number(jsonData[i].tebal)} X ${jsonData[i].lebar} X ${jsonData[i].panjang}`
+	        option += `<option value="${jsonData[i].id}">${data}</option>`
 	      }
-	      $("#id").html(option);
+	      $("#material0").html(option);
 	      } else { alert('Something wrong!') }
 	    });
+  	});
+
+	$("#material0").change(function(){ 
+	    $.get("<?= site_url() ?>material/getMaterial/"+$(this).val(), function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Material ---</option>';
+	      if(status == 'success') {
+			if (jsonData.length > 0) {
+				var tebal = jsonData[0].tebal,
+				panjang = jsonData[0].panjang,
+				lebar = jsonData[0].lebar
+				document.getElementById("tebal0").value = Number(jsonData[0].tebal);
+				document.getElementById("panjang0").value = Number(jsonData[0].panjang);
+				document.getElementById("lebar0").value = Number(jsonData[0].lebar);
+				document.getElementById("harga0").value = Number(jsonData[0].harga);
+				document.getElementById("berat0").value = parseFloat((tebal * lebar * panjang * 7.85) / 1000000).toFixed(2);
+				document.getElementById("jumlah_sheet0").focus()
+			}
+	      } else { alert('Something wrong!') }
+	    });
+  	});
+
+	$("#jumlah_sheet0").on('input',function(){
+		var jumlah = $("#jumlah_sheet0").val()
+		var berat = $("#berat0").val()
+		var berat_pcs = parseFloat(berat / jumlah).toFixed(2);
+		document.getElementById("berat_pcs0").value = berat_pcs
+
+		var harga = $("#harga0").val();
+		document.getElementById("harga_pcs0").value = Number(harga) * Number(berat_pcs);
   	});
   
 	$("#id").change(function(){
@@ -260,15 +291,14 @@
 		var panjang = Number($("input[id^='panjang']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
 		var berat = Number($("input[id^='berat']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
 		var jumlah = Number($("input[id^='jumlah_sheet']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
-
 		var id = arg.getAttribute('id');
 		//var value = arg.value;
 		//console.log(parseFloat(berat / jumlah).toFixed(2));
-		$("input[id^='berat']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat((tebal * lebar * panjang * 7.85) / 1000000).toFixed(2));
-		$("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(berat / jumlah).toFixed(2));
-		if (id.toLowerCase().indexOf("harga") >= 0){
-			$("input[id^='harga_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(Number($("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val()) * Number($("input[id^='harga']", 'tr#'+$tr+'.material_cloned-row').val())).toFixed(2));
-		}
+		// $("input[id^='berat']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat((tebal * lebar * panjang * 7.85) / 1000000).toFixed(2));
+		// $("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(berat / jumlah).toFixed(2));
+		// if (id.toLowerCase().indexOf("harga") >= 0){
+		// 	$("input[id^='harga_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(Number($("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val()) * Number($("input[id^='harga']", 'tr#'+$tr+'.material_cloned-row').val())).toFixed(2));
+		// }
 		//total(arg);
 	}
 
@@ -278,7 +308,7 @@
 		var harga = Number($("input[id^='submaterial_harga']", 'tr#'+$tr+'.submaterial_cloned-row').val()) || 1;
 
 		var id = arg.getAttribute('id');
-		console.log(id);
+		// console.log(id);
 		var value = arg.value;
 		//console.log(parseFloat(berat / jumlah).toFixed(2));
 		$("input[id^='submaterial_harga_pcs']", 'tr#'+$tr+'.submaterial_cloned-row').val(parseFloat(pemakaian * harga).toFixed(2));

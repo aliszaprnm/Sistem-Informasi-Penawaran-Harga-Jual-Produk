@@ -23,7 +23,7 @@ class Produk extends CI_Controller
 
 	public function get_customer($kodeCustomer)
 	{
-		$query = $this->db->query("select *,(select nama_customer from customer where kode_customer = a.kode_customer) as customer from material a inner join customer b on a.kode_customer = b.kode_customer where a.kode_customer = $kodeCustomer");
+		$query = $this->db->query("select *,(select nama_customer from customer where kode_customer = a.kode_customer) as customer from material a inner join customer b on a.kode_customer = b.kode_customer where a.kode_customer = '$kodeCustomer'");
 		$data = $query->result();
 		echo json_encode($data);
 	}
