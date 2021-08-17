@@ -8,17 +8,28 @@
     <div class="card-body">
       <form action="" method="post">
         <div class="form-group">
+          <label for="kode_customer">Customer</label>
+          <select name="kode_customer" class="form-control" id="kode_customer" disabled>
+            <?php foreach ($customer as $c) { ?>
+              <option value="<?php echo $c->kode_customer ?>" <?= ($row->kode_customer == $c->kode_customer) ? 'selected' : ''; ?>> <?php echo $c->nama_customer ?> </option>
+            <?php } ?>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="kode_produk">Produk</label>
-          <select name="kode_produk" class="form-control" id="kode_produk">
+          <select name="kode_produk" class="form-control" id="kode_produk" disabled>
             <?php foreach ($produk as $p) { ?>
-              <option value="<?php echo $p->kode_produk ?>" <?php echo $row->kode_produk == $p->kode_produk ? 'selected' : '' ?>> <?php echo $p->nama_produk ?> </option>
+              <option value="<?php echo $p->kode_produk ?>" <?= ($row->kode_produk == $p->kode_produk) ? 'selected' : ''; ?>> <?php echo $p->nama_produk ?> </option>
             <?php } ?>
           </select>
         </div>
         <div class="form-group">
           <label for="jenis_material">Jenis Material</label>
-          <input type="text" name="jenis_material" class="form-control form-control-sm" id="jenis_material" value="<?php echo $row->jenis_material ?>" required>
-          <?php echo form_error('jenis_material', '<span class="text-danger small pl-3">', '</span>'); ?>
+          <select name="id_material" class="form-control" id="id_material">
+            <?php foreach ($material as $mat) { ?>
+              <option value="<?php echo $mat->id ?>" <?php echo $row->id_material == $mat->id ? 'selected' : '' ?>> <?php echo $mat->jenis_material ?> </option>
+            <?php } ?>
+          </select>
         </div>
         <div class="form-group">
           <label for="tebal_material">Tebal Material</label>
@@ -67,6 +78,33 @@
 </div>
 
 <script>
+  $("#kode_customer").change(function(){ 
+      $.get("<?= site_url() ?>produk/get_customer/"+$(this).val(), function(data, status){
+        var jsonData = $.parseJSON(data);
+        var option = '<option value="" disabled selected>--- Pilih Material ---</option>';
+        if(status == 'success') {
+        for(i=0; i<jsonData.length; i++){
+      var data = `${jsonData[i].jenis_material} - ${Number(jsonData[i].tebal)} X ${jsonData[i].lebar} X ${jsonData[i].panjang}`
+          option += `<option value="${jsonData[i].id}">${data}</option>`
+        }
+        $("#material0").html(option);
+        } else { alert('Something wrong!') }
+      });
+    });
+
+  // $("#kode_produk").change(function(){   
+  //   $.get("<?= site_url() ?>processcost/get_harga/"+$(this).val(), function(data, status){
+  //     var jsonData = $.parseJSON(data);
+  //     if(status == 'success') {
+  //     //for(i=0; i<jsonData.length; i++){
+  //       $("#material").val(jsonData.harga_material);
+  //       $("#sub_material").val(jsonData.total_submaterial);
+  //       $("#process").val(jsonData.total_proses);
+  //     //}
+  //     } else { alert('Something wrong please contact administrator!') }
+  //   });
+  // });
+
   function hitung() {
     let berat_material = document.getElementById('berat_material').value;
     let jml_per_sheet = document.getElementById('jml_per_sheet').value;

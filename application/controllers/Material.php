@@ -95,6 +95,7 @@ class Material extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = 'Edit Material Produk';
 			$data['produk'] = $this->db->get('produk')->result();
+			$data['material'] = $this->db->get('material')->result;
 			$data['row'] = $this->db->get_where('material_produk', ['id' => $id])->row();
 			
 			$this->load->view('templates/header', $data);

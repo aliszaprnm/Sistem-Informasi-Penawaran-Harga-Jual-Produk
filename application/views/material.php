@@ -26,9 +26,9 @@
                 		<tr>
                     		<td><?php echo $row->nama_produk ?></td>
                     		<td><?php echo $row->jenis_material ?></td>
-                    		<td><?php echo floatval($row->tebal_material) ." mm" ?></td>
-                    		<td><?php echo floatval($row->lebar_material) ." mm" ?></td>
-                    		<td><?php echo floatval($row->panjang_material) ." mm" ?></td>
+                    		<td><?php echo floatval($row->tebal) ." mm" ?></td>
+                    		<td><?php echo floatval($row->lebar) ." mm" ?></td>
+                    		<td><?php echo floatval($row->panjang) ." mm" ?></td>
                             <td><?php echo $row->berat_material ." kg" ?></td>
                             <td><?php echo $row->jml_per_sheet ." pcs" ?></td>
                             <td><?php echo "Rp" . floatval($row->harga_per_produk) ?></td>
