@@ -20,6 +20,15 @@ class ProdukModel extends CI_Model
 		return $this->db->get();
 	}
 
+	public function GetHargaMaterial($material)
+	{
+	 	$this->db->select('harga'
+						);
+	 	$this->db->from('material');
+	 	$this->db->where('id',$material);
+	 	return $this->db->get()->row();
+	}
+
 	public function tambah()
 	{
 		$arg = $this->input->post();
@@ -46,7 +55,7 @@ class ProdukModel extends CI_Model
 		for ($i=0; $i < count($material); $i++) {
 			if ($material[$i] != '') {
 				$detil_material[$i]['kode_produk'] = $headerId;
-				$detil_material[$i]['jenis_material'] = $arg['material'][$i];
+				$detil_material[$i]['jenis_material'] = $arg['jenis_material'][$i];
 				$detil_material[$i]['tebal_material'] = $arg['tebal'][$i];
 				$detil_material[$i]['lebar_material'] = $arg['lebar'][$i];
 				$detil_material[$i]['panjang_material'] = $arg['panjang'][$i];

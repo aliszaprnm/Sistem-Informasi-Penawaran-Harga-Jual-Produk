@@ -21,11 +21,46 @@ class Produk extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 
+	public function get_customer($kodeCustomer)
+	{
+		$query = $this->db->query("select *,(select nama_customer from customer where kode_customer = a.kode_customer) as customer from material a inner join customer b on a.kode_customer = b.kode_customer where a.kode_customer = $kodeCustomer");
+		$data = $query->result();
+		echo json_encode($data);
+	}
+
+	public function get_customerV2($kodeCustomer, $materialId)
+	{
+		$syntax = "
+		SELECT customer.nama_customer as customer , material.*
+		FROM customer
+		JOIN material ON customer.kode_customer = material.kode_customer
+		WHERE customer.kode_customer = $kodeCustomer AND material.id = '$materialId'";
+		$query = $this->db->query($syntax);
+		$data = $query->result();
+		echo json_encode($data);
+	}
+
+	public function get_harga($materialId){
+		// $this->db->select('(select sum(total) from process_cost where pesanan_id = a.id) as process_cost, (select sum(total) from tooling_cost where pesanan_id = a.id) as tooling_cost')
+		// ->from('pesanan a')
+		// ->where('id',$orderId);
+	 	// echo json_encode($this->db->get()->row());
+	 	$this->db->select('(select tebal from material where kode_customer = a.kode_customer) as tebal')
+		->from('material a')
+		->where('id',$materialId);
+	 	echo json_encode($this->db->get()->row());
+	}
+
+	// public function get_harga($idMaterial){
+	// 	echo json_encode($this->ProdukModel->getHargaMaterial($idMaterial));
+	// }
+
 	public function tambah()
 	{
 		if (!($this->input->post('kode_produk'))) {
 			$data['title'] = 'Tambah Produk';
 			$data['customer'] = $this->db->get('customer')->result();
+			$data['material'] = $this->db->get('material')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
 			
 			$CekKodeProduk = $this->db->get('produk')->num_rows();

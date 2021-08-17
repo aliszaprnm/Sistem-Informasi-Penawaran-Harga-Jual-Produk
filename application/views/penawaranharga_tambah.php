@@ -55,6 +55,20 @@
   </div>
 </div>
 <script>
+  $("#kode_pesanan").change(function(){  
+    $.get("<?= site_url() ?>processcost/get_pesanan/"+$(this).val(), function(data, status){
+      var jsonData = $.parseJSON(data);
+      var option = '<option value="" disabled selected>--- Pilih Produk ---</option>';
+      if(status == 'success') {
+      for(i=0; i<jsonData.length; i++){
+        option += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
+        $("#jarak").val(jsonData[i].jarak);
+      }
+      $("#kode_produk").html(option);
+      } else { alert('Something wrong please contact administrator!') }
+    });
+  });
+  
 	$("#kode_produk").change(function(){
     const kodePesanan = $("#kode_pesanan").val()
     const kodeProduk = $("#kode_produk").val()

@@ -48,22 +48,22 @@
         </div>
         <div class="form-group">
           <label for="packing">Packing</label>
-          <input type="number" min="0" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" value="<?php echo $row->harga_packing ?>" onblur="hitung(this)">
+          <input type="number" min="0.03" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" value="<?php echo $row->harga_packing ?>" onblur="hitung(this)">
           <?php echo form_error('packing', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="quality">Quality Control</label>
-          <input type="number" min="0" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" value="<?php echo $row->harga_qc ?>" onblur="hitung(this)">
+          <input type="number" min="0.03" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" value="<?php echo $row->harga_qc ?>" onblur="hitung(this)">
           <?php echo form_error('quality', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="mtc_dies">Maintenance Dies</label>
-          <input type="number" min="0" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" value="<?php echo $row->harga_mtc_dies ?>" onblur="hitung(this)">
+          <input type="number" min="0.05" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" value="<?php echo $row->harga_mtc_dies ?>" onblur="hitung(this)">
           <?php echo form_error('mtc_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="harga_material">Profit & OH</label>
-          <input type="number" min="0" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" value="<?php echo $row->profit_dan_OH ?>" onblur="hitung(this)">
+          <input type="number" min="0.15" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" value="<?php echo $row->profit_dan_OH ?>" onblur="hitung(this)">
           <?php echo form_error('profit_oh', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">

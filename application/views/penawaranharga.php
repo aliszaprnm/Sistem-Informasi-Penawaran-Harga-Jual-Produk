@@ -8,7 +8,7 @@
 			<a href="<?php echo site_url('penawaranharga/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Penawaran Harga</a>
             <?php } ?>
         <?php } ?>
-        <!--<a href="<?php echo site_url('penawaranharga/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a>-->
+        <!-- <a href="<?php echo site_url('penawaranharga/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a> -->
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -24,11 +24,9 @@
 					<?php if(!($this->uri->segment(2)) || in_array($this->uri->segment(2), array('index'))){ ?>
                         <th>Status</th>
 						<th>Aksi</th>
-                    <?php if($this->session->userdata('role') == 'Operational Manager'){ ?>
-    					<?php } if(($this->uri->segment(2)) && in_array($this->uri->segment(2), array('validasi'))){ ?>
-    						<th>Proses</th>
-                        <?php } ?>
-					<?php }?>
+    				<?php } if(($this->uri->segment(2)) && in_array($this->uri->segment(2), array('validasi'))){ ?>
+    					   <th>Proses</th>
+                    <?php } ?>
                   	</tr>
                 </thead>
                 <tbody>
@@ -51,13 +49,13 @@
     									<a href="<?php echo site_url('penawaranharga/proses/reject/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menolak penawaran ini?')"class="btn btn-warning btn-sm"><i class="fas fa-minus-circle"></i></a>
     								<?php } else { ?>
     									<!-- <a href="<?php echo site_url('penawaranharga/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a> -->
-                                        <a href="<?= site_url('penawaranharga/detil/' .$row->pesanan_id) ?>" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
-    									<a href="<?php echo site_url('penawaranharga/hapus/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="<?= site_url('penawaranharga/detil_baru/' .$row->pesanan_id .'/'.$row->status) ?>" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+    									<!-- <a href="<?php echo site_url('penawaranharga/hapus/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a> -->
                                     <?php } ?>
                                 </td>
                             <?php } else { ?>
                                 <td>
-                                    <a href="<?= site_url('penawaranharga/detil/' .$row->pesanan_id) ?>" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+                                    <a href="<?= site_url('penawaranharga/detil_baru/' .$row->pesanan_id .'/'.$row->status) ?>" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
                                 </td>
                             <?php } ?>
 						<?php } if(($this->uri->segment(2)) && in_array($this->uri->segment(2), array('validasi'))){ ?>

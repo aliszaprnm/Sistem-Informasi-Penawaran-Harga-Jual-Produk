@@ -1,4 +1,3 @@
-
 <html>
 <head></head>
 <body>
@@ -26,35 +25,41 @@ th, td {
 }
 </style>
  <br>
-            <div align="left">
-			<table class="borderless" style="border:none" width="100%">
+    <!-- <div align="left">
+		<table class="borderless" style="border:none" width="100%">
 			<tr class="borderless">
 			<td class="borderless">
-                <img id="logo-header" src="<?php echo base_url()?>assets/bower_components/image/logo1.png" height="50" width="100">
-				</td>
+                <img id="logo-header" src="<?php echo base_url()?>assets/img/LOGONIJU.png" height="120" width="120">
+			</td> -->
 				<!-- <?php echo base_url();?>images/skf.png -->
-				<td class="borderless" align=right>PT NAGASAKTI COMPONENT PARTS<br>
-				Jln Bintang Mas No.12 Km.47,5, <br>Nanggewer Cibinong Bogor 16912, Indonesia. <br>
-				Phone: 62(21) 3801790 
-				Fax: 62(21) 3811347</TD>
-				</table>
-                 </div>
+			<!-- <td class="borderless"><h3 align="center">PT NUSA INDAH JAYA UTAMA</h3>
+				<h3 align="center">PENAWARAN HARGA</h3>
+				<h4 align="center"><?php echo date('d F Y'); ?></h4>
+			</td>
+		</table>
+    </div>
         <br>
-		<hr>
+		<hr> -->
 
-<p> Tanggal Cetak : <?php echo date('Y-m-d'); ?></p>
-<h3 align="center">Form Penawaran Harga</h3> 
-<table>
-	<!-- <tr>
+<!-- <img id="logo-header" src="<?php echo base_url()?>assets/img/LOGONIJU.png" height="100" width="100"> -->
+<h3 align="center">PT NUSA INDAH JAYA UTAMA</h3>
+<h3 align="center">PENAWARAN HARGA</h3> 
+<h4 align="center"><?php echo date('d F Y'); ?></h2>
+	<hr>
+
+<p>Kode Pesanan: <?php echo $rows[0]->kode_pesanan?></p>
+<p>Customer: <?php echo $rows[0]->nama_customer?></p>
+<!-- <table>
+	<tr>
 		<td>Nomor SPKP </td>
 		<td>: <?php echo $record2['no_spkp'] ?></td>
 	</tr>
 	<tr>
 		<td>Tanggal SPKP dibuat </td>
 		<td>: <?php echo $record2['tanggal_dibuat'] ?></td>
-	</tr> -->
+	</tr>
 
-</table>
+</table> -->
 
 </div>
 <div>
@@ -62,21 +67,28 @@ th, td {
 	<table id="table" class="table table-bordered table-hover table-striped cell-border" width="100%">
         <thead>
 			<tr >
-				<th>Produk</th>
-				<th>Material</th>
-				<th>Sub Material</th>
-				<th>Proses</th>
-				<th>Transportasi</th>
-				<th>% Packing</th>
-				<th>Total Packing</th>
-				<th>% QC</th>
-				<th>Total QC</th>
-				<th>% Mtc. Dies</th>
-				<th>Mtc. Dies</th>
-				<th>% Profit</th>
-				<th>Total Profit</th>
-				<th>Process Cost</th>
-				<th>Tooling Cost</th>
+				<th rowspan="2">Produk</th>
+				<th rowspan="2">Material</th>
+				<th rowspan="2">Sub Material</th>
+				<th rowspan="2">Proses</th>
+				<th rowspan="2">Transportasi</th>
+				<th colspan="2">Packing</th>
+				<th colspan="2">Quality Control</th>
+				<th colspan="2">Maintenance Dies</th>
+				<th colspan="2">Profit dan OH</th>
+				<th rowspan="2">Process Cost</th>
+				<th rowspan="2">Tooling Cost</th>
+				<th rowspan="2">Total</th>
+			</tr>
+			<tr>
+				<th>%</th>
+				<th>Harga</th>
+				<th>%</th>
+				<th>Harga</th>
+				<th>%</th>
+				<th>Harga</th>
+				<th>%</th>
+				<th>Harga</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -85,8 +97,8 @@ th, td {
 				<!--<td><?= $row->kode_grup ?></td>-->
 				<td><?= $row->nama_produk ?></td>
 				<td><?= "Rp". floatval($row->harga_material) ?></td>
-				<td><?= "Rp". floatval($row->harga_proses) ?></td>
 				<td><?= "Rp". floatval($row->harga_sub_material) ?></td>
+				<td><?= "Rp". floatval($row->harga_proses) ?></td>
 				<td><?= "Rp". ($row->harga_delivery * $row->jarak) ?></td>
 				<td><?= floatval($row->harga_packing * 100) . '%' ?></td>
 				<td><?= "Rp". floatval($row->harga_packing * $row->harga_proses) ?></td>
@@ -98,20 +110,21 @@ th, td {
 				<td><?= "Rp". floatval($row->profit_dan_OH * $row->harga_proses) ?></td>
 				<td><?= "Rp". floatval($row->harga_material + $row->harga_proses + $row->harga_sub_material + ($row->harga_delivery * $row->jarak) + ($row->harga_packing * $row->harga_proses) + ($row->harga_qc * $row->harga_proses) + ($row->harga_mtc_dies * $row->harga_proses) + ($row->profit_dan_OH * $row->harga_proses)) ?></td>
 				<td><?= "Rp". floatval($row->tooling_cost) ?></td>
+				<td><?= "Rp". floatval($row->harga_material + $row->harga_proses + $row->harga_sub_material + ($row->harga_delivery * $row->jarak) + ($row->harga_packing * $row->harga_proses) + ($row->harga_qc * $row->harga_proses) + ($row->harga_mtc_dies * $row->harga_proses) + ($row->profit_dan_OH * $row->harga_proses) + $row->tooling_cost) ?></td>
 			</tr>
 			<?php } ?>
         </tbody>
 </table>
 
 <div id="approveTable">
-	<table width="300px">
+	<table width="600px">
 			<thead>
 				<tr>
 					<th colspan="4">Approval</th>
 				</tr>
 				<tr>
-					<th colspan="2">Customer</th>
-					<th colspan="2">PT Nusa Indah</th>
+					<th colspan="2" width="50%">Customer</th>
+					<th colspan="2" width="50%">PT Nusa Indah Jaya Utama</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -124,8 +137,12 @@ th, td {
 				<tr>
 					<td style="height:2em"></td>
 					<td style="height:2em"></td>
-					<td style="height:2em"></td>
-					<td style="height:2em"></td>
+					<td height="20em" align="center">H. Saipudin <br>
+						(Director)
+					</td>
+					<td height="20em" align="center">Soetarman <br>
+						(Manager)
+					</td>
 				</tr>
 			</tbody>
 	</table>

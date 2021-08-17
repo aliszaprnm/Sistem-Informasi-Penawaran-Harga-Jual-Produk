@@ -39,7 +39,7 @@ class Proses extends CI_Controller
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
-			$data['title'] = 'Tambah Produk';
+			$data['title'] = 'Tambah Proses Produk';
 			$data['produk'] = $this->db->get('produk')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
 			// $data['proses'] = $this->db->get('proses')->result();

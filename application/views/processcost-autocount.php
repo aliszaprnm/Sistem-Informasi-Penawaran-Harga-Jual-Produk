@@ -34,7 +34,7 @@
                     		<td><?php echo "Rp". $row->harga_material ?></td>
                             <td><?php echo "Rp". $row->harga_proses ?></td>
                             <td><?php echo "Rp". $row->harga_sub_material ?></td>
-                            <td><?php echo "Rp". $row->harga_delivery / 17 * $row->jarak * $row->berat_produk?></td>
+                            <td><?php echo "Rp". $row->harga_delivery * $row->jarak * $row->berat_produk?></td>
                             <td><?php echo "Rp". $row->harga_packing * $row->total_harga_proses ?></td>
                             <td><?php echo "Rp". $row->harga_qc * $row->total_harga_proses ?></td>
                             <td><?php echo "Rp". $row->harga_mtc_dies * $row->total_harga_proses ?></td>

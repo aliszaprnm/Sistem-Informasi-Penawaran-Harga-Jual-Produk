@@ -32,8 +32,7 @@ class ProcessCost extends CI_Controller
 	public function get_pesananV2($orderId, $kodeProduk)
 	{
 		$syntax = "
-		SELECT pesanan.* , pesanan_detil.*, customer.jarak , customer.nama_customer as customer, 
-		produk.nama_produk as produk
+		SELECT pesanan.* , pesanan_detil.*, customer.jarak , customer.nama_customer as customer, produk.nama_produk as produk
 		FROM pesanan
 		JOIN pesanan_detil ON pesanan.id = pesanan_detil.pesanan_id
 		JOIN customer ON customer.kode_customer = pesanan.kode_customer 

@@ -12,6 +12,15 @@
           <input type="text" name="kode_produk" class="form-control form-control-sm" id="kode_produk" value="<?php echo "PROD-".sprintf("%03s", $kode_produk) ?>" readonly>
         </div>
         <div class="form-group">
+          <label for="kode_customer">Customer</label>
+          <select name="kode_customer" class="form-control" id="kode_customer">
+            <option value="" disabled selected>--- Pilih Customer ---</option>
+            <?php foreach ($customer as $c) { ?>
+              <option value="<?php echo $c->kode_customer ?>"> <?php echo $c->nama_customer ?> </option>
+            <?php } ?>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="kode_grup">Kode Grup</label>
           <input type="text" name="kode_grup" class="form-control form-control-sm" id="kode_grup" value="<?php echo set_value('kode_grup') ?>" required>
           <?php echo form_error('kode_grup', '<span class="text-danger small pl-3">', '</span>'); ?>
@@ -61,19 +70,25 @@
 		  <tbody style="text-align:center">
 			<tr id="material_detail0" class="material_cloned-row">
 			  <td>
-				  <input type="text" name="material[]" class="form-control" id="material0" required>
+				  <!-- <input type="text" name="material[]" class="form-control" id="material0" required> -->
+				  <select name="material[]" class="form-control" id="material0" required>
+					<option value="" disabled selected>--- Pilih Material ---</option>
+					<?php foreach ($material as $mat) { ?>
+					  <option value="<?php echo $mat->id ?>"> <?php echo $mat->jenis_material. ' - ' .floatval($mat->tebal). ' x ' .$mat->lebar. ' x ' .$mat->panjang?> </option>
+					<?php } ?>
+				</select>
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="tebal[]" class="form-control" id="tebal0" required>
+				  <input type="number" min="0" lang="en" step="0.001" name="tebal[]" class="form-control" id="tebal0" value="<?php echo set_value('tebal')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="lebar[]" class="form-control" id="lebar0" required>
+				  <input type="number" min="0" lang="en" step="0.001" name="lebar[]" class="form-control" id="lebar0" value="<?php echo set_value('lebar')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="panjang[]" class="form-control" id="panjang0" required>
+				  <input type="number" min="0" lang="en" step="0.001" name="panjang[]" class="form-control" id="panjang0" value="<?php echo set_value('panjang')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="berat[]" class="form-control calc_material" id="berat0" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="0" lang="en" step="0.001" name="berat[]" readonly class="form-control calc_material" id="berat0" required>
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="jumlah_sheet[]" class="form-control calc_material" id="jumlah_sheet0" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
@@ -82,7 +97,7 @@
 				  <input type="number" min="0" lang="en" step="0.001" name="berat_pcs[]" readonly class="form-control" id="berat_pcs0" required>
 			  </td>
 			  <td>
-				  <input type="number" min="1" name="harga[]" class="form-control calc_material" id="harga0" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="1" name="harga[]" readonly class="form-control calc_material" id="harga0" value="<?php echo set_value('harga') ?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="harga_pcs[]" readonly class="form-control" id="harga_pcs0" required>
@@ -187,14 +202,69 @@
 </div>
 
 <script>
+	$("#kode_customer").change(function(){  
+	    $.get("<?= site_url() ?>produk/get_customer/"+$(this).val(), function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Material ---</option>';
+	      if(status == 'success') {
+	      for(i=0; i<jsonData.length; i++){
+	        option += `<option value="${jsonData[i].id}">${jsonData[i].material}</option>`
+	      }
+	      $("#id").html(option);
+	      } else { alert('Something wrong!') }
+	    });
+  	});
+  
+	$("#id").change(function(){
+    const kodeCustomer = $("#kode_customer").val()
+    const materialId = $("#id").val()
+	  $.get("<?= site_url() ?>produk/get_customerV2/"+kodeCustomer+"/"+materialId, function(data, status){
+		  var jsonData = $.parseJSON(data);
+		  var optionMaterial = '<option value="" disabled selected>--- Pilih Material ---</option>';
+		  var tebalMaterial = 'readonly';
+		  if(status == 'success') {
+			// for(i=0; i<jsonData.length; i++){
+			// 	optionProduk += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
+			// 	optionCustomer += `<option value="${jsonData[i].kode_customer}">${jsonData[i].customer}</option>`
+			// }
+			// $("#kode_produk").html(optionProduk);
+			$("#kode_customer").val(jsonData[0].kode_customer);
+			/*$(".select option").val(function(idx, val) {
+			  $(this).siblings('[value="'+ val +'"]').remove();
+			});*/
+			var map = {};
+			$('.select option').each(function () {
+				if (map[this.value]) {
+					$(this).remove()
+				}
+				map[this.value] = true;
+			})
+		  } else { alert('Something wrong!') }
+	  });
+	  $.get("<?= site_url() ?>produk/get_harga/"+materialId, function(data, status){
+		  var jsonData = $.parseJSON(data);
+		  if(status == 'success') {
+				$("#tebal").val(jsonData.tebal);
+		  } else { alert('Something wrong!') }
+	  });
+	});
+
+	$("input").keyup(function(){
+		$("#tebal");
+	});
+
 	function calculate_material(arg){
 		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
+		var tebal = Number($("input[id^='tebal']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
+		var lebar = Number($("input[id^='lebar']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
+		var panjang = Number($("input[id^='panjang']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
 		var berat = Number($("input[id^='berat']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
 		var jumlah = Number($("input[id^='jumlah_sheet']", 'tr#'+$tr+'.material_cloned-row').val()) || 1;
 
 		var id = arg.getAttribute('id');
 		//var value = arg.value;
 		//console.log(parseFloat(berat / jumlah).toFixed(2));
+		$("input[id^='berat']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat((tebal * lebar * panjang * 7.85) / 1000000).toFixed(2));
 		$("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(berat / jumlah).toFixed(2));
 		if (id.toLowerCase().indexOf("harga") >= 0){
 			$("input[id^='harga_pcs']", 'tr#'+$tr+'.material_cloned-row').val(parseFloat(Number($("input[id^='berat_pcs']", 'tr#'+$tr+'.material_cloned-row').val()) * Number($("input[id^='harga']", 'tr#'+$tr+'.material_cloned-row').val())).toFixed(2));

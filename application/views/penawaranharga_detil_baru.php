@@ -16,7 +16,7 @@
       <a href="<?php echo site_url('penawaranharga/deal') ?>" class="btn btn-info btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
       <!-- <a href="<?php echo site_url('penawaranharga/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a> -->
       <?php if($this->session->userdata('role') == 'Marketing'){ ?>
-        <a href="<?=site_url('penawaranharga/cetak_hasil/'. $this->uri->segment(3))?>" target='_blank' class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i> Cetak PDF</a>
+        <a href="<?=site_url('penawaranharga/cetak_hasil_baru/'. $this->uri->segment(3). '/'. $this->uri->segment(4))?>" target='_blank' class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i> Cetak PDF</a>
       <?php } ?>
     </div>
     <div class="card-body">
@@ -87,58 +87,3 @@
   </div>
 </div>
 
-<script>
-	const pesanan  = "<?= $rows[0]->kode_pesanan ?>";
-	const tanggal  = "<?= $rows[0]->tanggal ?>";
-	const customer = "<?= $rows[0]->nama_customer ?>";
-var table = $('#exportTable').DataTable({
-    dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
-      "<'row'<'col-sm-12'tr>>" +
-      "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    //"dom": 'Blfrtip',
-    /*"lengthChange": false,
-    "lengthMenu": [
-      [50, 100, 1000, -1],
-      [50, 100, 1000, "All"]
-    ],*/
-    "initComplete": function() {
-      $("#exportTable").show();
-    },
-    //buttons: [ /*'copy',*/ 'excel', 'pdf', 'print' /*, 'colvis'*/ ]
-    buttons: [{
-      extend: 'pdfHtml5',
-	  orientation: 'landscape',
-	  pageSize: 'LEGAL',
-      //message: "Made: 20_05-17\nMade by whom: User232\n" + "Custom message",
-      title: 'PT NIJU - Penawaran Harga Detil',
-      header: true,
-      customize: function(doc) {
-        doc.content.splice(0, 1, {
-          text: [{
-            text: 'PENAWARAN HARGA - PT NUSA INDAH JAYA UTAMA \n \n',
-            bold: true,
-            fontSize: 10,
-            alignment: 'center'
-          },{
-            text: `Kode Pesanan: ${pesanan} \n`,
-            bold: true,
-            fontSize: 8
-          },{
-            text: `Tanggal Pesanan: ${tanggal} \n`,
-            bold: true,
-            fontSize: 8
-          },{
-            text: `Nama Customer: ${customer} \n`,
-            bold: true,
-            fontSize: 8
-          }],
-          margin: [0, 0, 0, 12],
-          alignment: 'left',
-          size: '2px'
-        });
-      }
-    }]
-  });
-  table.buttons().container().appendTo('#exportTable_wrapper .col-md-6:eq(0)');
-</script>
-</script>

@@ -10,28 +10,36 @@ class Dashboard extends CI_Controller {
         $this->db->from('customer a');
         $header = $this->db->get();
         
-        $this->db->select('count(id)  as counted');
+        $this->db->select('count(id)  as counted, status');
         $this->db->from('penawaran_harga a');
         $this->db->group_by('status'); 
 		$this->db->order_by('status', 'asc');
         $get_status = $this->db->get();
         
-        $this->db->select('count(id) as counted, left(MONTHNAME(tanggal),3) as months');
+        $this->db->select('count(id) as counted, left(MONTHNAME(tanggal),3) as months, YEAR(tanggal) as years, date_format(tanggal, "%b %y") as month_years');
         $this->db->from('pesanan a');
-        $this->db->group_by('month(tanggal)'); 
-		$this->db->order_by('month(tanggal)', 'asc');
+        $this->db->group_by('year(tanggal)'); 
+		$this->db->order_by('year(tanggal)', 'asc');
         $get_monthly = $this->db->get();
         
+        $status = array('Deal' => 0, 'Negotiating' => 0, 'New' => 0, 'Reject' => 0);
+        // print_r($get_status->result_array()); exit;
+
         foreach($get_status->result_array() as $val) {
-			$status[] = $val['counted'];
+			$index = $val['status']; 
+			$status[$index] = $val['counted'];
 		}
 		
+		$status = array_values($status);
+
 		foreach($get_monthly->result_array() as $val) {
 			$total[] = $val['counted'];
 			$month[] = $val['months'];
+			$year[] = $val['years'];
+			$month_years[] = $val['month_years'];
 		}
         
-        $data = array('header' => $header->row(), 'status' => isset($status) ? $status : 0, 'total' => isset($total) ? $total : 0, 'month' => isset($month) ? $month : 0);
+        $data = array('header' => $header->row(), 'status' => isset($status) ? $status : 0, 'total' => isset($total) ? $total : 0, 'month' => isset($month_years) ? $month_years : 0);
 		$data['title'] = 'Dashboard';
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar');

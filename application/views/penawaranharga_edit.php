@@ -95,7 +95,9 @@
 	  });
 	});*/
 	
-	$("input").keyup(function(){
-		$("#harga_jual").val(parseFloat($("#process_cost").val()) + parseFloat($("#tooling_cost").val()));
-	});
+  <?php if($this->session->userdata('role') == 'Marketing'){ ?>
+  	$("input").keyup(function(){
+  		$("#harga_jual").val(parseFloat($("#process_cost").val()) + parseFloat($("#tooling_cost").val()));
+  	});
+  <?php } ?>
 </script>
