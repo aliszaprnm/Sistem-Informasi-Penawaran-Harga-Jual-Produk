@@ -127,4 +127,16 @@ class Mesin extends CI_Controller {
 		$this->dompdf->render();
 		$this->dompdf->stream('List Data Mesin', ['Attachment' => 0]);
 	}
+
+	public function getMesin($kodeMesin)
+	{
+		$query = $this->db->query("
+		SELECT nama_mesin, harga_dies
+		FROM mesin
+		WHERE kode_mesin = $kodeMesin
+		");
+		$data = $query->result();
+		echo json_encode($data);
+	}
+
 }

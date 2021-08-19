@@ -149,4 +149,15 @@ class Proses extends CI_Controller
 		}
 	}
 
+	public function getProses($id)
+	{
+		$query = $this->db->query("
+		SELECT nama_proses, harga
+		FROM proses
+		WHERE id = $id
+		");
+		$data = $query->result();
+		echo json_encode($data);
+	}
+
 }

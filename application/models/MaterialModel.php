@@ -4,13 +4,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class MaterialModel extends CI_Model
 {
 
-	public function GetMaterialProduk()
+	public function GetMaterialProduk($where=array())
 	{
-		$this->db->select('*, produk.nama_produk as nama_produk, material.*, customer.nama_customer as nama_customer');
-		$this->db->from('material_produk');
+		// $this->db->select('*, produk.*, produk.nama_produk as nama_produk, material.*, customer.*, customer.nama_customer as nama_customer');
+		// $this->db->from('material_produk');
+		// $this->db->join('produk', 'produk.kode_produk = material_produk.kode_produk', 'left');
+		// $this->db->join('material', 'material.id = material_produk.id_material', 'left');
+		// $this->db->join('customer', 'customer.kode_customer = material.kode_customer', 'left');
+		// return $this->db->get();
+		$this->db->select('material_produk.*, customer.nama_customer as nama_customer, produk.nama_produk as nama_produk, material.*');
+	 	$this->db->from('material');
+	 	$this->db->join('material_produk', 'material.id = material_produk.id_material', 'left');
+	 	$this->db->join('customer', 'customer.kode_customer = material.kode_customer', 'left');
 		$this->db->join('produk', 'produk.kode_produk = material_produk.kode_produk', 'left');
-		$this->db->join('material', 'material.id = material_produk.id_material', 'left');
-		$this->db->join('customer', 'customer.kode_customer = material.kode_customer', 'left');
+		if(count($where) > 0) $this->db->where($where);
 		return $this->db->get();
 	}
 

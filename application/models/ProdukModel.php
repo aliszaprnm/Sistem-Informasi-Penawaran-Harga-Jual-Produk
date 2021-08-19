@@ -22,10 +22,17 @@ class ProdukModel extends CI_Model
 
 	public function GetHargaMaterial($material)
 	{
-	 	$this->db->select('harga'
-						);
+	 	$this->db->select('harga');
 	 	$this->db->from('material');
 	 	$this->db->where('id',$material);
+	 	return $this->db->get()->row();
+	}
+
+	public function GetHargaSubmaterial($material_sub)
+	{
+	 	$this->db->select('harga');
+	 	$this->db->from('sub_material');
+	 	$this->db->where('id', $material_sub);
 	 	return $this->db->get()->row();
 	}
 
@@ -43,6 +50,7 @@ class ProdukModel extends CI_Model
 			'kode_produk' => $this->input->post('kode_produk', true),
 			'kode_grup' => $this->input->post('kode_grup', true),
 			'nama_produk' => $this->input->post('nama_produk', true),
+			// 'harga_dies' => $this->input->post('harga_dies', true),
 			//'cavity' => $this->input->post('cavity', true),
 			//'status' => 'Used',
 			'mod_by' => $this->session->userdata('userid'),
@@ -72,9 +80,9 @@ class ProdukModel extends CI_Model
 		for ($i=0; $i < count($material_sub); $i++) {
 			if ($material_sub[$i] != '') {
 				$detil_material_sub[$i]['kode_produk'] = $headerId;
-				$detil_material_sub[$i]['sub_material'] = $arg['sub_material'][$i];
+				$detil_material_sub[$i]['id_submaterial'] = $arg['sub_material'][$i];
 				$detil_material_sub[$i]['pemakaian'] = $arg['pemakaian'][$i];
-				$detil_material_sub[$i]['harga_sub_material'] = $arg['submaterial_harga'][$i];
+				// $detil_material_sub[$i]['harga_sub_material'] = $arg['submaterial_harga'][$i];
 				$detil_material_sub[$i]['harga_per_produk'] = $arg['submaterial_harga_pcs'][$i];
 			}
 		}
@@ -83,11 +91,11 @@ class ProdukModel extends CI_Model
 		for ($i=0; $i < count($proses_produk); $i++) {
 			if ($proses_produk[$i] != '') {
 				$detil_proses_produk[$i]['kode_produk'] = $headerId;
-				$detil_proses_produk[$i]['nama_proses'] = $arg['proses'][$i];
+				$detil_proses_produk[$i]['id_proses'] = $arg['proses'][$i];
 				$detil_proses_produk[$i]['kode_mesin'] = $arg['mesin'][$i];
 				// $detil_proses_produk[$i]['std_dies_height'] = ($arg['std_dies_height'][$i]) ? $arg['std_dies_height'][$i] : null;
-				$detil_proses_produk[$i]['harga_dies'] = ($arg['harga_dies'][$i]) ? $arg['harga_dies'][$i] : null;
-				$detil_proses_produk[$i]['harga_proses'] = $arg['proses_harga'][$i];
+				// $detil_proses_produk[$i]['harga_dies'] = ($arg['harga_dies'][$i]) ? $arg['harga_dies'][$i] : null;
+				// $detil_proses_produk[$i]['harga_proses'] = $arg['proses_harga'][$i];
 				$detil_proses_produk[$i]['harga_per_produk'] = $arg['proses_harga_pcs'][$i];
 			}
 		}

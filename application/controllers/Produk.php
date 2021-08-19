@@ -61,6 +61,8 @@ class Produk extends CI_Controller
 			$data['title'] = 'Tambah Produk';
 			$data['customer'] = $this->db->get('customer')->result();
 			$data['material'] = $this->db->get('material')->result();
+			$data['sub_material'] = $this->db->get('sub_material')->result();
+			$data['proses'] = $this->db->get('proses')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
 			
 			$CekKodeProduk = $this->db->get('produk')->num_rows();

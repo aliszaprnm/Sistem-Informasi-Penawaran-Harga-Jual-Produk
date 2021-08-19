@@ -21,7 +21,7 @@
                 	<?php foreach ($rows as $row) { ?>
                 		<tr rowspan="2">
                     		<td><?php echo $row->nama_produk ?></td>
-                    		<td><?php echo $row->sub_material ?></td>
+                    		<td><?php echo $row->nama_submaterial ?></td>
                     		<td><?php echo floatval($row->pemakaian) ." kg" ?></td>
                     		<td><?php echo "Rp" . floatval($row->harga_per_produk) ?></td>
                     		<td>

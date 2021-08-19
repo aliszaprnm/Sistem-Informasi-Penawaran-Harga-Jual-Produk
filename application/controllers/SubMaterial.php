@@ -109,4 +109,15 @@ class SubMaterial extends CI_Controller {
 				redirect('submaterial');
 		}
 	}
+
+	public function getSubmaterial($id)
+	{
+		$query = $this->db->query("
+		SELECT nama_submaterial, harga
+		FROM sub_material
+		WHERE id = $id
+		");
+		$data = $query->result();
+		echo json_encode($data);
+	}
 }

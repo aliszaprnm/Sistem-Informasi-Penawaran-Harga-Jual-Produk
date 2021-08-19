@@ -71,7 +71,7 @@
 			<tr id="material_detail0" class="material_cloned-row">
 			  <td>
 				  <!-- <input type="text" name="material[]" class="form-control" id="material0" required> -->
-				  <select name="material[]" class="form-control" id="material0" required>
+				 <select name="material[]" class="form-control" id="material0" required>
 					<option value="" disabled selected>--- Pilih Material ---</option>
 					<!-- <?php foreach ($material as $mat) { ?>
 					  <option value="<?php echo $mat->id ?>"> <?php echo $mat->jenis_material. ' - ' .floatval($mat->tebal). ' x ' .$mat->lebar. ' x ' .$mat->panjang?> </option>
@@ -79,13 +79,13 @@
 				</select>
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="tebal[]" class="form-control" id="tebal0" value="<?php echo set_value('tebal')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="0" lang="en" step="0.001" name="tebal[]" class="form-control" id="tebal0" readonly value="<?php echo set_value('tebal')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="lebar[]" class="form-control" id="lebar0" value="<?php echo set_value('lebar')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="0" lang="en" step="0.001" name="lebar[]" class="form-control" id="lebar0" readonly value="<?php echo set_value('lebar')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="panjang[]" class="form-control" id="panjang0" value="<?php echo set_value('panjang')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="0" lang="en" step="0.001" name="panjang[]" class="form-control" id="panjang0" readonly value="<?php echo set_value('panjang')?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="0" lang="en" step="0.001" name="berat[]" readonly class="form-control calc_material" id="berat0" required>
@@ -97,7 +97,7 @@
 				  <input type="number" min="0" lang="en" step="0.001" name="berat_pcs[]" readonly class="form-control" id="berat_pcs0" required>
 			  </td>
 			  <td>
-				  <input type="number" min="1" name="harga[]" readonly class="form-control calc_material" id="harga0" value="<?php echo set_value('harga') ?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
+				  <input type="number" min="1" name="harga[]" readonly class="form-control calc_material" id="harga0" readonly value="<?php echo set_value('harga') ?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="harga_pcs[]" readonly class="form-control" id="harga_pcs0" required>
@@ -126,13 +126,18 @@
 		  <tbody style="text-align:center">
 			<tr id="submaterial_detail0" class="submaterial_cloned-row">
 			  <td>
-				  <input type="text" name="sub_material[]" class="form-control" id="sub_material0">
+				 <select name="sub_material[]" class="form-control" id="submaterial0" required>
+					<option value="" disabled selected>--- Pilih Submaterial ---</option>
+					<?php foreach ($sub_material as $sub_mat) { ?>
+					  <option value="<?php echo $sub_mat->id ?>"> <?php echo $sub_mat->nama_submaterial?> </option>
+					<?php } ?>
+				</select>
 			  </td>
 			  <td>
 				  <input type="number" min="0" lang="en" step="0.001" name="pemakaian[]" class="form-control calc_submaterial" id="pemakaian0" onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="1" name="submaterial_harga[]" class="form-control calc_submaterial" id="submaterial_harga0" onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
+				  <input type="number" min="1" name="submaterial_harga[]" class="form-control calc_submaterial" id="submaterial_harga0" readonly onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="0" name="submaterial_harga_pcs[]" readonly class="form-control" id="submaterial_harga_pcs0">
@@ -143,8 +148,8 @@
 		</table>
 		<div class="row">
 			<div class="col-md-12">
-				<button id="submaterial_add_row" class="btn btn-success pull-left">+ Add Sub</button>
-				<button id='submaterial_delete_row' class="pull-right btn btn-danger">- Delete Sub</button>
+				<button id="submaterial_add_row" class="btn btn-success pull-left">+ Tambah Submaterial</button>
+				<button id='submaterial_delete_row' class="pull-right btn btn-danger">- Hapus</button>
 			</div>
 		</div>
 		<br />		
@@ -163,7 +168,12 @@
 		  <tbody style="text-align:center">
 			<tr id="proses_detail0" class="proses_cloned-row">
 			  <td>
-				  <input type="text" name="proses[]" class="form-control" id="proses0" required>
+				<select name="proses[]" class="form-control" id="proses0" onchange="calculate_proses(this)" required>
+					<option value="" disabled selected>--- Pilih Proses ---</option>
+					<?php foreach ($proses as $pro) { ?>
+					  <option value="<?php echo $pro->id ?>"> <?php echo $pro->nama_proses?> </option>
+					<?php } ?>
+				</select>
 			  </td>
 			  <td>
 				<select name="mesin[]" class="form-control" id="mesin0" onchange="calculate_proses(this)" required>
@@ -177,7 +187,7 @@
 				  <input type="number" lang="en" step="0.01" name="std_dies_height[]" class="form-control calc_proses" id="std_dies_height0">
 			  </td> -->
 			  <td>
-				  <input type="number" min="1" name="harga_dies[]" class="form-control calc_proses" id="harga_dies0" required>
+				  <input type="number" min="1" name="harga_dies[]" class="form-control" id="harga_dies0" required>
 			  </td>
 			  <td>
 				  <input type="number" lang="en" step="0.01" name="proses_harga[]" class="form-control" id="proses_harga0" required onkeyup="calculate_proses(this)" onmouseup="calculate_proses(this)">
@@ -191,8 +201,8 @@
 		</table>
 		<div class="row">
 			<div class="col-md-12">
-				<button id="proses_add_row" class="btn btn-success pull-left">+ Add Proses</button>
-				<button id='proses_delete_row' class="pull-right btn btn-danger">- Delete Proses</button>
+				<button id="proses_add_row" class="btn btn-success pull-left">+ Tambah Proses</button>
+				<button id='proses_delete_row' class="pull-right btn btn-danger">- Hapus</button>
 			</div>
 		</div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>
@@ -245,44 +255,97 @@
 		var harga = $("#harga0").val();
 		document.getElementById("harga_pcs0").value = Number(harga) * Number(berat_pcs);
   	});
-  
-	$("#id").change(function(){
-    const kodeCustomer = $("#kode_customer").val()
-    const materialId = $("#id").val()
-	  $.get("<?= site_url() ?>produk/get_customerV2/"+kodeCustomer+"/"+materialId, function(data, status){
-		  var jsonData = $.parseJSON(data);
-		  var optionMaterial = '<option value="" disabled selected>--- Pilih Material ---</option>';
-		  var tebalMaterial = 'readonly';
-		  if(status == 'success') {
-			// for(i=0; i<jsonData.length; i++){
-			// 	optionProduk += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
-			// 	optionCustomer += `<option value="${jsonData[i].kode_customer}">${jsonData[i].customer}</option>`
-			// }
-			// $("#kode_produk").html(optionProduk);
-			$("#kode_customer").val(jsonData[0].kode_customer);
-			/*$(".select option").val(function(idx, val) {
-			  $(this).siblings('[value="'+ val +'"]').remove();
-			});*/
-			var map = {};
-			$('.select option').each(function () {
-				if (map[this.value]) {
-					$(this).remove()
-				}
-				map[this.value] = true;
-			})
-		  } else { alert('Something wrong!') }
-	  });
-	  $.get("<?= site_url() ?>produk/get_harga/"+materialId, function(data, status){
-		  var jsonData = $.parseJSON(data);
-		  if(status == 'success') {
-				$("#tebal").val(jsonData.tebal);
-		  } else { alert('Something wrong!') }
-	  });
-	});
 
-	$("input").keyup(function(){
-		$("#tebal");
-	});
+  	$("#submaterial0").change(function(){ 
+	    $.get("<?= site_url() ?>submaterial/getSubmaterial/"+$(this).val(), function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
+	      if(status == 'success') {
+			if (jsonData.length > 0) {
+				var harga = jsonData[0].harga
+				document.getElementById("submaterial_harga0").value = Number(jsonData[0].harga);
+				document.getElementById("pemakaian0").focus()
+			}
+	      } else { alert('Something wrong!') }
+	    });
+  	});
+
+	$("#pemakaian0").on('input',function(){
+		var pemakaian = $("#pemakaian0").val()
+		var harga = $("#submaterial_harga0").val()
+		document.getElementById("submaterial_harga_pcs0").value = Number(harga) * Number(pemakaian)
+  	});
+
+  	$("#proses0").change(function(){ 
+	    $.get("<?= site_url() ?>proses/getProses/"+$(this).val(), function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Proses ---</option>';
+	      if(status == 'success') {
+			if (jsonData.length > 0) {
+				var harga = jsonData[0].harga
+				document.getElementById("proses_harga0").value = Number(jsonData[0].harga);
+				document.getElementById("mesin0").focus()
+			}
+	      } else { alert('Something wrong!') }
+	    });
+  	});
+
+	$("#mesin0").on('input',function(){
+		var kekuatan_mesin = $("#mesin0").val()
+		var harga = $("#proses_harga0").val()
+		document.getElementById("proses_harga_pcs0").value = Number(harga) * Number(kekuatan_mesin)
+  	});
+
+  	$("#mesin0").change(function(){ 
+	    $.get("<?= site_url() ?>mesin/getMesin/"+$(this).val(), function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Mesin ---</option>';
+	      if(status == 'success') {
+			if (jsonData.length > 0) {
+				var harga_dies = jsonData[0].harga_dies
+				document.getElementById("harga_dies0").value = Number(jsonData[0].harga_dies);
+			}
+	      } else { alert('Something wrong!') }
+	    });
+  	});  	
+  
+	// $("#id").change(function(){
+ //    const kodeCustomer = $("#kode_customer").val()
+ //    const materialId = $("#id").val()
+	//   $.get("<?= site_url() ?>produk/get_customerV2/"+kodeCustomer+"/"+materialId, function(data, status){
+	// 	  var jsonData = $.parseJSON(data);
+	// 	  var optionMaterial = '<option value="" disabled selected>--- Pilih Material ---</option>';
+	// 	  var tebalMaterial = 'readonly';
+	// 	  if(status == 'success') {
+	// 		// for(i=0; i<jsonData.length; i++){
+	// 		// 	optionProduk += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
+	// 		// 	optionCustomer += `<option value="${jsonData[i].kode_customer}">${jsonData[i].customer}</option>`
+	// 		// }
+	// 		// $("#kode_produk").html(optionProduk);
+	// 		$("#kode_customer").val(jsonData[0].kode_customer);
+	// 		/*$(".select option").val(function(idx, val) {
+	// 		  $(this).siblings('[value="'+ val +'"]').remove();
+	// 		});*/
+	// 		var map = {};
+	// 		$('.select option').each(function () {
+	// 			if (map[this.value]) {
+	// 				$(this).remove()
+	// 			}
+	// 			map[this.value] = true;
+	// 		})
+	// 	  } else { alert('Something wrong!') }
+	//   });
+	//   $.get("<?= site_url() ?>produk/get_harga/"+materialId, function(data, status){
+	// 	  var jsonData = $.parseJSON(data);
+	// 	  if(status == 'success') {
+	// 			$("#tebal").val(jsonData.tebal);
+	// 	  } else { alert('Something wrong!') }
+	//   });
+	// });
+
+	// $("input").keyup(function(){
+	// 	$("#tebal");
+	// });
 
 	function calculate_material(arg){
 		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
