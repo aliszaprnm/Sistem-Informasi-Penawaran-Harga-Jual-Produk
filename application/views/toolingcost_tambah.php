@@ -26,22 +26,22 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="material">Harga Dies</label>
+          <label for="harga_dies">Harga Dies</label>
           <input type="text" name="harga_dies" class="form-control form-control-sm" id="harga_dies" value="<?php echo set_value('harga_dies') ?>" readOnly>
           <?php echo form_error('harga_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="process">Volume Produksi</label>
+          <label for="vol_prod">Volume Produksi</label>
           <input type="text" name="vol_prod" class="form-control form-control-sm" id="vol_prod" value="<?php echo set_value('vol_prod') ?>" required>
           <?php echo form_error('vol_prod', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="material">Depresiasi Dies</label>
+          <label for="depresiasi_dies">Depresiasi Dies</label>
           <input type="text" name="depresiasi_dies" class="form-control form-control-sm" id="depresiasi_dies" value="<?php echo set_value('depresiasi_dies') ?>" required>
           <?php echo form_error('depresiasi_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="process">Total</label>
+          <label for="total">Total</label>
           <input type="text" name="total" class="form-control form-control-sm" id="total" value="<?php echo set_value('total') ?>" readOnly>
           <?php echo form_error('total', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>

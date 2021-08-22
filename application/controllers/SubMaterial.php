@@ -20,11 +20,40 @@ class SubMaterial extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function tambah_master()
+	{
+		$this->form_validation->set_rules('nama_submaterial', 'Nama Submaterial', 'trim|required', [
+			'required' => 'Nama submaterial tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('harga', 'Harga Submaterial', 'trim|required|numeric', [
+			'required' => 'Harga submaterial tidak boleh kosong',
+			'numeric' => 'Harga submaterial harus menggunakan angka'
+		]);
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['title'] = 'Tambah Data Master Sub Material';
+			$this->load->view('templates/header', $data);
+			$this->load->view('templates/sidebar');
+			$this->load->view('submaterial_master_tambah', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->SubMaterialModel->tambah_master();
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Data berhasil ditambahkan!</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+				redirect('submaterial');
+			}
+		}
+	}
+
 	public function tambah()
 	{
-		$this->form_validation->set_rules('sub_material', 'Sub Material', 'trim|required', [
-			'required' => 'Sub material tidak boleh kosong'
-		]);
 		$this->form_validation->set_rules('pemakaian', 'Pemakaian', 'trim|required', [
 			'required' => 'Pemakaian sub material tidak boleh kosong'
 		]);
@@ -34,6 +63,7 @@ class SubMaterial extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = 'Tambah Sub Material Produk';
+			$data['sub_material'] = $this->db->get('sub_material')->result();
 			$data['produk'] = $this->db->get('produk')->result();
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar');

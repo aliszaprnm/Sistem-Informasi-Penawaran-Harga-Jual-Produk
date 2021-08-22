@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label for="jarak">Jarak</label>
-          <input type="text" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo set_value('jarak') ?>">
+          <input type="number" lang="en" step="0.01" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo set_value('jarak') ?>">
           <?php echo form_error('jarak', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -35,7 +35,7 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input type="text" name="email" class="form-control form-control-sm" id="email" value="<?php echo set_value('email') ?>">
-          <!-- <?php echo form_error('email', '<span class="text-danger small pl-3">', '</span>'); ?> -->
+          <?php echo form_error('email', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>
       </form>

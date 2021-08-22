@@ -14,6 +14,7 @@
     					<th>Kode Customer</th>
     					<th>Nama Customer</th>
     					<th>Alamat</th>
+                        <th>Jarak</th>
 						<th>Telp</th>
 						<th>Email</th>
 						<th>Aksi</th>
@@ -25,7 +26,8 @@
                     		<td><?php echo $row->kode_customer ?></td>
                     		<td><?php echo $row->nama_customer ?></td>
                     		<td><?php echo $row->alamat ?></td>
-                    		<td><?php echo $row->telp ?></td>
+                            <td><?php echo $row->jarak. " km" ?></td>
+                    		<td><?php echo "(021) ". $row->telp ?></td>
                     		<td><?php echo $row->email ?></td>
                     		<td>
                     			<a href="<?php echo site_url('customer/edit/' .$row->kode_customer) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>

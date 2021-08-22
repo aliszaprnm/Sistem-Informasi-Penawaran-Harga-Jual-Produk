@@ -22,8 +22,40 @@ class ToolingCost extends CI_Controller
 	}
 	
 	public function get_harga($produkId){
-		$this->db->select('sum(harga_dies) as harga_dies')->from('proses_produk')->where('kode_produk',$produkId);
-	 	echo json_encode($this->db->get()->row());
+		$syntax = "
+		SELECT produk.nama_produk, 
+		SUM(CASE
+		WHEN proses_produk.kode_produk = '$produkId'
+		THEN mesin.harga_dies
+		ELSE 0
+		END) AS total_harga_dies,
+		(SUM(CASE
+		WHEN proses_produk.kode_produk = '$produkId'
+		THEN mesin.vol_prod
+		ELSE 0
+		END)/COUNT(CASE
+		WHEN proses_produk.kode_produk = '$produkId'
+		THEN 1
+		ELSE NULL
+		END)) AS vol_prod,
+		(SUM(CASE
+		WHEN proses_produk.kode_produk = '$produkId'
+		THEN mesin.depresiasi_dies
+		ELSE 0
+		END)/COUNT(CASE
+		WHEN proses_produk.kode_produk = '$produkId'
+		THEN 1
+		ELSE NULL
+		END)) AS depresiasi_dies
+		FROM proses_produk
+		join mesin
+		join produk
+		where proses_produk.kode_produk = produk.kode_produk and proses_produk.kode_mesin = mesin.kode_mesin";
+		$query = $this->db->query($syntax);
+		$data = $query->result();
+		echo json_encode($data);
+		// $this->db->select('sum(harga_dies) as harga_dies')->from('proses_produk')->where('kode_produk',$produkId);
+	 // 	echo json_encode($this->db->get()->row());
 	}
 
 	public function tambah()

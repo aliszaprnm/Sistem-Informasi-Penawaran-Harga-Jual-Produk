@@ -3,7 +3,7 @@
   <?php echo $this->session->flashdata('message'); ?>
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
-  		<!-- <a href="<?php echo site_url('material/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Material</a> -->
+  		<a href="<?php echo site_url('material/tambah_master') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Data Master Material</a>
     </div>
     <div class="card-body">
     	<div class="table-responsive">

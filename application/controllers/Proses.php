@@ -23,6 +23,38 @@ class Proses extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 
+	public function tambah_master()
+	{
+		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required', [
+			'required' => 'Proses tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('harga', 'Harga Proses', 'trim|required', [
+			'required' => 'Harga proses tidak boleh kosong'
+		]);
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['title'] = 'Tambah Data Master Proses';
+			// $data['proses'] = $this->db->get('proses')->result();
+			$this->load->view('templates/header', $data);
+			$this->load->view('templates/sidebar');
+			$this->load->view('proses_master_tambah', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->load->view('proses');
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Data berhasil ditambahkan!</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+				redirect('proses');
+			}
+		}
+	}
+
 	public function tambah()
 	{
 		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required', [
@@ -41,6 +73,7 @@ class Proses extends CI_Controller
 		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = 'Tambah Proses Produk';
 			$data['produk'] = $this->db->get('produk')->result();
+			$data['proses'] = $this->db->get('proses')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
 			// $data['proses'] = $this->db->get('proses')->result();
 			$this->load->view('templates/header', $data);

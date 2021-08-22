@@ -19,18 +19,22 @@
         </div>
         <div class="form-group">
           <label for="kekuatan">Kekuatan Mesin</label>
-          <!-- <input type="number" min="0" name="cavity" value="<?=$row->cavity?>" class="form-control"> -->
           <input type="text" name="kekuatan" class="form-control form-control-sm" id="kekuatan" value="<?php echo $row->kekuatan ?>">
           <?php echo form_error('kekuatan', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
+          <label for="harga_dies">Harga Dies</label>
+          <input type="text" name="harga_dies" class="form-control form-control-sm" id="harga_dies" value="<?php echo $row->harga_dies ?>">
+          <?php echo form_error('harga_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
+        </div>
+        <!-- <div class="form-group">
           <label for="satuan">Satuan</label>
           <select name="satuan" class="form-control" id="satuan">
             <option value="Kg" <?php if($row->satuan == "Kg") { echo "selected";} ?>>Kg </option>
             <option value="Ton" <?php if($row->satuan == "Ton") { echo "selected";} ?>>Ton </option>
           </select>
           <?php echo form_error('satuan', '<span class="text-danger small pl-3">', '</span>'); ?>
-        </div>
+        </div> -->
         <!-- <div class="form-group">
           <label for="proses">Proses</label> <br />
           <?php foreach ($proses as $p) { ?>

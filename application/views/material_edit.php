@@ -7,24 +7,24 @@
     </div>
     <div class="card-body">
       <form action="" method="post">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="kode_customer">Customer</label>
           <select name="kode_customer" class="form-control" id="kode_customer" disabled>
             <?php foreach ($customer as $c) { ?>
-              <option value="<?php echo $c->kode_customer ?>" <?= ($row->kode_customer == $c->kode_customer) ? 'selected' : ''; ?>> <?php echo $c->nama_customer ?> </option>
+              <option value="<?php echo $c->kode_customer ?>" <?php echo ($row->kode_customer == $c->kode_customer) ? 'selected' : ''; ?>> <?php echo $c->nama_customer ?> </option>
             <?php } ?>
           </select>
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="kode_produk">Produk</label>
           <select name="kode_produk" class="form-control" id="kode_produk" disabled>
             <?php foreach ($produk as $p) { ?>
-              <option value="<?php echo $p->kode_produk ?>" <?= ($row->kode_produk == $p->kode_produk) ? 'selected' : ''; ?>> <?php echo $p->nama_produk ?> </option>
+              <option value="<?php echo $p->kode_produk ?>" <?php echo $row->kode_produk == $p->kode_produk ? 'selected' : '' ?>> <?php echo $p->nama_produk ?> </option>
             <?php } ?>
           </select>
         </div>
         <div class="form-group">
-          <label for="jenis_material">Jenis Material</label>
+          <label for="id_material">Jenis Material</label>
           <select name="id_material" class="form-control" id="id_material">
             <?php foreach ($material as $mat) { ?>
               <option value="<?php echo $mat->id ?>" <?php echo $row->id_material == $mat->id ? 'selected' : '' ?>> <?php echo $mat->jenis_material ?> </option>
@@ -33,7 +33,7 @@
         </div>
         <div class="form-group">
           <label for="tebal_material">Tebal Material</label>
-          <input type="number" lang="en" step="0.001" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo $row->tebal_material ?>" required>
+          <input type="number" name="tebal_material" class="form-control form-control-sm" id="tebal_material" readonly>
           <?php echo form_error('tebal_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">

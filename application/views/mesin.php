@@ -14,6 +14,7 @@
                         <th>Kode Mesin</th>
                         <th>Nama Mesin</th>
                         <th>Kekuatan Mesin</th>
+                        <th>Harga Dies</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -22,7 +23,8 @@
                         <tr>
                             <td><?php echo $row->kode_mesin ?></td>
                             <td><?php echo $row->nama_mesin ?></td>
-                            <td><?php echo floatval($row->kekuatan) ." ". $row->satuan ?></td>
+                            <td><?php echo floatval($row->kekuatan) ." Ton"?></td>
+                            <td><?php echo $row->harga_dies ?></td>
                             <td>
                                 <a href="<?php echo site_url('mesin/edit/' .$row->kode_mesin) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
                                 <a href="<?php echo site_url('mesin/hapus/'.$row->kode_mesin) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>

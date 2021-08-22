@@ -3,7 +3,8 @@
   <?php echo $this->session->flashdata('message'); ?>
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
-        <a href="<?php echo site_url('proses/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Proses</a>
+        <a href="<?php echo site_url('proses/tambah') ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> Tambah Proses Produk</a>
+        <a href="<?php echo site_url('proses/tambah_master') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Data Master Proses</a>
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -22,7 +23,7 @@
                 		<tr>
                     		<td><?php echo $row->nama_produk ?></td>
                     		<td><?php echo $row->nama_proses ?></td>
-                            <td><?php echo $row->nama_mesin ." - ". floatval($row->kekuatan) ." ". $row->satuan ?></td>
+                            <td><?php echo $row->nama_mesin ." - ". floatval($row->kekuatan) ." Ton" ?></td>
                             <td><?php echo "Rp". floatval($row->harga_per_produk) ?></td>
                             <td>
                                 <a href="<?php echo site_url('proses/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>

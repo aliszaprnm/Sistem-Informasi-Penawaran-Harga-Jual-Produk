@@ -24,7 +24,7 @@ class MesinModel extends CI_Model {
 			'kode_mesin' => $this->input->post('kode_mesin', true),
 			'nama_mesin' => $this->input->post('nama_mesin', true),
 			'kekuatan' => $this->input->post('kekuatan', true),
-			'satuan' => $this->input->post('satuan', true)
+			'harga_dies' => $this->input->post('harga_dies', true)
 		];
 		$this->db->insert('mesin', $data);
 	}
@@ -35,7 +35,7 @@ class MesinModel extends CI_Model {
 			'kode_mesin' => $this->input->post('kode_mesin', true),
 			'nama_mesin' => $this->input->post('nama_mesin', true),
 			'kekuatan' => $this->input->post('kekuatan', true),
-			'satuan' => $this->input->post('satuan', true)
+			'harga_dies' => $this->input->post('harga_dies', true)
 		];
 		
 		$this->db->where('kode_mesin', $kode_mesin);

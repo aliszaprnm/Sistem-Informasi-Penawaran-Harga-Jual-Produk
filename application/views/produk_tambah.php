@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label for="kode_customer">Customer</label>
-          <select name="kode_customer" class="form-control" id="kode_customer">
+          <select name="kode_customer" class="form-control" id="kode_customer" required="Pilih salah satu customer">
             <option value="" disabled selected>--- Pilih Customer ---</option>
             <?php foreach ($customer as $c) { ?>
               <option value="<?php echo $c->kode_customer ?>"> <?php echo $c->nama_customer ?> </option>
@@ -126,7 +126,7 @@
 		  <tbody style="text-align:center">
 			<tr id="submaterial_detail0" class="submaterial_cloned-row">
 			  <td>
-				 <select name="sub_material[]" class="form-control" id="submaterial0" required>
+				<select name="sub_material[]" class="form-control" id="submaterial0" required>
 					<option value="" disabled selected>--- Pilih Submaterial ---</option>
 					<?php foreach ($sub_material as $sub_mat) { ?>
 					  <option value="<?php echo $sub_mat->id ?>"> <?php echo $sub_mat->nama_submaterial?> </option>
@@ -179,7 +179,7 @@
 				<select name="mesin[]" class="form-control" id="mesin0" onchange="calculate_proses(this)" required>
 					<option value="" disabled selected>--- Pilih Mesin ---</option>
 					<?php foreach ($mesin as $m) { ?>
-					  <option value="<?php echo $m->kode_mesin ?>"> <?php echo $m->nama_mesin. ' - ' .floatval($m->kekuatan). ' ' .$m->satuan ?> </option>
+					  <option value="<?php echo $m->kode_mesin ?>"> <?php echo $m->nama_mesin. ' - ' .floatval($m->kekuatan). ' Ton' ?> </option>
 					<?php } ?>
 				</select>
 			  </td>

@@ -57,6 +57,16 @@ class Produk extends CI_Controller
 
 	public function tambah()
 	{
+		$this->form_validation->set_rules('kode_customer', 'Customer', 'trim|required', [
+			'required' => 'Customer harus dipilih'
+		]);
+		$this->form_validation->set_rules('kode_grup', 'Kode Grup', 'trim|required', [
+			'required' => 'Kode grup tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('nama_produk', 'Nama Produk', 'trim|required', [
+			'required' => 'Nama produk tidak boleh kosong'
+		]);
+		
 		if (!($this->input->post('kode_produk'))) {
 			$data['title'] = 'Tambah Produk';
 			$data['customer'] = $this->db->get('customer')->result();
@@ -104,7 +114,7 @@ class Produk extends CI_Controller
 			'required' => 'Kode grup tidak boleh kosong'
 		]);
 		$this->form_validation->set_rules('nama_produk', 'Nama Produk', 'trim|required', [
-			'required' => 'Nama part tidak boleh kosong'
+			'required' => 'Nama produk tidak boleh kosong'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {

@@ -14,11 +14,20 @@ class SubMaterialModel extends CI_Model
 		return $this->db->get();
 	}
 
+	public function tambah_master()
+	{
+		$data = [
+			'nama_submaterial' => $this->input->post('nama_submaterial', true),
+			'harga' => $this->input->post('harga', true),
+		];
+		$this->db->insert('sub_material', $data);
+	}
+
 	public function tambah()
 	{
 		$data = [
 			'kode_produk' => $this->input->post('kode_produk', true),
-			// 'sub_material' => $this->input->post('sub_material', true),
+			'id_submaterial' => $this->input->post('id_submaterial', true),
 			'pemakaian' => $this->input->post('pemakaian', true),
 			// 'harga_sub_material' => $this->input->post('harga_sub_material', true),
 			'harga_per_produk' => $this->input->post('harga_per_produk', true),

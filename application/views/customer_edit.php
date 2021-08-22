@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
           <label for="jarak">Jarak</label>
-          <input type="text" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo $row->jarak ?>">
+          <input type="number" step="0.01" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo $row->jarak ?>">
           <?php echo form_error('jarak', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">

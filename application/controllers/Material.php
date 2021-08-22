@@ -20,6 +20,47 @@ class Material extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function tambah_master()
+	{
+		$this->form_validation->set_rules('jenis_material', 'Jenis Material', 'trim|required', [
+			'required' => 'Jenis material tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('tebal', 'Tebal Material', 'trim|required', [
+			'required' => 'Tebal material tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('lebar', 'Lebar Material', 'trim|required', [
+			'required' => 'Lebar material tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('panjang', 'Panjang Material', 'trim|required', [
+			'required' => 'Panjang material tidak boleh kosong'
+		]);
+		$this->form_validation->set_rules('harga', 'Harga Material', 'trim|required', [
+			'required' => 'Harga material tidak boleh kosong'
+		]);
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['title'] = 'Tambah Data Master Material';
+			$data['customer'] = $this->db->get('customer')->result();
+			$this->load->view('templates/header', $data);
+			$this->load->view('templates/sidebar');
+			$this->load->view('material_master_tambah', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->MaterialModel->tambah_master();
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Data berhasil ditambahkan!</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+				redirect('material');
+			}
+		}
+	}
+
 	public function tambah()
 	{
 		$this->form_validation->set_rules('jenis_material', 'Jenis Material', 'trim|required', [
