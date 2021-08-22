@@ -33,17 +33,17 @@
         </div>
         <div class="form-group">
           <label for="tebal_material">Tebal Material</label>
-          <input type="number" name="tebal_material" class="form-control form-control-sm" id="tebal_material" readonly>
+          <input type="number" name="tebal_material" class="form-control form-control-sm" id="tebal_material" value="<?php echo $row->tebal ?>" readonly>
           <?php echo form_error('tebal_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="lebar_material">Lebar Material</label>
-          <input type="number" lang="en" step="0.001" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo $row->lebar_material ?>" required>
+          <input type="number" lang="en" step="0.001" name="lebar_material" class="form-control form-control-sm" id="lebar_material" value="<?php echo $row->lebar ?>" required>
           <?php echo form_error('lebar_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="panjang_material">Panjang Material</label>
-          <input type="number" lang="en" step="0.001" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo $row->panjang_material ?>" required>
+          <input type="number" lang="en" step="0.001" name="panjang_material" class="form-control form-control-sm" id="panjang_material" value="<?php echo $row->panjang ?>" required>
           <?php echo form_error('panjang_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group">
           <label for="harga_material">Harga Material</label>
-          <input type="number" min="1" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung(this)"value="<?php echo $row->harga_material ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
+          <input type="number" min="1" name="harga_material" class="form-control form-control-sm" id="harga_material" onkeyup="hitung(this)"value="<?php echo $row->harga ?>" required onkeyup="hitung(this)" onmouseup="hitung(this)">
           <?php echo form_error('harga_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">

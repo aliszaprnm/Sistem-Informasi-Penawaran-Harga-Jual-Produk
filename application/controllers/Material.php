@@ -138,8 +138,14 @@ class Material extends CI_Controller {
 			$data['produk'] = $this->db->get('produk')->result();
 			$data['material'] = $this->db->get('material')->result();
 			$data['customer'] = $this->db->get('customer')->result();
-			$data['row'] = $this->db->get_where('material_produk', ['id' => $id])->row();
-			
+			$query = $this->db->query("
+			SELECT *
+			FROM material
+			JOIN material_produk ON material.id = material_produk.id_material
+			WHERE material.id = $id
+			");
+			$data['row'] = $query->row();
+			// $data['row'] = $this->db->get_where('material_produk', ['id' => $id])->row();
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar');
 			$this->load->view('material_edit', $data);
