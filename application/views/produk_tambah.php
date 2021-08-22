@@ -126,7 +126,7 @@
 		  <tbody style="text-align:center">
 			<tr id="submaterial_detail0" class="submaterial_cloned-row">
 			  <td>
-				<select name="sub_material[]" class="form-control" id="submaterial0" required>
+				<select name="sub_material[]" class="form-control" id="sub_material0" onchange="changeSubMaterial(this)" required>
 					<option value="" disabled selected>--- Pilih Submaterial ---</option>
 					<?php foreach ($sub_material as $sub_mat) { ?>
 					  <option value="<?php echo $sub_mat->id ?>"> <?php echo $sub_mat->nama_submaterial?> </option>
@@ -256,26 +256,6 @@
 		document.getElementById("harga_pcs0").value = Number(harga) * Number(berat_pcs);
   	});
 
-  	$("#submaterial0").change(function(){ 
-	    $.get("<?= site_url() ?>submaterial/getSubmaterial/"+$(this).val(), function(data, status){
-	      var jsonData = $.parseJSON(data);
-	      var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
-	      if(status == 'success') {
-			if (jsonData.length > 0) {
-				var harga = jsonData[0].harga
-				document.getElementById("submaterial_harga0").value = Number(jsonData[0].harga);
-				document.getElementById("pemakaian0").focus()
-			}
-	      } else { alert('Something wrong!') }
-	    });
-  	});
-
-	$("#pemakaian0").on('input',function(){
-		var pemakaian = $("#pemakaian0").val()
-		var harga = $("#submaterial_harga0").val()
-		document.getElementById("submaterial_harga_pcs0").value = Number(harga) * Number(pemakaian)
-  	});
-
   	$("#proses0").change(function(){ 
 	    $.get("<?= site_url() ?>proses/getProses/"+$(this).val(), function(data, status){
 	      var jsonData = $.parseJSON(data);
@@ -346,6 +326,22 @@
 	// $("input").keyup(function(){
 	// 	$("#tebal");
 	// });
+
+	function changeSubMaterial(args) {
+		let value = args.value
+		let id = args.id.replace(/[^\d]/g, "");
+	    $.get("<?= site_url() ?>submaterial/getSubmaterial/"+ args.value, function(data, status){
+	      var jsonData = $.parseJSON(data);
+	      var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
+	      if(status == 'success') {
+			if (jsonData.length > 0) {
+				var harga = jsonData[0].harga
+				document.getElementById("submaterial_harga"+id).value = Number(jsonData[0].harga);
+				document.getElementById("pemakaian"+id).focus()
+			}
+	      } else { alert('Something wrong!') }
+	    });
+	}
 
 	function calculate_material(arg){
 		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
@@ -490,7 +486,6 @@ $(document).ready(function() {
     $("#submaterial_add_row").click(function(e){
       e.preventDefault();
       let new_row_number = submaterial_row_number - 1;
-
       $('#submaterial_detail' + submaterial_row_number).html($('#submaterial_detail' + new_row_number).html()).find('td:first-child');
       $('#submaterial_detail_table').append('<tr id="submaterial_detail' + (submaterial_row_number + 1) + '" class=submaterial_cloned-row></tr>');
       $("#sub_material"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'sub_material'+submaterial_row_number);
