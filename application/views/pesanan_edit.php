@@ -49,7 +49,7 @@
 						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty<?= $i; ?>" value="<?php echo $rows->qty ?>">
 					  </td>
 					  <td>
-						  <textarea name="keterangan[]" id="keterangan<?= $i; ?>" class="md-textarea form-control" rows="1" required><?php echo $rows->keterangan ?></textarea>
+						  <textarea name="keterangan[]" id="keterangan<?= $i; ?>" class="md-textarea form-control" rows="1"><?php echo $rows->keterangan ?></textarea>
 					  </td>
 					</tr>
 					<?php $i++; } ?>

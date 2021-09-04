@@ -26,7 +26,8 @@ class Dashboard extends CI_Controller {
         // print_r($get_status->result_array()); exit;
 
         foreach($get_status->result_array() as $val) {
-			$index = $val['status']; 
+			if($val['status'] == 'Reject by OM') $val['status'] = 'Negotiating';
+			$index = $val['status'];
 			$status[$index] = $val['counted'];
 		}
 		

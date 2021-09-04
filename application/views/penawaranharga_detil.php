@@ -54,6 +54,7 @@
 					<th>Total Profit</th>
 					<th>Process Cost</th>
 					<th>Tooling Cost</th>
+          <th>Harga Jual</th>
 				</tr>
               </thead>
               <tbody>
@@ -64,7 +65,7 @@
 						<td><?= "Rp". floatval($row->harga_material) ?></td>
 						<td><?= "Rp". floatval($row->harga_proses) ?></td>
 						<td><?= "Rp". floatval($row->harga_sub_material) ?></td>
-						<td><?= "Rp". ($row->harga_delivery * $row->jarak) ?></td>
+						<td><?= "Rp". number_format(($row->harga_delivery / 12.3 * $row->berat_produk * $row->jarak), 2) ?></td>
 						<td><?= floatval($row->harga_packing * 100) . '%' ?></td>
 						<td><?= "Rp". floatval($row->harga_packing * $row->harga_proses) ?></td>
 						<td><?= floatval($row->harga_qc * 100) . '%' ?></td>
@@ -73,8 +74,9 @@
 						<td><?= "Rp". floatval($row->harga_mtc_dies * $row->harga_proses) ?></td>
 						<td><?= floatval($row->profit_dan_OH * 100) .'%' ?></td>
 						<td><?= "Rp". floatval($row->profit_dan_OH * $row->harga_proses) ?></td>
-						<td><?= "Rp". floatval($row->harga_material + $row->harga_proses + $row->harga_sub_material + ($row->harga_delivery * $row->jarak) + ($row->harga_packing * $row->harga_proses) + ($row->harga_qc * $row->harga_proses) + ($row->harga_mtc_dies * $row->harga_proses) + ($row->profit_dan_OH * $row->harga_proses)) ?></td>
+						<td><?= "Rp". floatval($row->total) ?></td>
 						<td><?= "Rp". floatval($row->tooling_cost) ?></td>
+            <td><?= "Rp". floatval($row->harga_jual) ?></td>
 					</tr>
 				  <?php } ?>
               </tbody>

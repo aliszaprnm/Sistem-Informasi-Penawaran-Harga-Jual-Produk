@@ -32,12 +32,12 @@
         </div>
         <div class="form-group">
           <label for="process">Volume Produksi</label>
-          <input type="text" name="vol_prod" class="form-control form-control-sm" id="vol_prod" value="<?php echo set_value('vol_prod') ?>" required>
+          <input type="text" name="vol_prod" class="form-control form-control-sm" id="vol_prod" value="<?php echo set_value('vol_prod') ?>" readOnly>
           <?php echo form_error('vol_prod', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="material">Depresiasi Dies</label>
-          <input type="text" name="depresiasi_dies" class="form-control form-control-sm" id="depresiasi_dies" value="<?php echo set_value('depresiasi_dies') ?>" required>
+          <input type="text" name="depresiasi_dies" class="form-control form-control-sm" id="depresiasi_dies" value="<?php echo set_value('depresiasi_dies') ?>" readOnly>
           <?php echo form_error('depresiasi_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -70,6 +70,10 @@
 		  if(status == 'success') {
 			//for(i=0; i<jsonData.length; i++){
 				$("#harga_dies").val(jsonData.harga_dies);
+				$("#vol_prod").val(jsonData.vol_prod);
+				$("#depresiasi_dies").val(jsonData.depresiasi_dies);
+				const harga_dies = parseFloat($("#harga_dies").val()) || 1;
+				$("#total").val(parseFloat(parseFloat(harga_dies) / (parseFloat($("#vol_prod").val()) * parseFloat($("#depresiasi_dies").val()))).toFixed(2));
 			//}
 		  } else { alert('Something wrong please contact administrator!') }
 	  });

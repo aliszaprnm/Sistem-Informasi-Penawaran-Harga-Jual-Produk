@@ -26,17 +26,18 @@ class PenawaranHarga extends CI_Controller
 	
 	public function detil($id)
 	{
-		$data['title'] = 'Penawaran Harga Detil';
+		$data['title'] = 'Detail Penawaran Harga';
 		// $where = array('penawaran_harga.status' => 'Deal');
 		// if($this->session->userdata('role') == 'Operational Manager')
 		// $where = array_merge($where,['penawaran_harga.created_by' => $this->session->userdata('userid')]);
 		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
-		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total as harga_jual, a.status, e.berat_produk, f.*
 							FROM penawaran_harga a
 							LEFT JOIN pesanan b ON a.pesanan_id = b.id
 							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
 							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
-							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							LEFT JOIN material_produk e ON a.kode_produk = e.kode_produk
+							LEFT JOIN process_cost f ON a.pesanan_id = f.pesanan_id AND a.kode_produk = f.kode_produk
 							WHERE a.pesanan_id = $id AND a.status = 'Deal'
 						");
 		$data['rows'] = $getData->result();
@@ -48,7 +49,7 @@ class PenawaranHarga extends CI_Controller
 
 	public function detil_baru($id, $status='New')
 	{
-		$data['title'] = 'Penawaran Harga Detil';
+		$data['title'] = 'Detail Penawaran Harga';
 		$where = null;
 		if (!empty($status)) {
 			$where = " and a.status = '$status'"; 
@@ -57,12 +58,13 @@ class PenawaranHarga extends CI_Controller
 		// if($this->session->userdata('role') == 'Operational Manager')
 		// $where = array_merge($where,['penawaran_harga.created_by' => $this->session->userdata('userid')]);
 		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
-		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.berat_produk, f.*
 							FROM penawaran_harga a
 							LEFT JOIN pesanan b ON a.pesanan_id = b.id
 							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
 							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
-							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							LEFT JOIN material_produk e ON a.kode_produk = e.kode_produk
+							LEFT JOIN process_cost f ON a.pesanan_id = f.pesanan_id AND a.kode_produk = f.kode_produk
 							WHERE a.pesanan_id = $id $where
 						");
 		$data['rows'] = $getData->result();
@@ -167,12 +169,14 @@ class PenawaranHarga extends CI_Controller
 			$creator = $dataBefore->created_by;
 			$modByBefore = $dataBefore->mod_by;
 			//if($status == 'Baru') {
-				if($confirm == 'deal') $message = ['status' => 'Deal', 'success' => 'Penawaran harga berhasil diupdate!', 'error' => 'Terjadi kesalahan!', 'message' => 'deal'];
-				if($confirm == 'nego') $message = ['status' => 'Negotiating', 'success' => 'Penawaran harga akan di negosiasi kembali!', 'error' => 'Terjadi kesalahan!', 'message' => 'negotiating'];
-				if($confirm == 'reject') $message = ['status' => 'Reject', 'success' => 'Penawaran harga berhasil di tolak!', 'error' => 'Terjadi kesalahan!', 'message' => 'reject'];
-				$this->db->where('id', $id);
-				$this->db->update('penawaran_harga', array('status' => $message['status'], 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
-				if($this->db->affected_rows() > 0 && ($confirm == 'nego' || ($confirm == 'reject' && $creator == $this->session->userdata('userid')))) {
+				if($confirm == 'deal') $message = ['status' => 'Deal', 'success' => 'Penawaran harga disetujui!', 'error' => 'Terjadi kesalahan!', 'message' => 'deal'];
+				if($confirm == 'nego') $message = ['status' => 'Negotiating', 'success' => 'Penawaran harga akan dinegosiasi kembali!', 'error' => 'Terjadi kesalahan!', 'message' => 'negotiating'];
+				if($confirm == 'reject') $message = ['status' => 'Reject', 'success' => 'Penawaran harga ditolak!', 'error' => 'Terjadi kesalahan!', 'message' => 'reject'];
+				if($confirm != 'reject' && $this->session->userdata('role') != 'Operational Manager') {
+					$this->db->where('id', $id);
+					$this->db->update('penawaran_harga', array('status' => $message['status'], 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
+				}
+				if(/*$this->db->affected_rows() > 0 &&*/ ($confirm == 'nego' /*|| ($confirm == 'reject' && $creator == $this->session->userdata('userid'))*/ && ($this->session->userdata('role') == 'Marketing'))) {
 					$dataAfter = $this->db->select('status,created_by,mod_by')->from('penawaran_harga')->where('id', $id)->limit(1)->get()->row();
 					$statusAfter = $dataAfter->status;
 					$modByAfter = $dataAfter->mod_by;
@@ -191,10 +195,31 @@ class PenawaranHarga extends CI_Controller
 					];
 
 					$this->db->insert('notification', $dataNotif);
-				} if($confirm == 'deal' || $confirm == 'reject') {
+				} if($confirm == 'deal' || ($confirm == 'reject' && ($this->session->userdata('role') == 'Marketing'))) {
 					$pesananId = $this->db->select('pesanan_id')->from('penawaran_harga')->where('id', $id)->limit(1)->get()->row('pesanan_id');
+					$this->db->where('id', $id);
+					$this->db->update('penawaran_harga', array('status' => $message['status'], 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
 					$this->db->where('id', $pesananId);
 					$this->db->update('pesanan', ['status' => 'Selesai', 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')]);
+				}
+
+				if(($confirm == 'reject' && ($this->session->userdata('role') == 'Operational Manager'))) {
+					$dataAfter = $this->db->select('status,created_by,mod_by')->from('penawaran_harga')->where('id', $id)->limit(1)->get()->row();
+					$statusAfter = $dataAfter->status;
+					$modByAfter = $dataAfter->mod_by;
+					$dataNotif = [
+						'request_id' => $id,
+						'type' => ($confirm == 'reject') ? 'Reject' : 'Negotiate',
+						'message' => 'There is new '. $message['message'],
+						'from_user_id' => $this->session->userdata('userid'),
+						'to_user_id' => ($confirm == 'reject') ? $modByBefore : $creator,
+						'date' => date('Y-m-d H:i:s'),
+						'status' => 'unread'
+					];
+					$this->db->insert('notification', $dataNotif);
+				} if(($confirm == 'reject' && ($this->session->userdata('role') == 'Operational Manager'))) {
+					$this->db->where('id', $id);
+					$this->db->update('penawaran_harga', array('status' => 'Reject by OM', 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
 				}
 			/*} else if($status == 'Validasi'){
 				$this->db->select('*');
@@ -228,7 +253,7 @@ class PenawaranHarga extends CI_Controller
 					</div>
 				');
 			}
-			redirect('penawaranharga/validasi');
+			redirect('penawaranharga');
 		}
 	}
 
@@ -310,26 +335,27 @@ class PenawaranHarga extends CI_Controller
 	}
 
 	public function cetak_hasil($id) {
-		$data['title'] = 'Penawaran Harga Detil';
+		$data['title'] = 'Detail Penawaran Harga';
 		
 		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
-		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, f.berat_produk as berat_produk, process_cost, tooling_cost, a.total, a.status, e.*
 							FROM penawaran_harga a
 							LEFT JOIN pesanan b ON a.pesanan_id = b.id
 							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
 							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
 							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							left join material_produk f on a.kode_produk = f.kode_produk
 							WHERE a.pesanan_id = $id AND a.status = 'Deal'
 						");
 		
 		$data['rows'] = $getData->result();
 		// var_dump($data);
 		// die();
-        $this->load->view('cetak_laporan_hasil_produksi', $data);
+        $this->load->view('cetak_penawaran_harga', $data);
     }
 
     public function cetak_hasil_baru($id, $status = 'New') {
-		$data['title'] = 'Penawaran Harga Detil';
+		$data['title'] = 'Detail Penawaran Harga';
 		$where = null;
 		if (!empty($status)) {
 			$where = " and a.status = '$status'";
@@ -347,6 +373,6 @@ class PenawaranHarga extends CI_Controller
 		$data['rows'] = $getData->result();
 		// var_dump($data);
 		// die();
-        $this->load->view('cetak_laporan_hasil_produksi', $data);
+        $this->load->view('cetak_penawaran_harga', $data);
     }
 }

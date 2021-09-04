@@ -28,14 +28,20 @@ class Customer extends CI_Controller {
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required', [
 			'required' => 'Alamat tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('jarak', 'Jarak', 'trim|required', [
-			'required' => 'Jarak tidak boleh kosong'
+		$this->form_validation->set_rules('jarak', 'Jarak', 'trim|required|greater_than_equal_to[0.01]', [
+			'required' => 'Jarak tidak boleh kosong',
+			'greater_than_equal_to' => 'Jarak harus lebih dari atau sama dengan 0.01'
 		]);
-		$this->form_validation->set_rules('telp', 'Telp', 'trim|required', [
-			'required' => 'Nomor telepon tidak boleh kosong'
+		$this->form_validation->set_rules('telp', 'Telp', 'trim|required|numeric|integer|min_length[7]|max_length[9]', [
+			'required' => 'Nomor telepon tidak boleh kosong',
+			'numeric' => 'Nomor telepon harus berisi angka',			
+			'integer' => 'Nomor telepon yang Anda masukkan tidak valid',
+			'min_length' => 'Nomor telepon minimal terdiri dari 7 angka',
+			'max_length' => 'Nomor telepon maksimal terdiri dari 9 angka'
 		]);
-		$this->form_validation->set_rules('email', 'Email', 'trim|required', [
-			'required' => 'Email tidak boleh kosong'
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+			'required' => 'Email tidak boleh kosong',
+			'valid_email' => 'Email yang Anda masukkan tidak valid'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
@@ -75,19 +81,25 @@ class Customer extends CI_Controller {
 	public function edit($kode_customer)
 	{
 		$this->form_validation->set_rules('nama_customer', 'Nama Customer', 'trim|required', [
-			'required' => 'Nama Customer tidak boleh kosong'
+			'required' => 'Nama customer tidak boleh kosong'
 		]);
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required', [
 			'required' => 'Alamat tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('jarak', 'Jarak', 'trim|required', [
-			'required' => 'Jarak tidak boleh kosong'
+		$this->form_validation->set_rules('jarak', 'Jarak', 'trim|required|greater_than_equal_to[0.01]', [
+			'required' => 'Jarak tidak boleh kosong',
+			'greater_than_equal_to' => 'Jarak harus lebih dari atau sama dengan 0.01'
 		]);
-		$this->form_validation->set_rules('telp', 'Telp', 'trim|required', [
-			'required' => 'Nomor telepon tidak boleh kosong'
+		$this->form_validation->set_rules('telp', 'Telp', 'trim|required|numeric|integer|min_length[7]|max_length[9]', [
+			'required' => 'Nomor telepon tidak boleh kosong',
+			'numeric' => 'Nomor telepon harus berisi angka',
+			'integer' => 'Nomor telepon yang Anda masukkan tidak valid',
+			'min_length' => 'Nomor telepon minimal terdiri dari 7 angka',
+			'max_length' => 'Nomor telepon maksimal terdiri dari 9 angka'
 		]);
-		$this->form_validation->set_rules('email', 'Email', 'trim|required', [
-			'required' => 'Email tidak boleh kosong'
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+			'required' => 'Email tidak boleh kosong',
+			'valid_email' => 'Email yang Anda masukkan tidak valid'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {

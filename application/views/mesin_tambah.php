@@ -19,24 +19,22 @@
         </div>
         <div class="form-group">
           <label for="kekuatan">Kekuatan Mesin</label>
-          <!-- <input type="number" min="0" name="cavity" value="<?=$row->cavity?>" class="form-control"> -->
           <input type="text" name="kekuatan" class="form-control form-control-sm" id="kekuatan" value="<?php echo set_value('kekuatan') ?>">
           <?php echo form_error('kekuatan', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
+          <label for="harga_dies">Harga Dies</label>
+          <input type="text" name="harga_dies" class="form-control form-control-sm" id="harga_dies" value="<?php echo set_value('harga_dies') ?>">
+          <?php echo form_error('harga_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
+        </div>
+        <!-- <div class="form-group">
           <label for="satuan">Satuan</label>
           <select name="satuan" class="form-control" id="satuan">
             <option value="" disabled selected>--- Pilih Satuan ---</option>
             <option value="Kg">Kg</option>
             <option value="Ton">Ton</option>
-            <!-- <?php foreach ($customer as $c) { ?>
-              <option value="<?php echo $c->kode_customer ?>"> <?php echo $c->nama_customer ?> </option>
-            <?php } ?> -->
-          </select>
-          <!-- <input type="number" min="0" name="cavity" value="<?=$row->cavity?>" class="form-control"> -->
-          <!-- <input type="number" min="0" name="satuan" class="form-control form-control-sm" id="satuan" value="<?php echo set_value('satuan') ?>"> -->
           <?php echo form_error('satuan', '<span class="text-danger small pl-3">', '</span>'); ?>
-        </div>
+        </div> -->
         <!-- <div class="form-group">
           <label for="proses">Proses</label> <br />
           <?php foreach ($proses as $p) { ?>

@@ -33,7 +33,7 @@ class ProcessCostModel extends CI_Model
 
 	public function GetHargaProduk($produk)
 	{
-	 	$this->db->select('sum(harga_per_produk) as harga_material,
+	 	$this->db->select('berat_produk as berat produk, sum(harga_per_produk) as harga_material,
 							(select sum(harga_per_produk) from sub_material_produk where kode_produk = `material_produk`.kode_produk) as total_submaterial,
 							(select sum(harga_per_produk) from proses_produk where kode_produk = `material_produk`.kode_produk) as total_proses'
 						);

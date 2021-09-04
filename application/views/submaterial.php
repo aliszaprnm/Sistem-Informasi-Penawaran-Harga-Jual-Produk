@@ -3,7 +3,8 @@
   <?php echo $this->session->flashdata('message'); ?>
   <div class="card shadow mb-4">
   	<div class="card-header py-3">
-  		<a href="<?php echo site_url('submaterial/tambah') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Sub Material</a>
+  		<a href="<?php echo site_url('submaterial/tambah') ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> Tambah Sub Material Produk</a>
+      <a href="<?php echo site_url('submaterial/tambah_master') ?>" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i> Tambah Data Master Sub Material</a>
     </div>
     <div class="card-body">
     	<div class="table-responsive">
@@ -25,8 +26,8 @@
                     		<td><?php echo floatval($row->pemakaian) ." kg" ?></td>
                     		<td><?php echo "Rp" . floatval($row->harga_per_produk) ?></td>
                     		<td>
-                    			<a href="<?php echo site_url('submaterial/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="<?php echo site_url('submaterial/hapus/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                    			<a href="<?php echo site_url('submaterial/edit/' .$row->id. '/'. $row->kode_produk) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                          <a href="<?php echo site_url('submaterial/hapus/'.$row->id. '/'. $row->kode_produk) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                     		</td>
                     	</tr>
                     <?php } ?>

@@ -13,6 +13,14 @@
           <?php echo form_error('kode_produk', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
+          <label for="kode_customer">Customer</label>
+          <select name="kode_customer" class="form-control" id="kode_customer">
+            <?php foreach ($customer as $c) { ?>
+              <option value="<?php echo $c->kode_customer ?>" <?php echo $row->kode_customer == $c->kode_customer ? 'selected' : '' ?>> <?php echo $c->nama_customer ?> </option>
+            <?php } ?>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="kode_grup">Kode Grup</label>
           <input type="text" name="kode_grup" class="form-control form-control-sm" id="kode_grup" value="<?php echo $row->kode_grup ?>">
           <?php echo form_error('kode_grup', '<span class="text-danger small pl-3">', '</span>'); ?>

@@ -48,6 +48,7 @@ class ProdukModel extends CI_Model
 
 		$data = [
 			'kode_produk' => $this->input->post('kode_produk', true),
+			'kode_customer' => $this->input->post('kode_customer', true),
 			'kode_grup' => $this->input->post('kode_grup', true),
 			'nama_produk' => $this->input->post('nama_produk', true),
 			// 'harga_dies' => $this->input->post('harga_dies', true),
@@ -113,6 +114,7 @@ class ProdukModel extends CI_Model
 			//'kode_produk' => $this->input->post('kode_produk', true),
 			'kode_grup' => $this->input->post('kode_grup', true),
 			'nama_produk' => $this->input->post('nama_produk', true),
+			'kode_customer' => $this->input->post('kode_customer', true)
 			//'cavity' => $this->input->post('cavity', true)
 		];
 		$this->db->where('kode_produk', $kode_produk);

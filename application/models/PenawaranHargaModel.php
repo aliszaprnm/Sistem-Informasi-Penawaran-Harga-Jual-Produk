@@ -11,9 +11,13 @@ class PenawaranHargaModel extends CI_Model
 		$this->db->join('pesanan', 'pesanan.id = penawaran_harga.pesanan_id', 'left');
 		$this->db->join('customer', 'customer.kode_customer = penawaran_harga.kode_customer', 'left');
 		$this->db->join('produk', 'produk.kode_produk = penawaran_harga.kode_produk', 'left');
-		if(count($where) > 0) $this->db->where($where);
-		if(isset($where['penawaran_harga.status']) && $where['penawaran_harga.status'] == 'Negotiating') $this->db->or_where('penawaran_harga.status', 'New');
+		// if(count($where) > 0) $this->db->where($where);
+		// if(isset($where['penawaran_harga.status']) && $where['penawaran_harga.status'] == 'Negotiating') $this->db->or_where('penawaran_harga.status', 'New');
+		// return $this->db->get();
+		if(count($where) > 0 && isset($where['penawaran_harga.status']) && $where['penawaran_harga.status'] == 'Negotiating') $this->db->where_in('penawaran_harga.status',array('New','Negotiating','Reject By OM'));
+		if(count($where) > 0 && (isset($where['penawaran_harga.status']) && $where['penawaran_harga.status'] != 'Negotiating')) $this->db->where($where);
 		return $this->db->get();
+		//print_r($this->db->last_query()); exit;
 	}
 
 	public function tambah()

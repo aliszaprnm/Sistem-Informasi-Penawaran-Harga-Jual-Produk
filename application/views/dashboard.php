@@ -125,10 +125,10 @@
                       <i class="fas fa-circle text-success"></i> Deal
                     </span>
                     <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> New
+                      <i class="fas fa-circle text-primary"></i> Negotiating
                     </span>
                     <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Negotiating
+                      <i class="fas fa-circle text-info"></i> New
                     </span>
                     <span class="mr-2">
                       <i class="fas fa-circle text-warning"></i> Reject
@@ -185,7 +185,7 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Deal", "New", "Negotiating", "Reject"],
+    labels: ["Deal", "Negotiating", "New", "Reject"],
     datasets: [{
       data: <?= json_encode($status); ?>,
       backgroundColor: ['#1cc88a', '#4e73df', '#36b9cc', '#f6c23e'],

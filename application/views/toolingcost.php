@@ -37,7 +37,7 @@
                             <td><?php echo "Rp". $row->total ?></td>
                             <?php if($this->session->userdata('role') == 'Operational Manager'){ ?>
                                 <td>
-                                    <a href="<?php echo site_url('toolingcost/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <!-- <a href="<?php echo site_url('toolingcost/edit/' .$row->id) ?>" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a> -->
                                     <a href="<?php echo site_url('toolingcost/hapus/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             <?php } ?>

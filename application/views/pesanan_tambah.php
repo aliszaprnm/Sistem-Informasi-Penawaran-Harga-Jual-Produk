@@ -42,9 +42,9 @@
                   <td>
 					  <select name="kode_produk[]" class="form-control" id="kode_produk0" required>
 						<option value="" disabled selected>--- Pilih Produk ---</option>
-						<?php foreach ($produk as $p) { ?>
+						<!-- <?php foreach ($produk as $p) { ?>
 						  <option value="<?php echo $p->kode_produk ?>"> <?php echo $p->nama_produk ?> </option>
-						<?php } ?>
+						<?php } ?> -->
 					  </select>
                   </td>
                   <td>
@@ -74,6 +74,20 @@
 </div>
 
 <script>
+  $("#kode_customer").change(function(){ 
+      $.get("<?= site_url() ?>pesanan/get_produk/"+$(this).val(), function(data, status){
+        var jsonData = $.parseJSON(data);
+        var option = '<option value="" disabled selected>--- Pilih Produk ---</option>';
+        if(status == 'success') {
+        for(i=0; i<jsonData.length; i++){
+      var data = `${jsonData[i].nama_produk}`
+          option += `<option value="${jsonData[i].id}">${data}</option>`
+        }
+        $("#kode_produk0").html(option);
+        } else { alert('Something wrong!') }
+      });
+    });
+
 $(document).ready(function() {
 	let row_number = 1;
     if(row_number <= 1) {

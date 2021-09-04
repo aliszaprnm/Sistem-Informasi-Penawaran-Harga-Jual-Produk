@@ -23,10 +23,19 @@ class Mesin extends CI_Controller {
 	public function tambah()
 	{
 		$this->form_validation->set_rules('nama_mesin', 'Nama Mesin', 'trim|required', [
-			'required' => 'Nama Mesin tidak boleh kosong'
+			'required' => 'Nama mesin tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required', [
-			'required' => 'Satuan tidak boleh kosong'
+		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Kekuatan mesin tidak boleh kosong',
+			'numeric' => 'Kekuatan mesin hanya dapat diisi dengan angka',
+			'integer' => 'Kekuatan mesin hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Kekuatan mesin harus lebih dari 0'
+		]);
+		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Harga dies tidak boleh kosong',
+			'numeric' => 'Harga dies hanya dapat diisi dengan angka',
+			'integer' => 'Harga dies hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Harga dies harus lebih dari 0'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
@@ -66,10 +75,15 @@ class Mesin extends CI_Controller {
 	public function edit($kode_mesin)
 	{
 		$this->form_validation->set_rules('nama_mesin', 'Nama Mesin', 'trim|required', [
-			'required' => 'Nama Mesin tidak boleh kosong'
+			'required' => 'Nama mesin tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required', [
-			'required' => 'Kekuatan Mesin tidak boleh kosong'
+		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required|integer', [
+			'required' => 'Kekuatan mesin tidak boleh kosong',
+			'integer' => 'Kekuatan mesin hanya dapat diisi dengan bilangan bulat'
+		]);
+		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required|integer', [
+			'required' => 'Harga dies tidak boleh kosong',
+			'integer' => 'Harga dies hanya dapat diisi dengan bilangan bulat'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
@@ -131,9 +145,9 @@ class Mesin extends CI_Controller {
 	public function getMesin($kodeMesin)
 	{
 		$query = $this->db->query("
-		SELECT nama_mesin, harga_dies
+		SELECT *
 		FROM mesin
-		WHERE kode_mesin = $kodeMesin
+		WHERE kode_mesin = '$kodeMesin'
 		");
 		$data = $query->result();
 		echo json_encode($data);

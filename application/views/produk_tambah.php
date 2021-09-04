@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label for="kode_customer">Customer</label>
-          <select name="kode_customer" class="form-control" id="kode_customer">
+          <select name="kode_customer" class="form-control" id="kode_customer" required="Customer harus dipilih.">
             <option value="" disabled selected>--- Pilih Customer ---</option>
             <?php foreach ($customer as $c) { ?>
               <option value="<?php echo $c->kode_customer ?>"> <?php echo $c->nama_customer ?> </option>
@@ -126,7 +126,7 @@
 		  <tbody style="text-align:center">
 			<tr id="submaterial_detail0" class="submaterial_cloned-row">
 			  <td>
-				 <select name="sub_material[]" class="form-control" id="submaterial0" required>
+				<select name="sub_material[]" class="form-control" id="submaterial0" onchange="get_harga_submaterial(this)" required>
 					<option value="" disabled selected>--- Pilih Submaterial ---</option>
 					<?php foreach ($sub_material as $sub_mat) { ?>
 					  <option value="<?php echo $sub_mat->id ?>"> <?php echo $sub_mat->nama_submaterial?> </option>
@@ -134,7 +134,7 @@
 				</select>
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="pemakaian[]" class="form-control calc_submaterial" id="pemakaian0" onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
+				  <input type="number" min="0.001" lang="en" step="0.001" name="pemakaian[]" class="form-control calc_submaterial" id="pemakaian0" required onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="submaterial_harga[]" class="form-control calc_submaterial" id="submaterial_harga0" readonly onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
@@ -168,7 +168,7 @@
 		  <tbody style="text-align:center">
 			<tr id="proses_detail0" class="proses_cloned-row">
 			  <td>
-				<select name="proses[]" class="form-control" id="proses0" onchange="calculate_proses(this)" required>
+				<select name="proses[]" class="form-control" id="proses0" onchange="get_harga_proses(this)" required>
 					<option value="" disabled selected>--- Pilih Proses ---</option>
 					<?php foreach ($proses as $pro) { ?>
 					  <option value="<?php echo $pro->id ?>"> <?php echo $pro->nama_proses?> </option>
@@ -176,10 +176,10 @@
 				</select>
 			  </td>
 			  <td>
-				<select name="mesin[]" class="form-control" id="mesin0" onchange="calculate_proses(this)" required>
+				<select name="mesin[]" class="form-control" id="mesin0" onchange="get_harga_dies(this)" required>
 					<option value="" disabled selected>--- Pilih Mesin ---</option>
 					<?php foreach ($mesin as $m) { ?>
-					  <option value="<?php echo $m->kode_mesin ?>"> <?php echo $m->nama_mesin. ' - ' .floatval($m->kekuatan). ' ' .$m->satuan ?> </option>
+					  <option value="<?php echo $m->kode_mesin ?>"> <?php echo $m->nama_mesin. ' - ' .floatval($m->kekuatan). ' Ton' ?> </option>
 					<?php } ?>
 				</select>
 			  </td>
@@ -187,13 +187,13 @@
 				  <input type="number" lang="en" step="0.01" name="std_dies_height[]" class="form-control calc_proses" id="std_dies_height0">
 			  </td> -->
 			  <td>
-				  <input type="number" min="1" name="harga_dies[]" class="form-control" id="harga_dies0" required>
+				  <input type="number" min="1" name="harga_dies[]" class="form-control" id="harga_dies0" readonly>
 			  </td>
 			  <td>
-				  <input type="number" lang="en" step="0.01" name="proses_harga[]" class="form-control" id="proses_harga0" required onkeyup="calculate_proses(this)" onmouseup="calculate_proses(this)">
+				  <input type="number" lang="en" step="0.01" name="proses_harga[]" class="form-control" id="proses_harga0" readonly onkeyup="calculate_proses(this)" onmouseup="calculate_proses(this)">
 			  </td>
 			  <td>
-				  <input type="number" lang="en" step="0.01" name="proses_harga_pcs[]" readonly class="form-control" id="proses_harga_pcs0" required>
+				  <input type="number" lang="en" step="0.01" name="proses_harga_pcs[]" readonly class="form-control" id="proses_harga_pcs0">
 			  </td>
 			</tr>
 			<tr id="proses_detail1" class="proses_cloned-row">
@@ -256,19 +256,27 @@
 		document.getElementById("harga_pcs0").value = Number(harga) * Number(berat_pcs);
   	});
 
-  	$("#submaterial0").change(function(){ 
-	    $.get("<?= site_url() ?>submaterial/getSubmaterial/"+$(this).val(), function(data, status){
-	      var jsonData = $.parseJSON(data);
-	      var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
-	      if(status == 'success') {
-			if (jsonData.length > 0) {
-				var harga = jsonData[0].harga
-				document.getElementById("submaterial_harga0").value = Number(jsonData[0].harga);
-				document.getElementById("pemakaian0").focus()
-			}
-	      } else { alert('Something wrong!') }
+  	function get_harga_submaterial(arg) {
+		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
+		var pemakaian = Number($("input[id^='pemakaian']", 'tr#'+$tr+'.submaterial_cloned-row').val()) || 1;
+		var id = arg.getAttribute('id');
+		var value = arg.value;
+		//console.log(parseFloat(berat / jumlah).toFixed(2));
+
+		$.get("<?= site_url() ?>submaterial/getSubmaterial/"+arg.value, function(data, status){
+			var jsonData = $.parseJSON(data);
+			var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
+			if(status == 'success') {
+				if (jsonData.length > 0) {
+					var harga = jsonData[0].harga
+					$("input[id^='submaterial_harga']", 'tr#'+$tr+'.submaterial_cloned-row').val(Number(jsonData[0].harga));
+					$("input[id^='pemakaian']", 'tr#'+$tr+'.submaterial_cloned-row').focus();
+					/*document.getElementById("id").value = Number(jsonData[0].harga);
+					document.getElementById("pemakaian0").focus()*/
+				}
+			} else { alert('Something wrong!') }
 	    });
-  	});
+	}
 
 	$("#pemakaian0").on('input',function(){
 		var pemakaian = $("#pemakaian0").val()
@@ -276,38 +284,53 @@
 		document.getElementById("submaterial_harga_pcs0").value = Number(harga) * Number(pemakaian)
   	});
 
-  	$("#proses0").change(function(){ 
-	    $.get("<?= site_url() ?>proses/getProses/"+$(this).val(), function(data, status){
+	function get_harga_proses(arg){
+		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
+		var proses_harga = Number($("input[id^='proses_harga']", 'tr#'+$tr+'.proses_cloned-row').val()) || 1;
+		var id = arg.getAttribute('id');
+		var value = arg.value;
+		//console.log(parseFloat(berat / jumlah).toFixed(2));
+
+	    $.get("<?= site_url() ?>proses/getProses/"+value, function(data, status){
 	      var jsonData = $.parseJSON(data);
 	      var option = '<option value="" disabled selected>--- Pilih Proses ---</option>';
 	      if(status == 'success') {
 			if (jsonData.length > 0) {
 				var harga = jsonData[0].harga
-				document.getElementById("proses_harga0").value = Number(jsonData[0].harga);
-				document.getElementById("mesin0").focus()
+				$("input[id^='proses_harga']", 'tr#'+$tr+'.proses_cloned-row').val(Number(jsonData[0].harga));
+				$("input[id^='mesin']", 'tr#'+$tr+'.proses_cloned-row').focus();
+				/*document.getElementById("proses_harga0").value = Number(jsonData[0].harga);
+				document.getElementById("mesin0").focus()*/
 			}
 	      } else { alert('Something wrong!') }
 	    });
-  	});
+	}
 
-	$("#mesin0").on('input',function(){
+	/*$("#mesin0").on('input',function(){
 		var kekuatan_mesin = $("#mesin0").val()
 		var harga = $("#proses_harga0").val()
 		document.getElementById("proses_harga_pcs0").value = Number(harga) * Number(kekuatan_mesin)
-  	});
+  	});*/
 
-  	$("#mesin0").change(function(){ 
-	    $.get("<?= site_url() ?>mesin/getMesin/"+$(this).val(), function(data, status){
+	function get_harga_dies(arg){
+		var $tr = $(arg).closest('tr').attr('id'); // get tr which contains the input
+		var proses_harga = Number($("input[id^='proses_harga']", 'tr#'+$tr+'.proses_cloned-row').val()) || 1;
+		var id = arg.getAttribute('id');
+		var value = arg.value;
+		//console.log(parseFloat(berat / jumlah).toFixed(2));
+
+	    $.get("<?= site_url() ?>mesin/getMesin/"+value, function(data, status){
 	      var jsonData = $.parseJSON(data);
 	      var option = '<option value="" disabled selected>--- Pilih Mesin ---</option>';
 	      if(status == 'success') {
 			if (jsonData.length > 0) {
 				var harga_dies = jsonData[0].harga_dies
-				document.getElementById("harga_dies0").value = Number(jsonData[0].harga_dies);
+				$("input[id^='harga_dies']", 'tr#'+$tr+'.proses_cloned-row').val(Number(jsonData[0].harga_dies));
+				calculate_proses(arg);
 			}
 	      } else { alert('Something wrong!') }
 	    });
-  	});  	
+  	};
   
 	// $("#id").change(function(){
  //    const kodeCustomer = $("#kode_customer").val()
@@ -493,7 +516,7 @@ $(document).ready(function() {
 
       $('#submaterial_detail' + submaterial_row_number).html($('#submaterial_detail' + new_row_number).html()).find('td:first-child');
       $('#submaterial_detail_table').append('<tr id="submaterial_detail' + (submaterial_row_number + 1) + '" class=submaterial_cloned-row></tr>');
-      $("#sub_material"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'sub_material'+submaterial_row_number);
+      $("#submaterial"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'submaterial'+submaterial_row_number);
       $("#pemakaian"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'pemakaian'+submaterial_row_number);
       $("#submaterial_harga"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'submaterial_harga'+submaterial_row_number);
       $("#submaterial_harga_pcs"+new_row_number, 'tr#submaterial_detail'+submaterial_row_number+'.submaterial_cloned-row').attr('id', 'submaterial_harga_pcs'+submaterial_row_number);

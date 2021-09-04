@@ -62,10 +62,10 @@
                             <?php if($this->session->userdata('role') == 'Marketing'){ ?>
     							<td>
                                     <a href="<?php echo site_url('penawaranharga/proses/deal/' .$row->id) ?>" class="btn btn-success btn-sm"><i class="fas fa-check"></i></a>
-                                    <?php if($row->status == 'Negotiating') { ?>
-    									<a href="<?php echo site_url('penawaranharga/proses/reject/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin menolak penawaran ini?')"class="btn btn-warning btn-sm"><i class="fas fa-minus-circle"></i></a>
+                                    <?php if($row->status == 'Negotiating'|| $row->status == 'Reject by OM') { ?>
+    									<a href="<?php echo site_url('penawaranharga/proses/reject/'.$row->id) ?>" onclick="return confirm('Apakah Anda yakin customer menolak penawaran ini?')"class="btn btn-warning btn-sm"><i class="fas fa-minus-circle"></i></a>
     								<?php } if($row->status == 'New') { ?>
-    									<a href="<?php echo site_url('penawaranharga/proses/nego/' .$row->id) ?>" onclick="return confirm('Apakah Anda yakin ingin melakukan negosiasi untuk penawaran ini?')"class="btn btn-warning btn-sm"><i class="fas fa-cog"></i></a>
+    									<a href="<?php echo site_url('penawaranharga/proses/nego/' .$row->id) ?>" onclick="return confirm('Apakah Anda yakin customer melakukan negosiasi untuk penawaran ini?')"class="btn btn-warning btn-sm"><i class="fas fa-cog"></i></a>
     								<?php } ?>
                                 </td>
                             <?php } ?>

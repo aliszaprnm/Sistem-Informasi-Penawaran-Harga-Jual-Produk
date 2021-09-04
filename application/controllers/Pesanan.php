@@ -23,6 +23,17 @@ class Pesanan extends CI_Controller
 		$this->load->view('pesanan', $data);
 		$this->load->view('templates/footer');
 	}
+
+	public function get_produk($kodeCustomer)
+	{
+		/*$query = $this->db->query("select *,(select nama_customer from customer where kode_customer = a.kode_customer) as customer from produk a inner join customer b on a.kode_customer = b.kode_customer where a.kode_customer = '$kodeCustomer'");*/
+		$query = $this->db->query("
+			SELECT produk.*, customer.*, customer.nama_customer as customer 
+			FROM produk JOIN customer ON produk.kode_customer = customer.kode_customer 
+			WHERE UPPER(customer.kode_customer) = UPPER('$kodeCustomer') AND status = ''");
+		$data = $query->result();
+		echo json_encode($data);
+	}
 	
 	public function baru()
 	{

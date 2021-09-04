@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
       <form action="" method="post">
-		<div class="form-group">
+    <div class="form-group">
           <label for="kode_pesanan">Pesanan</label>
           <input type="hidden" name="kode_pesanan" class="form-control form-control-sm" value="<?php echo $row->pesanan_id ?>" readOnly>
           <select name="kode_pesanan" class="form-control" id="kode_pesanan" disabled>
@@ -45,6 +45,7 @@
         <div class="form-group">
           <label for="transportation">Transportation</label>
           <input type="hidden" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo $row->jarak ?>">
+          <input type="hidden" name="berat_produk" class="form-control form-control-sm" id="berat_produk" value="<?php echo $row->berat_produk ?>">
           <input type="number" min="0" lang="en" step="0.01" name="transportation" class="form-control form-control-sm" id="transportation" value="<?php echo $row->harga_delivery ?>">
           <?php echo form_error('transportation', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
@@ -81,45 +82,46 @@
 
 <script>
 
-  $("#kode_pesanan").change(function(){	 
-	  $.get("<?= site_url() ?>processcost/get_pesanan/"+$(this).val(), function(data, status){
-		  var jsonData = $.parseJSON(data);
-		  var option = '<option value="" disabled selected>--- Pilih Produk ---</option>';
-		  if(status == 'success') {
-			for(i=0; i<jsonData.length; i++){
-				option += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
-				$("#jarak").val(jsonData[i].jarak);
-			}
-			$("#kode_produk").html(option);
-		  } else { alert('Something wrong please contact administrator!') }
-	  });
+  $("#kode_pesanan").change(function(){  
+    $.get("<?= site_url() ?>processcost/get_pesanan/"+$(this).val(), function(data, status){
+      var jsonData = $.parseJSON(data);
+      var option = '<option value="" disabled selected>--- Pilih Produk ---</option>';
+      if(status == 'success') {
+      for(i=0; i<jsonData.length; i++){
+        option += `<option value="${jsonData[i].kode_produk}">${jsonData[i].produk}</option>`
+        $("#berat_produk").val(jsonData[i].berat_produk);
+        $("#jarak").val(jsonData[i].jarak);
+      }
+      $("#kode_produk").html(option);
+      } else { alert('Something wrong please contact administrator!') }
+    });
   });
   
-  $("#kode_produk").change(function(){	 
-	  $.get("<?= site_url() ?>processcost/get_harga/"+$(this).val(), function(data, status){
-		  var jsonData = $.parseJSON(data);
-		  if(status == 'success') {
-			//for(i=0; i<jsonData.length; i++){
-				$("#material").val(jsonData.harga_material);
-				$("#sub_material").val(jsonData.total_submaterial);
-				$("#process").val(jsonData.total_proses);
-			//}
-		  } else { alert('Something wrong please contact administrator!') }
-	  });
+  $("#kode_produk").change(function(){   
+    $.get("<?= site_url() ?>processcost/get_harga/"+$(this).val(), function(data, status){
+      var jsonData = $.parseJSON(data);
+      if(status == 'success') {
+      //for(i=0; i<jsonData.length; i++){
+        $("#material").val(jsonData.harga_material);
+        $("#sub_material").val(jsonData.total_submaterial);
+        $("#process").val(jsonData.total_proses);
+      //}
+      } else { alert('Something wrong please contact administrator!') }
+    });
   });
 
   $("input").change(function(){
-	  let material = $('#material').val();
-	  let sub_material = $('#sub_material').val();
-	  let process = $('#process').val();
-	  let transport = parseFloat($('#jarak').val()) * parseFloat($('#transportation').val());
-	  let packing = parseFloat($('#packing').val()) * parseFloat(process);
-	  let quality = parseFloat($('#quality').val()) * parseFloat(process);
-	  let mtc_dies = parseFloat($('#mtc_dies').val()) * parseFloat(process);
-	  let profit_oh = parseFloat($('#profit_oh').val()) * parseFloat(process);
-	  console.log(parseFloat(material)+parseFloat(sub_material)+parseFloat(process));
-	  console.log(transport,packing,quality,mtc_dies,profit_oh);
-	  console.log(parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh));
-	  $("#total").val(parseFloat(parseFloat(material)+parseFloat(sub_material)+parseFloat(process)+parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh)).toFixed(2));
+    let material = $('#material').val();
+    let sub_material = $('#sub_material').val();
+    let process = $('#process').val();
+    let transport = parseFloat($('#transportation').val()) / 12.3 * parseFloat($('#berat_produk').val()) * parseFloat($('#jarak').val());
+    let packing = parseFloat($('#packing').val()) * parseFloat(process);
+    let quality = parseFloat($('#quality').val()) * parseFloat(process);
+    let mtc_dies = parseFloat($('#mtc_dies').val()) * parseFloat(process);
+    let profit_oh = parseFloat($('#profit_oh').val()) * parseFloat(process);
+    console.log(parseFloat(material)+parseFloat(sub_material)+parseFloat(process));
+    console.log(transport,packing,quality,mtc_dies,profit_oh);
+    console.log(parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh));
+    $("#total").val(parseFloat(parseFloat(material)+parseFloat(sub_material)+parseFloat(process)+parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh)).toFixed(2));
   })
 </script>

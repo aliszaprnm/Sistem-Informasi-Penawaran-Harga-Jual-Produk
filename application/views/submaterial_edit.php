@@ -9,16 +9,26 @@
       <form action="" method="post">
         <div class="form-group">
           <label for="kode_produk">Produk</label>
-          <select name="kode_produk" class="form-control" id="kode_produk">
+          <select name="kode_produk" class="form-control" id="kode_produk" disabled>
             <option value="" disabled selected>--- Pilih Produk ---</option>
             <?php foreach ($produk as $p) { ?>
-              <option value="<?php echo $p->kode_produk ?>" <?php echo $row->kode_produk == $p->kode_produk ? 'selected' : '' ?>> <?php echo $p->nama_produk ?> </option>
+              <option value="<?php echo $p->kode_produk ?>" <?php echo $p->kode_produk === $row->kode_produk ? 'selected' : '' ?>> <?php echo $p->nama_produk ?> </option>
             <?php } ?>
           </select>
         </div>
+        <!--<div class="form-group">
+          <label for="sub_material">Sub Material</label>
+          <input type="text" name="sub_material" class="form-control form-control-sm" id="sub_material" value="<?php echo $row->nama_submaterial ?>">
+          <?php echo form_error('sub_material', '<span class="text-danger small pl-3">', '</span>'); ?>
+        </div>-->
         <div class="form-group">
           <label for="sub_material">Sub Material</label>
-          <input type="text" name="sub_material" class="form-control form-control-sm" id="sub_material" value="<?php echo $row->sub_material ?>">
+          <select name="id_submaterial" class="form-control" id="sub_material">
+            <option value="" disabled selected>--- Pilih Submaterial ---</option>
+            <?php foreach ($sub_material as $sm) { ?>
+              <option value="<?php echo $sm->id ?>" <?php echo $row->id_submaterial == $sm->id ? 'selected' : '' ?>> <?php echo $sm->nama_submaterial ?> </option>
+            <?php } ?>
+          </select>
           <?php echo form_error('sub_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -28,7 +38,7 @@
         </div>
         <div class="form-group">
           <label for="harga_sub_material">Harga Sub Material</label>
-          <input type="text" name="harga_sub_material" class="form-control form-control-sm" id="harga_sub_material" onkeyup="hitung()" value="<?php echo $row->harga_sub_material ?>">
+          <input type="text" name="harga_sub_material" class="form-control form-control-sm" id="harga_sub_material" onkeyup="hitung()" readonly value="<?php echo $row->harga ?>">
           <?php echo form_error('harga_sub_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -43,6 +53,20 @@
 </div>
 
 <script>
+  $("#sub_material").change(function(){ 
+    $.get("<?= site_url() ?>submaterial/getSubmaterial/"+$(this).val(), function(data, status){
+    var jsonData = $.parseJSON(data);
+    var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
+    if(status == 'success') {
+    if (jsonData.length > 0) {
+    var harga = jsonData[0].harga
+    document.getElementById("harga_sub_material").value = Number(jsonData[0].harga);
+    document.getElementById("pemakaian").focus()
+    hitung();
+    }
+    } else { alert('Something wrong!') }
+    });
+  });
   function hitung() {
     let pemakaian = document.getElementById('pemakaian').value;
     let harga_sub_material = document.getElementById('harga_sub_material').value;

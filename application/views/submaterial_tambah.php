@@ -18,7 +18,12 @@
         </div>
         <div class="form-group">
           <label for="sub_material">Sub Material</label>
-          <input type="text" name="sub_material" class="form-control form-control-sm" id="sub_material" value="<?php echo set_value('sub_material') ?>">
+          <select name="id_submaterial" class="form-control" id="sub_material">
+            <option value="" disabled selected>--- Pilih Submaterial ---</option>
+            <?php foreach ($sub_material as $sm) { ?>
+              <option value="<?php echo $sm->id ?>"> <?php echo $sm->nama_submaterial ?> </option>
+            <?php } ?>
+          </select>
           <?php echo form_error('sub_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -28,7 +33,7 @@
         </div>
         <div class="form-group">
           <label for="harga_sub_material">Harga Sub Material</label>
-          <input type="text" name="harga_sub_material" class="form-control form-control-sm" id="harga_sub_material" onkeyup="hitung()" value="<?php echo set_value('harga_sub_material') ?>">
+          <input type="text" name="harga_sub_material" class="form-control form-control-sm" id="harga_sub_material" readonly onkeyup="hitung()" value="<?php echo set_value('harga_sub_material') ?>">
           <?php echo form_error('harga_sub_material', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
@@ -43,11 +48,31 @@
 </div>
 
 <script>
-  function hitung() {
-    let pemakaian = document.getElementById('pemakaian').value;
-    let harga_sub_material = document.getElementById('harga_sub_material').value;
-    let harga_per_produk = document.getElementById('harga_per_produk');
+  $("#sub_material").change(function(){ 
+      $.get("<?= site_url() ?>submaterial/getSubmaterial/"+$(this).val(), function(data, status){
+        var jsonData = $.parseJSON(data);
+        var option = '<option value="" disabled selected>--- Pilih Submaterial ---</option>';
+        if(status == 'success') {
+      if (jsonData.length > 0) {
+        var harga = jsonData[0].harga
+        document.getElementById("harga_sub_material").value = Number(jsonData[0].harga);
+        document.getElementById("pemakaian").focus()
+      }
+        } else { alert('Something wrong!') }
+      });
+    });
 
-    harga_per_produk.value = parseInt(harga_sub_material)*parseFloat(pemakaian);
-  }
+  $("#pemakaian").on('input',function(){
+    var pemakaian = $("#pemakaian").val()
+    var harga = $("#harga_sub_material").val()
+    document.getElementById("harga_per_produk").value = Number(harga) * Number(pemakaian)
+    });
+
+  // function hitung() {
+  //   let pemakaian = document.getElementById('pemakaian').value;
+  //   let harga_sub_material = document.getElementById('harga_sub_material').value;
+  //   let harga_per_produk = document.getElementById('harga_per_produk');
+
+  //   harga_per_produk.value = parseInt(harga_sub_material)*parseFloat(pemakaian);
+  // }
 </script>

@@ -22,7 +22,11 @@ class ToolingCost extends CI_Controller
 	}
 	
 	public function get_harga($produkId){
-		$this->db->select('sum(harga_dies) as harga_dies')->from('proses_produk')->where('kode_produk',$produkId);
+		//$this->db->select('sum(harga_dies) as harga_dies')->from('mesin')->where('kode_produk',$produkId);
+		$this->db->select("sum(harga_dies) as harga_dies, avg(vol_prod) as vol_prod, avg(depresiasi_dies) as depresiasi_dies
+							from proses_produk a
+							left join mesin b on a.kode_mesin = b.kode_mesin
+							where kode_produk = '$produkId'");
 	 	echo json_encode($this->db->get()->row());
 	}
 

@@ -24,7 +24,7 @@ class ProcessCost extends CI_Controller
 	
 	public function get_pesanan($orderId)
 	{
-		$query = $this->db->query("select *,(select nama_produk from produk where kode_produk = b.kode_produk) as produk, (select nama_customer from customer where kode_customer = a.kode_customer) as customer, (select jarak from customer where kode_customer = a.kode_customer) as jarak from pesanan a inner join pesanan_detil b on a.id = b.pesanan_id where a.id = $orderId");
+		$query = $this->db->query("select *,(select nama_produk from produk where kode_produk = b.kode_produk) as produk, (select nama_customer from customer where kode_customer = a.kode_customer) as customer, (select berat_produk from material_produk where kode_produk = b.kode_produk) as berat_produk, (select jarak from customer where kode_customer = a.kode_customer) as jarak from pesanan a inner join pesanan_detil b on a.id = b.pesanan_id where a.id = $orderId");
 		$data = $query->result();
 		echo json_encode($data);
 	}

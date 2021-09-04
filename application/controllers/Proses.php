@@ -23,6 +23,42 @@ class Proses extends CI_Controller
 		$this->load->view('templates/footer');
 	}
 
+	public function tambah_master()
+	{
+		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required|alpha', [
+			'required' => 'Nama proses tidak boleh kosong',
+			'alpha' => 'Nama proses harus berbentuk huruf'
+		]);
+		$this->form_validation->set_rules('harga', 'Harga Proses', 'trim|required|numeric|greater_than[0]', [
+			'required' => 'Harga proses tidak boleh kosong',
+			'numeric' => 'Harga proses harus diisi dengan angka',
+			'greater_than' => 'Harga proses harus lebih dari 0'
+		]);
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['title'] = 'Tambah Data Master Proses';
+			// $data['proses'] = $this->db->get('proses')->result();
+			$this->load->view('templates/header', $data);
+			$this->load->view('templates/sidebar');
+			$this->load->view('proses_master_tambah', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$this->ProsesModel->tambah_master();
+			$this->load->view('proses');
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('message', '
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Data master berhasil ditambahkan!</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				');
+				redirect('proses');
+			}
+		}
+	}
+
 	public function tambah()
 	{
 		$this->form_validation->set_rules('nama_proses', 'Proses', 'trim|required', [
@@ -38,9 +74,10 @@ class Proses extends CI_Controller
 			'required' => 'Harga proses tidak boleh kosong'
 		]);
 
-		if ($this->form_validation->run() == FALSE) {
+		if (!$this->input->post('harga_per_produk')) {
 			$data['title'] = 'Tambah Proses Produk';
 			$data['produk'] = $this->db->get('produk')->result();
+			$data['proses'] = $this->db->get('proses')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
 			// $data['proses'] = $this->db->get('proses')->result();
 			$this->load->view('templates/header', $data);
@@ -55,7 +92,7 @@ class Proses extends CI_Controller
 			$kekuatanMesin = $dataMesin->kekuatan;
 			$hargaPerProduk = $kekuatanMesin * $hargaProses;
 
-			$this->ProsesModel->tambah($hargaPerProduk);
+			$this->ProsesModel->tambah();
 			// if (is_array($_POST['proses'])) {
 			// 	// $produk = implode(", ", $_POST['proses']);
 			// 	$proses = implode(', ', $this->input->post('proses'));
@@ -75,8 +112,8 @@ class Proses extends CI_Controller
 						</button>
 					</div>
 				');
-				redirect('proses');
 			}
+			redirect('proses');
 		}
 	}
 
@@ -95,11 +132,14 @@ class Proses extends CI_Controller
 			'required' => 'Harga proses tidak boleh kosong'
 		]);
 
-		if ($this->form_validation->run() == FALSE) {
+		if (!$this->input->post()) {
 			$data['title'] = 'Edit Proses Produk';
 			$data['produk'] = $this->db->get('produk')->result();
+			$data['proses'] = $this->db->get('proses')->result();
 			$data['mesin'] = $this->db->get('mesin')->result();
-			$data['row'] = $this->db->get_where('proses_produk', ['id' => $id])->row();
+			//$data['row'] = $this->db->get_where('proses_produk', ['id' => $id])->row();
+			$data['row'] = $this->ProsesModel->GetProsesProduk(array('proses_produk.id' => $id))->row();
+			//print_r($data['rows']); exit;
 			$this->load->view('templates/header', $data);
 			$this->load->view('templates/sidebar');
 			$this->load->view('proses_edit', $data);
@@ -127,8 +167,8 @@ class Proses extends CI_Controller
 						</button>
 					</div>
 				');
-				redirect('proses');
 			}
+			redirect('proses');
 		}
 	}
 

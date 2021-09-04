@@ -22,7 +22,7 @@
           <select name="level" class="form-control" id="level" required>
             <option value="" disabled selected>--- Pilih Level ---</option>
             <option value="Administrator"> Administrator </option>
-            <option value="Marketing"> Sales & Marketing </option>
+            <option value="Marketing"> Marketing </option>
             <option value="Operational Manager"> Operational Manager </option>
           </select>
           <?php echo form_error('level', '<span class="text-danger small pl-3">', '</span>'); ?>

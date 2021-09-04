@@ -39,12 +39,12 @@
                     		<td><?php echo "Rp". floatval($row->harga_material) ?></td>
                             <td><?php echo "Rp". floatval($row->harga_proses) ?></td>
                             <td><?php echo "Rp". floatval($row->harga_sub_material) ?></td>
-                            <td><?php echo "Rp". ($row->harga_delivery * $row->jarak) ?></td>
+                            <td><?php echo "Rp". number_format(($row->harga_delivery / 12.3 * $row->berat_produk * $row->jarak), 2)?></td>
                             <td><?php echo "Rp". floatval($row->harga_packing * $row->total_harga_proses) ?></td>
                             <td><?php echo "Rp". floatval($row->harga_qc * $row->total_harga_proses) ?></td>
                             <td><?php echo "Rp". floatval($row->harga_mtc_dies * $row->total_harga_proses) ?></td>
                             <td><?php echo "Rp". floatval($row->profit_dan_OH * $row->total_harga_proses) ?></td>
-                            <td><?php echo "Rp". floatval($row->harga_material + $row->harga_proses + $row->harga_sub_material + ($row->harga_delivery * $row->jarak) + ($row->harga_packing * $row->total_harga_proses) + ($row->harga_qc * $row->total_harga_proses) + ($row->harga_mtc_dies * $row->total_harga_proses) + ($row->profit_dan_OH * $row->total_harga_proses)) ?></td>
+                            <td><?php echo "Rp". floatval($row->total) ?></td>
                             <!--<td><?php echo "Rp". floatval($row->total) ?></td>-->
                             <?php if($this->session->userdata('role') == 'Operational Manager'){ ?>
                                 <td>
@@ -61,8 +61,9 @@
   </div>
 </div>
 
-<script>
+<!-- <script>
     function hitung() {
         
     }
 </script>
+ -->
