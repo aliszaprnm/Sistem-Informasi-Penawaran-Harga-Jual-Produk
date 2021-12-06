@@ -89,17 +89,13 @@ class SubMaterial extends CI_Controller {
 
 	public function edit($id, $produkId)
 	{
-		$this->form_validation->set_rules('sub_material', 'Sub Material', 'trim|required', [
-			'required' => 'Sub material tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('pemakaian', 'Pemakaian', 'trim|required', [
-			'required' => 'Pemakaian sub material tidak boleh kosong'
-		]);
-		$this->form_validation->set_rules('harga_sub_material', 'Harga Sub Material', 'trim|required', [
-			'required' => 'Harga sub material tidak boleh kosong'
+		$this->form_validation->set_rules('pemakaian', 'Pemakaian', 'trim|required|numeric|greater_than[0]', [
+			'required' => 'Pemakaian submaterial tidak boleh kosong',
+			'numeric' => 'Pemakaian submaterial ditulis dalam bentuk angka',
+			'greater_than' => 'Pemakaian submaterial harus lebih dari 0'
 		]);
 
-		if (!$this->input->post('id_submaterial')) {
+		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = 'Edit Sub Material Produk';
 			$data['produk'] = $this->db->get('produk')->result();
 			$data['sub_material'] = $this->db->get('sub_material')->result();

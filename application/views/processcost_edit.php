@@ -8,7 +8,7 @@
     <div class="card-body">
       <form action="" method="post">
     <div class="form-group">
-          <label for="kode_pesanan">Pesanan</label>
+          <label for="kode_pesanan">Kode Pesanan</label>
           <input type="hidden" name="kode_pesanan" class="form-control form-control-sm" value="<?php echo $row->pesanan_id ?>" readOnly>
           <select name="kode_pesanan" class="form-control" id="kode_pesanan" disabled>
             <option value="" disabled selected>--- Pilih Pesanan ---</option>
@@ -46,32 +46,32 @@
           <label for="transportation">Transportation</label>
           <input type="hidden" name="jarak" class="form-control form-control-sm" id="jarak" value="<?php echo $row->jarak ?>">
           <input type="hidden" name="berat_produk" class="form-control form-control-sm" id="berat_produk" value="<?php echo $row->berat_produk ?>">
-          <input type="number" min="0" lang="en" step="0.01" name="transportation" class="form-control form-control-sm" id="transportation" value="<?php echo $row->harga_delivery ?>">
+          <input type="number" min="0" lang="en" step="0.01" name="transportation" class="form-control form-control-sm" id="transportation" required value="<?php echo $row->harga_delivery ?>">
           <?php echo form_error('transportation', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="packing">Packing</label>
-          <input type="number" min="0.03" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" value="<?php echo $row->harga_packing ?>">
+          <label for="packing">Packing (%)</label>
+          <input type="number" min="3" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" required value="<?php echo $row->harga_packing ?>">
           <?php echo form_error('packing', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="quality">Quality Control</label>
-          <input type="number" min="0.03" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" value="<?php echo $row->harga_qc ?>">
+          <label for="quality">Quality Control (%)</label>
+          <input type="number" min="3" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" required value="<?php echo $row->harga_qc ?>">
           <?php echo form_error('quality', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="mtc_dies">Maintenance Dies</label>
-          <input type="number" min="0.05" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" value="<?php echo $row->harga_mtc_dies ?>">
+          <label for="mtc_dies">Maintenance Dies (%)</label>
+          <input type="number" min="5" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" required value="<?php echo $row->harga_mtc_dies ?>">
           <?php echo form_error('mtc_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="harga_material">Profit & OH</label>
-          <input type="number" min="0.15" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" value="<?php echo $row->profit_dan_OH ?>">
+          <label for="harga_material">Profit & OH (%)</label>
+          <input type="number" min="15" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" required value="<?php echo $row->profit_dan_OH ?>">
           <?php echo form_error('profit_oh', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="total">Total</label>
-          <input type="number" min="0" lang="en" step="0.01" name="total" class="form-control form-control-sm" id="total" readonly value="<?php echo $row->total ?>">
+          <input type="number" min="0" lang="en" step="0.01" name="total" class="form-control form-control-sm" id="total" readonly required value="<?php echo $row->total ?>">
           <?php echo form_error('total', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>
@@ -115,10 +115,10 @@
     let sub_material = $('#sub_material').val();
     let process = $('#process').val();
     let transport = parseFloat($('#transportation').val()) / 12.3 * parseFloat($('#berat_produk').val()) * parseFloat($('#jarak').val());
-    let packing = parseFloat($('#packing').val()) * parseFloat(process);
-    let quality = parseFloat($('#quality').val()) * parseFloat(process);
-    let mtc_dies = parseFloat($('#mtc_dies').val()) * parseFloat(process);
-    let profit_oh = parseFloat($('#profit_oh').val()) * parseFloat(process);
+    let packing = parseFloat($('#packing').val()) / 100 * parseFloat(process);
+    let quality = parseFloat($('#quality').val()) / 100 * parseFloat(process);
+    let mtc_dies = parseFloat($('#mtc_dies').val()) / 100 * parseFloat(process);
+    let profit_oh = parseFloat($('#profit_oh').val()) / 100 * parseFloat(process);
     console.log(parseFloat(material)+parseFloat(sub_material)+parseFloat(process));
     console.log(transport,packing,quality,mtc_dies,profit_oh);
     console.log(parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh));

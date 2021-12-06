@@ -22,10 +22,21 @@
           <input type="text" name="kekuatan" class="form-control form-control-sm" id="kekuatan" value="<?php echo set_value('kekuatan') ?>">
           <?php echo form_error('kekuatan', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
+
+        <div class="form-group">
+          <label for="vol_prod">Volume Produksi per Bulan</label>
+          <input type="text" name="vol_prod" class="form-control form-control-sm" id="vol_prod" value="<?php echo set_value('vol_prod') ?>">
+          <?php echo form_error('vol_prod', '<span class="text-danger small pl-3">', '</span>'); ?>
+        </div>
         <div class="form-group">
           <label for="harga_dies">Harga Dies</label>
           <input type="text" name="harga_dies" class="form-control form-control-sm" id="harga_dies" value="<?php echo set_value('harga_dies') ?>">
           <?php echo form_error('harga_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
+        </div>
+        <div class="form-group">
+          <label for="depresiasi_dies">Depresiasi Dies (Bulan)</label>
+          <input type="text" name="depresiasi_dies" class="form-control form-control-sm" id="depresiasi_dies" value="<?php echo set_value('depresiasi_dies') ?>">
+          <?php echo form_error('depresiasi_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <!-- <div class="form-group">
           <label for="satuan">Satuan</label>

@@ -20,14 +20,14 @@
           <label for="kode_produk">Produk</label>
           <select name="kode_produk" class="form-control" id="kode_produk" required>
             <option value="" disabled selected>--- Pilih Produk ---</option>
-            <?php foreach ($produk as $p) { ?>
+            <!-- <?php foreach ($produk as $p) { ?>
               <option value="<?php echo $p->kode_produk ?>"> <?php echo $p->nama_produk ?> </option>
-            <?php } ?>
+            <?php } ?> -->
           </select>
         </div>
         <div class="form-group">
           <label for="customer">Customer</label>
-          <select name="kode_customer" class="form-control select" id="kode_customer" required>
+          <select name="kode_customer" class="form-control select" id="kode_customer" required readonly>
             <option value="" disabled selected>--- Pilih Customer ---</option>
             <?php foreach ($customer as $c) { ?>
               <option value="<?php echo $c->kode_customer ?>"> <?php echo $c->nama_customer ?> </option>

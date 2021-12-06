@@ -94,7 +94,7 @@
 				  <input type="number" min="1" name="jumlah_sheet[]" class="form-control calc_material" id="jumlah_sheet0" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
 			  </td>
 			  <td>
-				  <input type="number" min="0" lang="en" step="0.001" name="berat_pcs[]" readonly class="form-control" id="berat_pcs0" required>
+				  <input type="number" min="0" lang="en" step="0.0001" name="berat_pcs[]" readonly class="form-control" id="berat_pcs0" required>
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="harga[]" readonly class="form-control calc_material" id="harga0" readonly value="<?php echo set_value('harga') ?>" required onkeyup="calculate_material(this)" onmouseup="calculate_material(this)">
@@ -126,7 +126,7 @@
 		  <tbody style="text-align:center">
 			<tr id="submaterial_detail0" class="submaterial_cloned-row">
 			  <td>
-				<select name="sub_material[]" class="form-control" id="submaterial0" onchange="get_harga_submaterial(this)" required>
+				<select name="sub_material[]" class="form-control" id="submaterial0" onchange="get_harga_submaterial(this)">
 					<option value="" disabled selected>--- Pilih Submaterial ---</option>
 					<?php foreach ($sub_material as $sub_mat) { ?>
 					  <option value="<?php echo $sub_mat->id ?>"> <?php echo $sub_mat->nama_submaterial?> </option>
@@ -134,7 +134,7 @@
 				</select>
 			  </td>
 			  <td>
-				  <input type="number" min="0.001" lang="en" step="0.001" name="pemakaian[]" class="form-control calc_submaterial" id="pemakaian0" required onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
+				  <input type="number" min="0.0001" lang="en" step="0.0001" name="pemakaian[]" class="form-control calc_submaterial" id="pemakaian0" onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
 			  </td>
 			  <td>
 				  <input type="number" min="1" name="submaterial_harga[]" class="form-control calc_submaterial" id="submaterial_harga0" readonly onkeyup="calculate_submaterial(this)" onmouseup="calculate_submaterial(this)">
@@ -249,7 +249,7 @@
 	$("#jumlah_sheet0").on('input',function(){
 		var jumlah = $("#jumlah_sheet0").val()
 		var berat = $("#berat0").val()
-		var berat_pcs = parseFloat(berat / jumlah).toFixed(2);
+		var berat_pcs = parseFloat(berat / jumlah).toFixed(3);
 		document.getElementById("berat_pcs0").value = berat_pcs
 
 		var harga = $("#harga0").val();

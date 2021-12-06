@@ -46,7 +46,7 @@
 						  </select>
 					  </td>
 					  <td>
-						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty<?= $i; ?>" value="<?php echo $rows->qty ?>">
+						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty<?= $i; ?>" required value="<?php echo $rows->qty ?>">
 					  </td>
 					  <td>
 						  <textarea name="keterangan[]" id="keterangan<?= $i; ?>" class="md-textarea form-control" rows="1"><?php echo $rows->keterangan ?></textarea>
@@ -65,7 +65,7 @@
 						</select>
 					  </td>
 					  <td>
-						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty0" value="<?php echo set_value('qty') ?>">
+						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty0" required value="<?php echo set_value('qty') ?>">
 					  </td>
 					  <td>
 						<textarea name="keterangan[]" id="keterangan0" class="md-textarea form-control" rows="1" required><?php echo set_value('keterangan') ?></textarea>

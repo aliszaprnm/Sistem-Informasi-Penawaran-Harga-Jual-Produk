@@ -21,7 +21,6 @@ class UserModel extends CI_Model
 			'nama' => $this->input->post('nama', true),
 			'username' => $this->input->post('username', true),
 			'level' => $this->input->post('level', true),
-			'password' => sha1($this->input->post('password1', true)),
 			'email' => $this->input->post('email', true),
 		];
 		$this->db->where('id', $id);

@@ -8,7 +8,7 @@
     <div class="card-body">
       <form action="" method="post">
 		<div class="form-group">
-          <label for="kode_pesanan">Pesanan</label>
+          <label for="kode_pesanan">Kode Pesanan</label>
           <select name="kode_pesanan" class="form-control form-control-sm" id="kode_pesanan" required>
             <option value="" disabled selected>--- Pilih Pesanan ---</option>
             <?php foreach ($pesanan as $o) { ?>
@@ -20,9 +20,9 @@
           <label for="kode_produk">Produk</label>
           <select name="kode_produk" class="form-control form-control-sm" id="kode_produk" required>
             <option value="" disabled selected>--- Pilih Produk ---</option>
-            <?php foreach ($produk as $p) { ?>
+            <!-- <?php foreach ($produk as $p) { ?>
               <option value="<?php echo $p->kode_produk ?>"> <?php echo $p->nama_produk ?> </option>
-            <?php } ?>
+            <?php } ?> -->
           </select>
         </div>
         <div class="form-group">
@@ -44,32 +44,32 @@
           <label for="transportation">Transportation</label>
           <input type="hidden" name="berat_produk" class="form-control form-control-sm" id="berat_produk">
           <input type="hidden" name="jarak" class="form-control form-control-sm" id="jarak">
-          <input type="number" min="0" lang="en" step="0.01" name="transportation" class="form-control form-control-sm" id="transportation" value="<?php echo set_value('transportation') ?>">
+          <input type="number" min="0" lang="en" step="0.01" name="transportation" class="form-control form-control-sm" id="transportation" required value="<?php echo set_value('transportation') ?>">
           <?php echo form_error('transportation', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="packing">Packing</label>
-          <input type="number" min="0.03" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" value="<?php echo set_value('packing') ?>">
+          <label for="packing">Packing (%)</label>
+          <input type="number" min="3" lang="en" step="0.01" name="packing" class="form-control form-control-sm" id="packing" required value="<?php echo set_value('packing') ?>">
           <?php echo form_error('packing', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="quality">Quality Control</label>
-          <input type="number" min="0.03" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" value="<?php echo set_value('quality') ?>">
+          <label for="quality">Quality Control (%)</label>
+          <input type="number" min="3" lang="en" step="0.01" name="quality" class="form-control form-control-sm" id="quality" required value="<?php echo set_value('quality') ?>">
           <?php echo form_error('quality', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="mtc_dies">Maintenance Dies</label>
-          <input type="number" min="0.05" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" value="<?php echo set_value('mtc_dies') ?>">
+          <label for="mtc_dies">Maintenance Dies (%)</label>
+          <input type="number" min="5" lang="en" step="0.01" name="mtc_dies" class="form-control form-control-sm" id="mtc_dies" required value="<?php echo set_value('mtc_dies') ?>">
           <?php echo form_error('mtc_dies', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
-          <label for="harga_material">Profit & OH</label>
-          <input type="number" min="0.15" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" value="<?php echo set_value('profit_oh') ?>">
+          <label for="harga_material">Profit & OH (%)</label>
+          <input type="number" min="15" lang="en" step="0.01" name="profit_oh" class="form-control form-control-sm" id="profit_oh" required value="<?php echo set_value('profit_oh') ?>">
           <?php echo form_error('profit_oh', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <div class="form-group">
           <label for="total">Total</label>
-          <input type="number" min="0" lang="en" step="0.01" name="total" class="form-control form-control-sm" id="total" readonly value="<?php echo set_value('total') ?>">
+          <input type="number" min="0" lang="en" step="0.01" name="total" class="form-control form-control-sm" id="total" readonly required value="<?php echo set_value('total') ?>">
           <?php echo form_error('total', '<span class="text-danger small pl-3">', '</span>'); ?>
         </div>
         <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-save"></i> Simpan</button>
@@ -112,10 +112,10 @@
 	  let sub_material = parseFloat($('#sub_material').val()) || 0;
 	  let process = parseFloat($('#process').val());
 	  let transport = parseFloat(parseFloat($('#transportation').val()) / 12.3 * parseFloat($('#berat_produk').val()) * parseFloat($('#jarak').val()));
-	  let packing = parseFloat(parseFloat($('#packing').val()) * process);
-	  let quality = parseFloat(parseFloat($('#quality').val()) * process);
-	  let mtc_dies = parseFloat(parseFloat($('#mtc_dies').val()) * process);
-	  let profit_oh = parseFloat(parseFloat($('#profit_oh').val()) * process);
+	  let packing = parseFloat(parseFloat($('#packing').val()) / 100 * process);
+	  let quality = parseFloat(parseFloat($('#quality').val()) / 100  * process);
+	  let mtc_dies = parseFloat(parseFloat($('#mtc_dies').val()) / 100  * process);
+	  let profit_oh = parseFloat(parseFloat($('#profit_oh').val()) / 100  * process);
 	  //console.log(transport,packing,quality,mtc_dies,profit_oh);
 	  $("#total").val(parseFloat(parseFloat(material)+parseFloat(sub_material)+parseFloat(process)+parseFloat(transport)+parseFloat(packing)+parseFloat(quality)+parseFloat(mtc_dies)+parseFloat(profit_oh)).toFixed(2));
   })

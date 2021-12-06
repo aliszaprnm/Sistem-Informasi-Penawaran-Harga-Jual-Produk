@@ -84,14 +84,15 @@ class ProcessCostModel extends CI_Model
 			$penawaran = $this->db->query("select * from penawaran_harga where pesanan_id = '".$this->input->post('kode_pesanan', true)."' and kode_produk = '".$this->input->post('kode_produk', true)."'");
 			$id = $penawaran->row('id');
 			$status = $penawaran->row('status');
-			$receiver = $penawaran->row('mod_by');
+			// $receiver = $penawaran->row('mod_by');
 			$this->db->where(['pesanan_id' => $this->input->post('kode_pesanan', true), 'kode_produk' => $this->input->post('kode_produk', true)]);
 			$this->db->update('penawaran_harga', array('process_cost' => $data['total'], 'mod_by' => $this->session->userdata('userid'), 'mod_date' => date('Y-m-d H:i:s')));
 			if($this->db->affected_rows() > 0 && $status == 'Negotiating') {
-				/*$this->db->select('MIN(id) as uid');
+				$this->db->select('MIN(id) as uid');
 				$this->db->from('user');
 				$this->db->where('level','Marketing');
-				$toUser = $this->db->get();*/
+				$toUser = $this->db->get();
+				$receiver = $toUser->row()->uid;
 				$dataNotif = [
 					'request_id' => $id,
 					'type' => 'Offer',

@@ -13,7 +13,7 @@
   <?php echo $this->session->flashdata('message'); ?>
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <a href="<?php echo site_url('penawaranharga/deal') ?>" class="btn btn-info btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
+      <a href="<?php echo site_url('penawaranharga') ?>" class="btn btn-info btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
       <!-- <a href="<?php echo site_url('penawaranharga/pdf') ?>" class="btn btn-info btn-sm" target="_blank"><i class="fas fa-file-pdf"></i> Cetak PDF</a> -->
       <?php if($this->session->userdata('role') == 'Marketing'){ ?>
         <a href="<?=site_url('penawaranharga/cetak_hasil_baru/'. $this->uri->segment(3). '/'. $this->uri->segment(4))?>" target='_blank' class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i> Cetak PDF</a>
@@ -63,17 +63,17 @@
 						<!--<td><?= $row->kode_grup ?></td>-->
 						<td><?= $row->nama_produk ?></td>
 						<td><?= "Rp". floatval($row->harga_material) ?></td>
-						<td><?= "Rp". floatval($row->harga_proses) ?></td>
 						<td><?= "Rp". floatval($row->harga_sub_material) ?></td>
+						<td><?= "Rp". floatval($row->harga_proses) ?></td>
 						<td><?= "Rp". number_format(($row->harga_delivery / 12.3 * $row->berat_produk * $row->jarak), 2) ?></td>
-						<td><?= floatval($row->harga_packing * 100) . '%' ?></td>
-						<td><?= "Rp". floatval($row->harga_packing * $row->harga_proses) ?></td>
-						<td><?= floatval($row->harga_qc * 100) . '%' ?></td>
-						<td><?= "Rp". floatval($row->harga_qc * $row->harga_proses) ?></td>
-						<td><?= floatval($row->harga_mtc_dies * 100) .'%' ?></td>
-						<td><?= "Rp". floatval($row->harga_mtc_dies * $row->harga_proses) ?></td>
-						<td><?= floatval($row->profit_dan_OH * 100) .'%' ?></td>
-						<td><?= "Rp". floatval($row->profit_dan_OH * $row->harga_proses) ?></td>
+						<td><?= floatval($row->harga_packing) . '%' ?></td>
+						<td><?= "Rp". number_format(($row->harga_packing / 100 * $row->harga_proses), 2) ?></td>
+						<td><?= floatval($row->harga_qc) . '%' ?></td>
+						<td><?= "Rp". number_format(($row->harga_qc / 100  * $row->harga_proses), 2) ?></td>
+						<td><?= floatval($row->harga_mtc_dies) .'%' ?></td>
+						<td><?= "Rp". number_format(($row->harga_mtc_dies / 100  * $row->harga_proses), 2) ?></td>
+						<td><?= floatval($row->profit_dan_OH) .'%' ?></td>
+						<td><?= "Rp". number_format(($row->profit_dan_OH / 100  * $row->harga_proses), 2) ?></td>
 						<td><?= "Rp". floatval($row->total) ?></td>
 						<td><?= "Rp". floatval($row->tooling_cost) ?></td>
 						<td><?= "Rp". floatval((floatval($row->total))+(floatval($row->tooling_cost))) ?></td>

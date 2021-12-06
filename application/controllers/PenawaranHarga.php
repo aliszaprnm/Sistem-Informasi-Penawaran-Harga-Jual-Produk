@@ -361,12 +361,13 @@ class PenawaranHarga extends CI_Controller
 			$where = " and a.status = '$status'";
 		}
 		//$data['rows'] = $this->PenawaranHargaModel->GetPenawaranHarga($where)->result();
-		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, process_cost, tooling_cost, a.total, a.status, e.*
+		$getData = $this->db->query(" SELECT a.id, a.pesanan_id, b.tanggal, b.kode_pesanan, a.kode_produk, c.nama_customer as nama_customer, c.jarak, d.kode_grup, d.nama_produk as nama_produk, f.berat_produk as berat_produk, process_cost, tooling_cost, a.total, a.status, e.*
 							FROM penawaran_harga a
 							LEFT JOIN pesanan b ON a.pesanan_id = b.id
 							LEFT JOIN customer c ON a.kode_customer = c.kode_customer
 							LEFT JOIN produk d ON a.kode_produk = d.kode_produk
 							LEFT JOIN process_cost e ON a.pesanan_id = e.pesanan_id AND a.kode_produk = e.kode_produk
+							left join material_produk f on a.kode_produk = f.kode_produk
 							WHERE a.pesanan_id = $id $where
 						");
 		

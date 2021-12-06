@@ -21,7 +21,7 @@
           <label for="level">Level</label>
           <select name="level" class="form-control" id="level">
             <option value="Administrator" <?php echo $row->level == "Administrator" ? 'selected' : '' ?>>Administrator </option>
-            <option value="Bagian Marketing" <?php echo $row->level == "Bagian Marketing" ? 'selected' : '' ?>>Bagian Marketing </option>
+            <option value="Marketing" <?php echo $row->level == "Marketing" ? 'selected' : '' ?>>Marketing </option>
             <option value="Operational Manager" <?php echo $row->level == "Operational Manager" ? 'selected' : '' ?>>Operational Manager </option>
           </select>
           <?php echo form_error('level', '<span class="text-danger small pl-3">', '</span>'); ?>

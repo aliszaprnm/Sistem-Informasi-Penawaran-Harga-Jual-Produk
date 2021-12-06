@@ -20,9 +20,9 @@
           <label for="kode_produk">Produk</label>
           <select name="kode_produk" class="form-control" id="kode_produk" required>
             <option value="" disabled selected>--- Pilih Produk ---</option>
-            <?php foreach ($produk as $p) { ?>
+            <!-- <?php foreach ($produk as $p) { ?>
               <option value="<?php echo $p->kode_produk ?>"> <?php echo $p->nama_produk ?> </option>
-            <?php } ?>
+            <?php } ?> -->
           </select>
         </div>
         <div class="form-group">
@@ -70,8 +70,8 @@
 		  if(status == 'success') {
 			//for(i=0; i<jsonData.length; i++){
 				$("#harga_dies").val(jsonData.harga_dies);
-				$("#vol_prod").val(jsonData.vol_prod);
-				$("#depresiasi_dies").val(jsonData.depresiasi_dies);
+				$("#vol_prod").val(parseFloat(jsonData.vol_prod).toFixed(0));
+				$("#depresiasi_dies").val(parseFloat(jsonData.depresiasi_dies).toFixed(0));
 				const harga_dies = parseFloat($("#harga_dies").val()) || 1;
 				$("#total").val(parseFloat(parseFloat(harga_dies) / (parseFloat($("#vol_prod").val()) * parseFloat($("#depresiasi_dies").val()))).toFixed(2));
 			//}

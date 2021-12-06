@@ -37,7 +37,7 @@
 					<?php $i = 0; foreach($detil as $rows) { ?>
 					<tr id="detail<?= $i; ?>" class="cloned-row">
 					  <td>
-						  <select name="kode_produk[]" class="form-control" id="kode_produk<?= $i; ?>">
+						  <select name="kode_produk[]" class="form-control" id="kode_produk<?= $i; ?>" disabled>
 							<option value="" disabled selected>--- Pilih Produk ---</option>
 							<?php foreach ($produk as $p) { ?>
 							  <option value="<?php echo $p->kode_produk ?>" <?= $p->kode_produk == $rows->kode_produk ? 'selected' : null; ?>> <?php echo $p->nama_produk ?> </option>
@@ -45,10 +45,10 @@
 						  </select>
 					  </td>
 					  <td>
-						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty<?= $i; ?>" value="<?php echo $rows->qty ?>">
+						<input type="number" min="3000" name="qty[]" class="form-control form-control" id="qty<?= $i; ?>" value="<?php echo $rows->qty ?>" readonly>
 					  </td>
 					  <td>
-						  <textarea name="keterangan[]" id="keterangan<?= $i; ?>" class="md-textarea form-control" rows="1" required><?php echo $rows->keterangan ?></textarea>
+						  <textarea name="keterangan[]" id="keterangan<?= $i; ?>" class="md-textarea form-control" rows="1" readonly><?php echo $rows->keterangan ?></textarea>
 					  </td>
 					</tr>
 					<?php $i++; } ?>

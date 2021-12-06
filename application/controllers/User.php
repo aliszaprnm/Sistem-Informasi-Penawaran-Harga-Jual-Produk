@@ -31,7 +31,7 @@ class User extends CI_Controller
 			'is_unique' => 'Username sudah dipakai, silakan pakai username lain'
 		]);
 		$this->form_validation->set_rules('level', 'Level', 'trim|required', [
-			'required' => 'Level tidak boleh kosong'
+			'required' => 'Silakan pilih jabatan Anda'
 		]);
 		$this->form_validation->set_rules('password1', 'Password', 'trim|required', [
 			'required' => 'Password tidak boleh kosong'
@@ -40,8 +40,9 @@ class User extends CI_Controller
 			'required' => 'Ulangi password tidak boleh kosong',
 			'matches' => 'Password yang dimasukkan tidak cocok'
 		]);
-		$this->form_validation->set_rules('email', 'Email', 'trim|required', [
-			'required' => 'Email tidak boleh kosong'
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+			'required' => 'Email tidak boleh kosong',
+			'valid_email' => 'Email yang Anda masukkan tidak valid'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {

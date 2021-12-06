@@ -31,11 +31,23 @@ class Mesin extends CI_Controller {
 			'integer' => 'Kekuatan mesin hanya dapat diisi dengan bilangan bulat',
 			'greater_than' => 'Kekuatan mesin harus lebih dari 0'
 		]);
+		$this->form_validation->set_rules('vol_prod', 'Volume Produksi per Bulan', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Volume produksi per bulan tidak boleh kosong',
+			'numeric' => 'Volume produksi per bulan hanya dapat diisi dengan angka',
+			'integer' => 'Volume produksi per bulan hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Volume produksi per bulan harus lebih dari 0'
+		]);
 		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required|numeric|integer|greater_than[0]', [
 			'required' => 'Harga dies tidak boleh kosong',
 			'numeric' => 'Harga dies hanya dapat diisi dengan angka',
 			'integer' => 'Harga dies hanya dapat diisi dengan bilangan bulat',
 			'greater_than' => 'Harga dies harus lebih dari 0'
+		]);
+		$this->form_validation->set_rules('depresiasi_dies', 'Depresiasi Dies', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Depresiasi dies tidak boleh kosong',
+			'numeric' => 'Depresiasi dies hanya dapat diisi dengan angka',
+			'integer' => 'Depresiasi dies hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Depresiasi dies harus lebih dari 0'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
@@ -77,13 +89,29 @@ class Mesin extends CI_Controller {
 		$this->form_validation->set_rules('nama_mesin', 'Nama Mesin', 'trim|required', [
 			'required' => 'Nama mesin tidak boleh kosong'
 		]);
-		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required|integer', [
+		$this->form_validation->set_rules('kekuatan', 'Kekuatan Mesin', 'trim|required|numeric|integer|greater_than[0]', [
 			'required' => 'Kekuatan mesin tidak boleh kosong',
-			'integer' => 'Kekuatan mesin hanya dapat diisi dengan bilangan bulat'
+			'numeric' => 'Kekuatan mesin hanya dapat diisi dengan angka',
+			'integer' => 'Kekuatan mesin hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Kekuatan mesin harus lebih dari 0'
 		]);
-		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required|integer', [
+		$this->form_validation->set_rules('vol_prod', 'Volume Produksi per Bulan', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Volume produksi per bulan tidak boleh kosong',
+			'numeric' => 'Volume produksi per bulan hanya dapat diisi dengan angka',
+			'integer' => 'Volume produksi per bulan hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Volume produksi per bulan harus lebih dari 0'
+		]);
+		$this->form_validation->set_rules('harga_dies', 'Harga Dies', 'trim|required|numeric|integer|greater_than[0]', [
 			'required' => 'Harga dies tidak boleh kosong',
-			'integer' => 'Harga dies hanya dapat diisi dengan bilangan bulat'
+			'numeric' => 'Harga dies hanya dapat diisi dengan angka',
+			'integer' => 'Harga dies hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Harga dies harus lebih dari 0'
+		]);
+		$this->form_validation->set_rules('depresiasi_dies', 'Depresiasi Dies', 'trim|required|numeric|integer|greater_than[0]', [
+			'required' => 'Depresiasi dies tidak boleh kosong',
+			'numeric' => 'Depresiasi dies hanya dapat diisi dengan angka',
+			'integer' => 'Depresiasi dies hanya dapat diisi dengan bilangan bulat',
+			'greater_than' => 'Depresiasi dies harus lebih dari 0'
 		]);
 
 		if ($this->form_validation->run() == FALSE) {

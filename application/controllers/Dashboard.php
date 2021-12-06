@@ -18,8 +18,8 @@ class Dashboard extends CI_Controller {
         
         $this->db->select('count(id) as counted, left(MONTHNAME(tanggal),3) as months, YEAR(tanggal) as years, date_format(tanggal, "%b %y") as month_years');
         $this->db->from('pesanan a');
-        $this->db->group_by('year(tanggal)'); 
-		$this->db->order_by('year(tanggal)', 'asc');
+        $this->db->group_by('month(tanggal)'); 
+		$this->db->order_by('year(tanggal)');
         $get_monthly = $this->db->get();
         
         $status = array('Deal' => 0, 'Negotiating' => 0, 'New' => 0, 'Reject' => 0);
@@ -66,19 +66,30 @@ class Dashboard extends CI_Controller {
 			foreach($query->result() as $row){
 				if($row->sum == 1){
 					$sql = $this->db->query("select message,
-													case type when 'Order' then '/pesanan/baru'
-													when 'Offer' then '/penawaranharga/validasi'
-													when 'Negotiate' then '/penawaranharga'
-													when 'Reject' then '/penawaranharga/reject'
+													case type when 'Order' then 'pesanan/baru'
+													when 'Offer' then 'penawaranharga/validasi'
+													when 'Negotiate' then 'penawaranharga'
+													when 'Reject' then 'penawaranharga/reject'
 													end as menu_link
 												 	from notification where type = '$row->type'")->row();
 					$link = $sql->menu_link;
 					$message = $sql->message;
 				}else{
-					$link = $row->type == 'Order' ? '/pesanan/baru' : '#';
-					$link = $row->type == 'Offer' ? '/penawaranharga/validasi' : '#';
-					$link = $row->type == 'Negotiate' ? '/penawaranharga/validasi' : '#';
-					$link = $row->type == 'Reject' ? '/penawaranharga/reject' : '#';
+					switch(strtolower(trim($row->type))){
+						case 'order':
+							$link = 'pesanan/baru';
+							break;
+						case 'offer':
+						case 'reject':
+							$link = 'penawaranharga/validasi';
+							break;
+						case 'negotiate':
+							$link = 'penawaranharga';
+							break;
+						default:
+							$link = '#';
+							break;
+					}
 					$message = "There is ".$row->sum." new ".$row->type .'s';					
 				}
 

@@ -81,7 +81,7 @@
         if(status == 'success') {
         for(i=0; i<jsonData.length; i++){
       var data = `${jsonData[i].nama_produk}`
-          option += `<option value="${jsonData[i].id}">${data}</option>`
+          option += `<option value="${jsonData[i].kode_produk}">${data}</option>`
         }
         $("#kode_produk0").html(option);
         } else { alert('Something wrong!') }

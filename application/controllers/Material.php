@@ -23,6 +23,7 @@ class Material extends CI_Controller {
 	public function tambah_master()
 	{
 		$this->form_validation->set_rules('kode_customer', 'Customer', 'trim|required|callback_check_default', [
+			'required' => 'Anda harus memilih salah satu customer',
 			'check_default' => 'Anda harus memilih salah satu customer'
 		]);
 		$this->form_validation->set_rules('jenis_material', 'Jenis Material', 'trim|required', [
